@@ -924,7 +924,7 @@ function vMore(){
    <label class="f" for="restore">Or paste a backup</label><textarea id="restore" placeholder="Paste a backup here"></textarea>
    <div class="acts"><button class="btn" data-act="restore" data-mode="merge">Merge in</button><button class="btn danger" data-act="restore" data-mode="replace">${ui.arm==='replace'?'Tap again to replace everything':'Replace everything'}</button></div></section>
   <section class="sec"><h2>About</h2><div class="acts" style="margin-top:var(--s3)"><button class="btn" data-act="intro">Replay the intro</button><button class="btn" data-act="hintsReset">Show tips again</button></div>
-   <p class="small muted" style="margin-top:var(--s4)">Orbit · v3 · Nov 9, 2026 · ${S.friends.length} ${S.friends.length===1?'person':'people'}</p></section>`;
+   <p class="small muted" style="margin-top:var(--s4)">Orbit · v3.4 · Nov 9, 2026 · ${S.friends.length} ${S.friends.length===1?'person':'people'}</p></section>`;
   return h;
 }
 
@@ -1383,7 +1383,8 @@ function sheetIntro(el){
   const s=ui.sheet;s.step=s.step||0;
   const P=[
    {h:'Welcome to your orbit',b:`<p>Orbit is a quiet place to keep track of the people in your life: how close you are, who reached out last, and what’s fair to expect.</p>${guideOrbit()}<p class="muted" style="margin-top:var(--s3)">Five rings, from Acquaintance on the outside to Homie closest to you. Closer means closer, not more important.</p>`},
-   {h:'The ladder',b:`<ul class="rows">${tiersTop().map(t=>`<li class="r"><div class="main"><b>${esc(t.name)}</b> <span class="muted">${esc(t.summary||'')}</span><div class="meta">Test: ${esc(t.test)}</div></div></li>`).join('')}</ul><p class="muted" style="margin-top:var(--s3)">Place people by what’s happening now, not what you hope. You can move anyone, any time.</p>`},
+   {h:'Four ways to describe a friendship',b:`<p>Every tier on the ladder is described the same four ways, so it’s easier to tell them apart:</p><dl class="dims" style="margin:var(--s3) 0">${DIMS.map(([k,l,d])=>`<dt>${l}</dt><dd>${d.charAt(0).toUpperCase()+d.slice(1)}</dd>`).join('')}</dl><p>Each step up the ladder adds one thing: <b>chosen</b>, then <b>planned</b>, then <b>relied on</b>, then <b>family</b>.</p>`},
+   {h:'The ladder',b:`<p class="muted">From closest to least close. Place people by what’s happening now, not what you hope. You can move anyone, any time.</p>${tiersTop().map(t=>`<div class="rung"><h3>${esc(t.name)}</h3>${tierDef(t)}${t.test?`<div class="test"><b>Quick test:</b> ${esc(t.test)}</div>`:''}</div>`).join('')}`},
    {h:'Two buttons, one habit',b:`<div class="logbtns" aria-hidden="true"><span class="btn primary">I reached out</span><span class="btn them">They did</span></div><p style="margin-top:var(--s4)">After any text, call or hangout, tap one. That’s the whole habit.</p><p>Who starts matters. It’s how Orbit notices when one person is carrying a friendship, and it’s what the gentle reminders are built on.</p>`},
    {h:'Expectations, kindly',b:`<p>Every tier says what’s fair to expect and what isn’t yet. When someone lets you down, <b>Reflect on this friendship</b> helps you check the expectation against what’s really happening.</p>${toneBlock(1)}<p class="note">You can change this any time in More.</p>`}
   ];
