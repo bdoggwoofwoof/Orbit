@@ -13,9 +13,11 @@
 <link rel="icon" href="icon-192.png">
 <title>Orbit</title>
 <script>try{var _s=JSON.parse(localStorage.getItem("orbit.v1")||"{}").settings;if(_s&&(_s.theme==="dark"||_s.theme==="light"))document.documentElement.dataset.theme=_s.theme}catch(e){}</script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
+@font-face{font-family:Fraunces;font-style:normal;font-display:swap;font-weight:100 900;src:url(fonts/fraunces-latin-opsz-normal.woff2) format('woff2')}
+@font-face{font-family:Inter;font-style:normal;font-display:swap;font-weight:400;src:url(fonts/inter-latin-400-normal.woff2) format('woff2')}
+@font-face{font-family:Inter;font-style:normal;font-display:swap;font-weight:500;src:url(fonts/inter-latin-500-normal.woff2) format('woff2')}
+@font-face{font-family:Inter;font-style:normal;font-display:swap;font-weight:600 700;src:url(fonts/inter-latin-600-normal.woff2) format('woff2')}
 /* ---------- tokens ---------- */
 :root{
   --paper:#F5F1E8;--surface:#FBF8F1;--ink:#222522;--ink2:#5A564E;--stone:#6F6B63;--rule:#E2DBCC;
@@ -72,6 +74,7 @@ details.later{margin-top:var(--s4);border-top:1px solid var(--rule)}details.late
 details.ps-fold{padding:var(--s4) 0;border-bottom:1px solid var(--rule)}details.ps-fold>summary{display:flex;flex-direction:column;gap:2px;cursor:pointer;list-style:none}details.ps-fold>summary::-webkit-details-marker{display:none}details.ps-fold>summary h4{margin:0}details.ps-fold>summary h4::after{content:" ›";color:var(--stone)}details.ps-fold[open]>summary h4::after{content:" ⌄"}
 .orbitbtn{display:block;margin:0 auto;background:none;border:0;padding:0;cursor:pointer;border-radius:50%}
 .orbit .cnt{fill:#fff;font:700 12px var(--sans)}
+.toc{display:flex;flex-wrap:wrap;gap:0 var(--s4);margin:0 0 var(--s3)}
 /* tour */
 .demo-banner{border:1px dashed var(--teal);color:var(--teal);border-radius:var(--r-md);padding:8px 12px;font-size:var(--t-sm);font-weight:600;margin:var(--s2) 0 var(--s3)}
 .tour{position:fixed;inset:0;z-index:200}
@@ -243,7 +246,6 @@ details.fold[open]>summary::before{transform:rotate(45deg)}
 .orbit .youl{font:600 10px var(--sans);fill:var(--paper)}
 .orbit .od{cursor:pointer}
 .orbit .od circle.d{fill:var(--teal);transition:r var(--dur) var(--ease)}
-.orbit .od.them circle.d{fill:var(--other)}
 .orbit .od.dorm circle.d{fill:var(--paper);stroke:var(--stone);stroke-width:1.5;stroke-dasharray:2 2}
 .orbit .od circle.halo{fill:none;stroke:var(--amber);stroke-width:2}
 .orbit .od text{font:600 9px var(--sans);fill:#fff;pointer-events:none}
@@ -442,7 +444,6 @@ const QUIZ=[
  {lvl:4,q:"You could show up at their place, or call at 2am, and it'd be welcome."},
  {lvl:4,q:"They've shown up for you in a hard moment."}
 ];
-const AV_COLORS=['#315E60','#8973A7','#A87836','#5E7A4F','#7A5A4A','#4F6A86','#8B5E73','#6B6F3A'];
 
 const BUILTIN_GROUPS=[{id:'near',name:'Nearby',kind:'place',color:'#4369A0',cadence:null,off:false,builtin:true},{id:'far',name:'Long-distance',kind:'place',color:'#A05838',cadence:null,off:false,builtin:true}];
 function mergeBuiltins(gs,dist){const out=gs.slice();BUILTIN_GROUPS.forEach(b=>{let g=out.find(x=>x.id===b.id);if(!g){g=Object.assign({},b);if(dist&&dist[b.id]!=null&&dist[b.id]!=='')g.cadence=Number(dist[b.id]);out.unshift(g)}g.builtin=true});
@@ -452,8 +453,12 @@ function normalizeFriend(f){if(!f||typeof f!=='object')return f;
   if(!f.created)f.created=((f.contacts||[]).map(c=>c.date).sort()[0])||todayISO();
   if(f.distance==='near'||f.distance==='far'){const g=f.groups||[];if(!g.includes(f.distance))f.groups=[f.distance].concat(g.filter(x=>x!=='near'&&x!=='far'))}
   delete f.distance;if(!Array.isArray(f.groups))f.groups=[];return f}
+/* v5.1: custom fields folded into Notes (nothing is lost) */
+function migrateFields(){const fs=S.settings.fields||[];if(!fs.length)return;
+  S.friends.forEach(f=>{const c=f.custom||{};const add=fs.map(fd=>c[fd.id]?fd.name+': '+c[fd.id]:'').filter(Boolean);if(add.length){f.notes=((f.notes||'').trim()+'\n'+add.join('\n')).trim();delete f.custom;saveFriend(f)}});
+  S.settings.fields=[];saveSettings()}
 function distOf(f){return(f.groups||[]).includes('far')?'far':(f.groups||[]).includes('near')?'near':''}
-function defaultSettings(){return {tiers:JSON.parse(JSON.stringify(DEFAULT_TIERS)),fields:[],timing:Object.assign({},DEFAULT_TIMING),tone:'gentle',avatars:'initials',onboarded:false,hints:[],reminders:{inapp:true,calendar:true,push:false},me:null,groups:BUILTIN_GROUPS.map(g=>Object.assign({},g)),colorBy:'tier',theme:'system',orbitNames:true,toured:false,dailyCap:5,homeNote:false,v:5}}
+function defaultSettings(){return {tiers:JSON.parse(JSON.stringify(DEFAULT_TIERS)),fields:[],timing:Object.assign({},DEFAULT_TIMING),tone:'gentle',avatars:'initials',onboarded:false,hints:[],reminders:{inapp:true,calendar:true,push:false},me:null,groups:BUILTIN_GROUPS.map(g=>Object.assign({},g)),colorBy:'tier',theme:'system',orbitNames:true,toured:false,dailyCap:5,homeNote:false,lastReview:null,v:5}}
 function normalizeSettings(s){
   const d=defaultSettings(); if(!s||typeof s!=='object')return d;
   const st=Array.isArray(s.tiers)?s.tiers:[];
@@ -475,6 +480,7 @@ function normalizeSettings(s){
     toured:!!s.toured,
     dailyCap:Math.max(1,parseInt(s.dailyCap,10)||5),
     homeNote:!!s.homeNote,
+    lastReview:typeof s.lastReview==='string'?s.lastReview:null,
     v:5
   };
 }
@@ -599,7 +605,6 @@ function extrasText(c){const x=[];const d=DEPTH.find(v=>v[0]===c.depth);if(d)x.p
   if(c.who==='me'&&c.reply==='waiting')x.push('waiting on a reply');else if(c.reply==='replied')x.push('they replied'+(c.replyDate?(c.replyDate===c.date?' same day':' '+fmtDate(c.replyDate)):''));else if(c.reply==='none')x.push('no reply');
   return x.join(' · ')}
 function lastMode(f){const l=lastContact(f);return l&&QUICK_MODES.includes(l.mode)?l.mode:'Text'}
-function hashColor(s){let h=0;for(const c of String(s))h=(h*31+c.charCodeAt(0))>>>0;return AV_COLORS[h%AV_COLORS.length]}
 function initials(n){const p=String(n).trim().split(/\s+/).filter(w=>/^[\p{L}\p{N}]/u.test(w));return((p[0]||'?')[0]+(p.length>1?p[p.length-1][0]:'')).toUpperCase()}
 function avatarHTML(f,lg){
   const m=S.settings.avatars;if(m==='off')return'';
@@ -684,7 +689,7 @@ function applySnap(snap){
   }
   const fr=[];let st=null;
   snap.docs.forEach(d=>{const v=d.data();if(!v)return;if(d.id==='settings')st=v;else if(d.id.indexOf('f_')===0)fr.push(clone(v))});
-  S.friends=fr.map(normalizeFriend);if(st)S.settings=normalizeSettings(clone(st));
+  S.friends=fr.map(normalizeFriend);if(st)S.settings=normalizeSettings(clone(st));migrateFields();
   cacheLocal();if(Sync.state!=='readonly')setSync('cloud');softRender();
 }
 function writeDoc(id,data){if(window.TOUR_DEMO)return;
@@ -905,6 +910,8 @@ function vReach(){
   const sd=T('statsDays');const m=S.friends.reduce((a,f)=>{const b=balance(f,sd);a.me+=b.me;a.them+=b.them;return a},{me:0,them:0});
   let h=homeBanner();
   h+=`<p class="lede">${today.length?`${today.length} for today.`:'Nobody is due today. Nice.'}</p><p class="note" style="margin-top:-4px">Last ${sd} days: you reached out ${m.me} time${m.me===1?'':'s'}, they did ${m.them}.</p>`;
+  const lr=S.settings.lastReview;
+  if(S.friends.length>=3&&(lr?daysSince(lr)>=7:daysSince(S.friends.map(f=>f.created||todayISO()).sort()[0])>=7)){hintShown=true;h+=`<div class="hint" role="note"><b>Weekly check-in.</b> Anyone you talked to this week but didn’t log? <button class="linkbtn" data-act="review">Take 2 minutes</button></div>`}
   if(feat){
     const fu=openFollowups(feat);const fd=dueInfo(feat);
     h+=`<div class="feature" id="row-${feat.id}">${avatarHTML(feat,1)}<div class="main" style="flex:1;min-width:0"><div class="q">${fd.state==='overdue'?'Who would benefit from hearing from you?':'Coming up soon'}</div>
@@ -946,7 +953,9 @@ function filterDefs(){
   return c;
 }
 function filterChips(){const fl=ui.filter;
-  return `<div class="chips" id="pfilters" role="group" aria-label="Show">${filterDefs().map(([k,l,col])=>k==='sep'?'<span class="sep" aria-hidden="true"></span>':`<button class="chip ${fl===k?'on':''}" data-act="filter" data-k="${k}" aria-pressed="${fl===k}">${col?`<i class="gdot" style="background:${col}"></i>`:''}${esc(l)}</button>`).join('')}</div>`}
+  const chip=([k,l,col])=>`<button class="chip ${fl===k?'on':''}" data-act="filter" data-k="${k}" aria-pressed="${fl===k}">${col?`<i class="gdot" style="background:${col}"></i>`:''}${esc(l)}</button>`;
+  const d=filterDefs(),i=d.findIndex(x=>x[0]==='sep');
+  return `<div id="pfilters" role="group" aria-label="Show"><div class="chips" aria-label="Groups and places">${d.slice(0,i).map(chip).join('')}</div><div class="chips" aria-label="Tiers and tags" style="margin-top:2px">${d.slice(i+1).map(chip).join('')}</div></div>`}
 function filtered(){
   let list=S.friends.slice();const q=(ui.q||'').trim().toLowerCase();
   if(q)list=list.filter(f=>(f.name+' '+(f.notes||'')+' '+(f.met||'')).toLowerCase().includes(q));
@@ -959,8 +968,8 @@ function filtered(){
 }
 function smallOrbit(list){
   const size=Math.max(200,Math.min(window.innerWidth-32,240));
-  if(list.length>15)return `<button class="orbitbtn" data-act="orbitBig" aria-label="Open the bigger orbit with names">${orbitSVG(list,size,{counts:true})}</button><p class="note" style="text-align:center;margin-top:0">${list.length} people. Tap for the bigger orbit with names.</p>${orbitLegend()}`;
-  return orbitSVG(list,size,{names:S.settings.orbitNames})+orbitLegend()+orbitTools();
+  if(list.length>15)return `<button class="orbitbtn" data-act="orbitBig" aria-label="Open the bigger orbit with names">${orbitSVG(list,size,{counts:true})}</button><p class="note" style="text-align:center;margin-top:0">${list.length} people. Tap for the bigger orbit with names and colors.</p>`;
+  return orbitSVG(list,size,{names:S.settings.orbitNames})+orbitTools();
 }
 function vPeople(){
   if(!S.friends.length)return emptyStart();
@@ -995,27 +1004,27 @@ function tierDef(t){
   return `<p class="tsum">${esc(t.summary||'')}</p><dl class="dims">${DIMS.map(([k,l])=>t[k]?`<dt>${l}</dt><dd>${esc(t[k])}</dd>`:'').join('')}</dl>`;
 }
 function vGuide(){
-  let h=`<p class="lede">A ladder for how close a friendship is, plus a few markers that describe it in other ways. It’s a map, not a ranking of anyone’s worth, and people move both directions over time.</p>
-  <div class="acts" style="margin-bottom:var(--s2)"><button class="btn" data-act="intro">Replay the intro</button></div>
+  let h=`<p class="lede">A ladder for how close a friendship is, plus a few tags that describe it in other ways. It’s a map, not a ranking of anyone’s worth, and people move both directions over time.</p>
+  <nav class="toc" aria-label="On this page">${[['g-ladder','The ladder'],['g-best','Best friend'],['g-tags','Tags'],['g-connect','How people connect'],['g-wrong','When something goes wrong'],['g-expect','Setting expectations'],['g-remember','Good to remember']].map(([id,l])=>`<button class="linkbtn" data-act="jump" data-t="${id}">${l}</button>`).join('')}</nav>
   <div class="orbitbox">${guideOrbit()}</div>
-  <section class="sec"><h2>The ladder</h2><p class="sub">Every tier is described the same four ways: <b>Contact</b> (why and how you see each other), <b>Knowing</b> (how well you know each other), <b>Asking</b> (what you could fairly ask of them) and <b>Effort</b> (who starts things). Each step up adds one thing: chosen, then planned, then go-to, then family. The <b>big-news test</b> under each tier asks: if something big happened to you, good or bad, what would happen with this person?</p>`;
+  <section class="sec" id="g-ladder"><h2>The ladder</h2><p class="sub">Every tier is described the same four ways: <b>Contact</b> (why and how you see each other), <b>Knowing</b> (how well you know each other), <b>Asking</b> (what you could fairly ask of them) and <b>Effort</b> (who starts things). Each step up adds one thing: chosen, then planned, then go-to, then family. The <b>big-news test</b> under each tier asks: if something big happened to you, good or bad, what would happen with this person?</p>`;
   tiersTop().forEach(t=>{
     const n=S.friends.filter(f=>f.tier===t.key).length;
     h+=`<div class="rung"><h3>${esc(t.name)} <small>${n?n+' '+(n===1?'person':'people')+' · ':''}${t.cadence?'reminder every '+t.cadence+' days':'no reminder'}</small></h3>${tierDef(t)}${t.test?`<div class="test"><b>Big-news test:</b> ${esc(t.test)}</div>`:''}${t.ex?`<p class="small muted" style="margin-top:var(--s2)">Examples: ${esc(t.ex)}</p>`:''}
     <details class="fold"><summary>What to expect</summary><div class="exp"><h4>Fair to expect</h4><ul>${lines(t.expect).map(x=>`<li>${esc(x)}</li>`).join('')}</ul><h4>Not fair to expect yet</h4><ul>${notyetHTML(t)}</ul></div></details></div>`;
   });
   h+=`<div class="rung"><h3>Stranger</h3><p style="margin-top:6px">Someone you haven’t met. Not tracked here, but any stranger could end up anywhere on this ladder.</p></div></section>
-  <section class="sec"><h2>Best friend</h2><div class="prose" style="margin-top:var(--s3)"><p>The top spot, taken literally: your <b>best</b> friend. Usually a Homie and often a Platonic soulmate. Everything a best friend should be, with grace, because everyone is human.</p>
+  <section class="sec" id="g-best"><h2>Best friend</h2><div class="prose" style="margin-top:var(--s3)"><p>The top spot, taken literally: your <b>best</b> friend. Usually a Homie and often a Platonic soulmate. Everything a best friend should be, with grace, because everyone is human.</p>
   <ul><li><b>Overarching:</b> your best friend across your whole life right now. Only one at a time, and it can change.</li><li><b>Of a season:</b> the best friend of a setting or stretch of life (college, a job, a city). You can have one per context.</li></ul></div></section>
-  <section class="sec"><h2>Tags</h2><p class="sub">Tags sit on top of the ladder rather than on it, because they describe something other than closeness.</p>`;
+  <section class="sec" id="g-tags"><h2>Tags</h2><p class="sub">Tags sit on top of the ladder rather than on it, because they describe something other than closeness.</p>`;
   MARKERS.forEach(m=>{h+=`<div class="rung"><h3>${esc(m.name)}</h3><p style="margin-top:6px">${esc(m.desc)}</p></div>`});
-  h+=`</section><section class="sec"><h2>How people connect</h2><div class="prose" style="margin-top:var(--s3)">
+  h+=`</section><section class="sec" id="g-connect"><h2>How people connect</h2><div class="prose" style="margin-top:var(--s3)">
    <p>Attachment research suggests people tend to lean toward a few patterns in close relationships. Orbit uses plain names for them. They’re rough tendencies, not types or diagnoses, and the same person can look different with different people or under stress.</p>
    <ul>${Object.values(STYLES).map(v=>`<li><b>${v.name}:</b> ${v.signs}</li>`).join('')}</ul>
    <p>Knowing your own pattern and guessing theirs can explain a lot: why a slow reply stings, why someone goes quiet after a hard talk, or why a friendship feels effortless. Take the check in More → How you connect, and pick a pattern on anyone’s page.</p></div></section>
-  <section class="sec"><h2>When something goes wrong</h2><p class="sub">A rough map. On anyone’s page, <b>Work through something</b> walks you through it step by step and saves a gameplan.</p>
+  <section class="sec" id="g-wrong"><h2>When something goes wrong</h2><p class="sub">A rough map. On anyone’s page, <b>Work through something</b> walks you through it step by step and saves a gameplan.</p>
    <div class="flowbox">${flowchartSVG()}</div></section>`;
-  h+=`<section class="sec"><h2>Setting expectations</h2><div class="prose" style="margin-top:var(--s3)">
+  h+=`<section class="sec" id="g-expect"><h2>Setting expectations</h2><div class="prose" style="margin-top:var(--s3)">
    <p>A lot of hurt in friendship comes from expecting a <b>Good friend’s</b> effort from someone who’s really a <b>Friend</b> (or less) from their side. The tier is where your expectations should live.</p>
    <ul><li><b>Place people by what’s happening, not what you hope.</b> Who starts things, how often you see each other, and whether they know you as well as you know them.</li>
    <li><b>When you feel let down, check the tier first.</b> Was what you expected on the “fair to expect” list for where they really are?</li>
@@ -1026,7 +1035,7 @@ function vGuide(){
    <ul><li><b>Reasonable:</b> it fits where they are on the ladder.</li><li><b>Clearly said:</b> you’ve told them, in words, not hints.</li><li><b>Agreed on:</b> they said yes to it. Not just “they didn’t argue.”</li></ul>
    <h3 style="font:600 var(--t-md) var(--sans);margin-top:var(--s4)">Not fair to expect from anyone</h3>
    <p>Some things aren’t fair to ask of any friend, however close:</p><ul>${NEVER.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div></section>
-  <section class="sec"><h2>Good to remember</h2><div class="prose" style="margin-top:var(--s3)"><ul>
+  <section class="sec" id="g-remember"><h2>Good to remember</h2><div class="prose" style="margin-top:var(--s3)"><ul>
    <li>Place people where you’d both agree. If it only feels close from one side, the lower tier is the honest one.</li>
    <li>Closeness takes time together. Research by Jeffrey Hall (2018) estimated roughly 50 hours to go from acquaintance to casual friend, about 90 to friend, and over 200 to a close friend.</li>
    <li>Everyone has limited room up top. Most people only have a handful of people at the closest level, so it’s normal for the upper tiers to be small.</li>
@@ -1094,16 +1103,14 @@ function vMore(){
     <label class="f" for="ty_${t.key}">Not fair to expect yet <span class="muted" style="font-weight:400">(one per line)</span></label><textarea id="ty_${t.key}" data-tier="${t.key}" data-field="notyet">${esc(t.notyet||'')}</textarea></div></details>`;
   });
   h+=`<div class="acts"><button class="btn quiet" data-act="resetTiers">${ui.arm==='reset'?'Tap again to reset all tier text':'Reset the ladder to defaults'}</button></div></section>
-  <section class="sec"><h2>Extra fields</h2><p class="sub">Fields that show on every person, like coffee order, love language or their kids’ names.</p>
-   <div style="margin-top:var(--s2)">${s.fields.map(fd=>`<div class="li"><span>${esc(fd.name)}</span><button class="btn quiet" data-act="delField" data-id="${fd.id}">Remove</button></div>`).join('')}</div>
-   <div class="addrow"><input type="text" id="newField" placeholder="e.g. Coffee order" aria-label="New field name"><button class="btn" data-act="addField">Add</button></div></section>
   <section class="sec"><h2>Your data</h2><p style="margin-top:var(--s3)">${st}</p>
    <div class="acts"><button class="btn primary" data-act="fileBackup">Save a backup file</button><button class="btn" data-act="copyBackup">Copy backup</button></div>
    <label class="f" for="restoreFile">Restore from a backup file</label><input type="file" id="restoreFile" accept=".json,application/json,text/plain">
    <label class="f" for="restore">Or paste a backup</label><textarea id="restore" placeholder="Paste a backup here"></textarea>
    <div class="acts"><button class="btn" data-act="restore" data-mode="merge">Merge in</button><button class="btn danger" data-act="restore" data-mode="replace">${ui.arm==='replace'?'Tap again to replace everything':'Replace everything'}</button></div></section>
   <section class="sec"><h2>About</h2><div class="acts" style="margin-top:var(--s3)"><button class="btn primary" data-act="tour">Take the tour</button><button class="btn" data-act="intro">Replay the intro</button><button class="btn" data-act="hintsReset">Show tips again</button></div>
-   <p class="small muted" style="margin-top:var(--s4)">Orbit · v5 · Nov 10, 2026 · ${S.friends.length} ${S.friends.length===1?'person':'people'}</p></section>`;
+   <p class="note">Your orbit stays private: ${IN_CLAUDE?'it’s saved in your own Claude account space':'it’s saved on this device only, nothing is sent anywhere, and it’s protected by your phone’s lock'}. Fonts are bundled, so nothing loads from other sites.</p>
+   <p class="small muted" style="margin-top:var(--s4)">Orbit · v5.1 · Nov 10, 2026 · ${S.friends.length} ${S.friends.length===1?'person':'people'}</p></section>`;
   return h;
 }
 /* ---------- sheets ---------- */
@@ -1129,6 +1136,7 @@ function renderSheet(){
   if(s.type==='intro')return sheetIntro(el);
   if(s.type==='me')return sheetMe(el);
   if(s.type==='orbit')return sheetOrbit(el);
+  if(s.type==='review')return sheetReview(el);
   const f=friend(s.id);if(!f){closeSheet();return}
   if(s.type==='edit')return sheetEdit(el,f);
   if(s.type==='reflect')return sheetReflect(el,f);
@@ -1136,6 +1144,14 @@ function renderSheet(){
   if(s.type==='repair')return sheetRepair(el,f);
   if(s.type==='plan')return sheetPlan(el,f);
   sheetPerson(el,f);
+}
+function sheetReview(el){
+  const s=ui.sheet;s.done=s.done||{};
+  const list=S.friends.filter(f=>!f.dormant&&!(f.contacts||[]).some(c=>daysSince(c.date)<7)||s.done[f.id]).sort((a,b)=>tierIdx(b)-tierIdx(a)||a.name.localeCompare(b.name));
+  el.innerHTML=sheetHead('Weekly check-in')+`<p class="muted" style="margin-top:0">Anyone you talked to, texted or saw this week but didn’t log? Tap who started it. Skip everyone else.</p>
+  ${list.length?`<ul class="rows">${list.map(f=>`<li class="r">${avatarHTML(f)}<div class="main"><span class="name" style="font-weight:600">${esc(f.name)}</span><div class="meta">${esc(tierOf(f).name)} · ${lastLine(f)}</div>
+    ${s.done[f.id]?`<div class="qacts"><span class="note" style="margin:0;align-self:center">Logged: ${s.done[f.id]==='me'?'you reached out':'they did'}</span></div>`:`<div class="qacts"><button class="btn sm primary" data-act="revLog" data-who="me" data-id="${f.id}">I reached out</button><button class="btn sm them" data-act="revLog" data-who="them" data-id="${f.id}">They did</button></div>`}</div></li>`).join('')}</ul>`:'<p>Everyone you’ve talked to this week is already logged.</p>'}
+  <div class="acts" style="margin-top:var(--s5)"><button class="btn primary block" data-act="revDone">Done for this week</button></div></div>`;
 }
 function sheetOrbit(el){
   const list=filtered();const size=Math.max(240,Math.min((el.clientWidth||window.innerWidth)-48,640));
@@ -1225,8 +1241,7 @@ function sheetPerson(el,f){
   <details class="fold ps-fold" ${(f.notes||openFollowups(f).length||(f.gifts||[]).some(x=>!x.done))?'':''}><summary><h4>Remember</h4><span class="muted small">${[openFollowups(f).length?openFollowups(f).length+' to ask about':'',(f.gifts||[]).filter(x=>!x.done).length?(f.gifts||[]).filter(x=>!x.done).length+' gift ideas':'',f.notes?'notes':''].filter(Boolean).join(' · ')||'Ask about, gift ideas, notes'}</span></summary>
     ${listBlock(f,'followups','Ask about next time','e.g. how the job interview went')}
     ${listBlock(f,'gifts','Gift ideas','e.g. the book they mentioned')}
-    <label class="f" for="fNotes">Notes</label><textarea id="fNotes" placeholder="Their people (partner, kids, pets), what they care about, what helps when they’re down">${esc(f.notes||'')}</textarea>
-    ${S.settings.fields.map(fd=>`<label class="f" for="cf_${fd.id}">${esc(fd.name)}</label><input type="text" id="cf_${fd.id}" data-cf="${fd.id}" value="${esc((f.custom||{})[fd.id]||'')}">`).join('')}
+    <label class="f" for="fNotes">Notes</label><textarea id="fNotes" placeholder="Their people (partner, kids, pets), coffee order, what they care about, what helps when they’re down">${esc(f.notes||'')}</textarea>
     ${f.birthday||f.met?`<p class="note">${f.birthday?'Birthday '+fmtDate(f.birthday).replace(/, \d{4}$/,''):''}${f.birthday&&f.met?' · ':''}${f.met?'Met: '+esc(f.met):''}</p>`:''}
   </details>
   <details class="fold ps-fold" ${(f.plans||[]).some(p=>p.status!=='resolved')?'open':''}><summary><h4>Understand this friendship</h4><span class="muted small">Reflect, work through something${enough?', strength and fit':''}</span></summary>
@@ -1259,7 +1274,6 @@ function bindPerson(el,f){
   bind('#fNeeds',v=>{f.needs=v});bind('#fNotes',v=>{f.notes=v});
   const ld=el.querySelector('#logDate'),ln=el.querySelector('#logNote'),lm=el.querySelector('#logMore');
   if(ld)ld.onchange=()=>{ui.sheet.logDate=ld.value};if(ln)ln.oninput=()=>{ui.sheet.logNote=ln.value};if(lm)lm.ontoggle=()=>{ui.sheet.detailsOpen=lm.open};
-  el.querySelectorAll('[data-cf]').forEach(x=>x.onchange=()=>{f.custom=Object.assign({},f.custom,{[x.dataset.cf]:x.value});saveFriend(f)});
   el.querySelectorAll('form[data-list]').forEach(fm=>fm.onsubmit=e=>{e.preventDefault();const inp=fm.querySelector('input');const v=inp.value.trim();if(!v)return;
     const k=fm.dataset.list;f[k]=(f[k]||[]).concat([{id:rid(),text:v,done:false,date:todayISO()}]);saveFriend(f);renderSheet();render();const n=$('#sheet form[data-list="'+k+'"] input');if(n)n.focus()});
   el.querySelectorAll('[data-li]').forEach(cb=>cb.onchange=()=>{const [k,id]=cb.dataset.li.split(':');const it=(f[k]||[]).find(x=>x.id===id);if(it){it.done=cb.checked;saveFriend(f);renderSheet();render()}});
@@ -1514,6 +1528,7 @@ function sheetRepair(el,f){
   let b='';
   if(s.step===0){
     b=`<p class="lede">What happened?</p><label class="sr" for="rpWhat">What happened</label><textarea id="rpWhat" placeholder="Just the facts, in a sentence or two. e.g. they cancelled our plans last minute again">${esc(p.what||'')}</textarea>
+    ${f.lastCheck&&f.lastCheck.exp?`<p class="note">When you reflected on ${fmtDate(f.lastCheck.date)}, you’d expected: “${esc(f.lastCheck.exp)}”.</p>`:''}
     <label class="f">What kind of thing is it?</label><div class="chips wrap" role="group" aria-label="Kind">${R_TYPES.map(([v,l])=>`<button class="chip ${p.type===v?'on':''}" data-act="rp" data-k="type" data-v="${v}" aria-pressed="${p.type===v}">${l}</button>`).join('')}</div>`+nav(p.type);
   }else if(s.step===1){
     b=`<p class="lede">How big is it, and how are you?</p>${seg('size',[['small','Small'],['medium','On my mind'],['big','It really hurt']],'How big is it?')}
@@ -1625,9 +1640,9 @@ function render(){
   const rf=$('#restoreFile');if(rf)rf.onchange=()=>{const fl=rf.files[0];if(!fl)return;fl.text().then(t=>{$('#restore').value=t;toast('Backup loaded. Tap Merge in or Replace everything.')})};
   document.querySelectorAll('[data-tier]').forEach(x=>x.onchange=()=>{const t=tiers().find(t=>t.key===x.dataset.tier);if(!t)return;const fld=x.dataset.field;t[fld]=fld==='cadence'?Math.max(0,parseInt(x.value,10)||0):x.value;saveSettings();flash(x)});
   document.querySelectorAll('#view [data-gf]').forEach(x=>x.onchange=()=>{const g=S.settings.groups.find(g=>g.id===x.dataset.g);if(!g)return;const k=x.dataset.gf;
-    if(k==='cadence')g.cadence=x.value===''?null:Math.max(0,parseInt(x.value,10)||0);else if(k==='off')g.off=x.checked;else if(k==='name'){if(x.value.trim())g.name=x.value.trim()}else g[k]=x.value;saveSettings();const id=x.id;render();flash($('#'+id));const d=$('#'+id)&&$('#'+id).closest('details');if(d)d.open=true});
+    if(k==='cadence'){const n=x.value===''?null:Math.max(0,parseInt(x.value,10)||0);if(n===0){g.off=true;g.cadence=null}else{g.cadence=n;g.off=false}}else if(k==='off')g.off=x.checked;else if(k==='name'){if(x.value.trim())g.name=x.value.trim()}else g[k]=x.value;saveSettings();const id=x.id;render();flash($('#'+id));const d=$('#'+id)&&$('#'+id).closest('details');if(d)d.open=true});
   const cb=$('#colorBy');if(cb)cb.onchange=()=>{S.settings.colorBy=cb.value;saveSettings();render()};
-  const ng=$('#newGroupForm');if(ng)ng.onsubmit=e=>{e.preventDefault();const v=$('#newGroup').value.trim();if(!v)return;addGroup(v,$('#newGroupKind').value);render();toast(`Added “${esc(v)}”`);const n=$('#newGroup');if(n)n.focus()};
+  const ng=$('#newGroupForm');if(ng)ng.onsubmit=e=>{e.preventDefault();const v=$('#newGroup').value.trim();if(!v)return;addGroup(v,$('#newGroupKind').value);render();const n=$('#newGroup');if(n)n.focus()};
 }
 function softRender(){
   const a=document.activeElement;
@@ -1659,6 +1674,10 @@ document.addEventListener('click',e=>{
   case 'gFilter':ui.filter='g:'+a.dataset.g;location.hash='people';return;
   case 'delGroup':{const id=a.dataset.g;const g=S.settings.groups.find(x=>x.id===id);if(!g||g.builtin)return;const gi=S.settings.groups.indexOf(g);const had=S.friends.filter(f=>(f.groups||[]).includes(id));S.settings.groups.splice(gi,1);saveSettings();had.forEach(f=>{f.groups=f.groups.filter(x=>x!==id);saveFriend(f)});if(ui.filter==='g:'+id)ui.filter='all';render();toast(`Deleted ${esc(g.name)}`,()=>{S.settings.groups.splice(gi,0,g);saveSettings();had.forEach(f=>{f.groups=(f.groups||[]).concat([id]);saveFriend(f)});render()});return}
   case 'dist':{const f=F();if(!f)return;f.groups=(f.groups||[]).filter(x=>x!=='near'&&x!=='far');if(a.dataset.v)f.groups.unshift(a.dataset.v);saveFriend(f);renderSheet();render();return}
+  case 'review':return openSheet({type:'review'});
+  case 'revLog':{const f=F();if(!f)return;const c={id:rid(),date:todayISO(),who:a.dataset.who,mode:'Other',note:''};f.contacts=(f.contacts||[]).concat([c]);saveFriend(f);S_.done[f.id]=a.dataset.who;renderSheet();render();toast(`Logged ${esc(f.name)}`,()=>{f.contacts=f.contacts.filter(x=>x.id!==c.id);saveFriend(f);delete S_.done[f.id];renderSheet();render()});return}
+  case 'revDone':S.settings.lastReview=todayISO();saveSettings();closeSheet();toast('See you next week');return;
+  case 'jump':{const t=document.getElementById(a.dataset.t);if(t){t.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});const h2=t.querySelector('h2');if(h2){h2.tabIndex=-1;h2.focus({preventScroll:true})}}return}
   case 'homeOk':S.settings.homeNote=true;saveSettings();render();return;
   case 'bnTog':{const on=!document.querySelector('#sheet .tierpick').classList.contains('showbn');document.querySelectorAll('#sheet .tierpick').forEach(x=>x.classList.toggle('showbn',on));a.textContent=on?'Hide the big-news test':'Show the big-news test for each';return}
   case 'grpTog':{const f=F();if(!f)return;const g=a.dataset.g;const L=f.groups||[];f.groups=L.includes(g)?L.filter(x=>x!==g):L.concat([g]);saveFriend(f);renderSheet();render();return}
@@ -1716,7 +1735,7 @@ document.addEventListener('click',e=>{
   case 'rBack':S_.step=Math.max(0,S_.step-1);renderSheet();$('#sheet').scrollTop=0;return;
   case 'rFair':S_.fair=a.dataset.v;return renderSheet();
   case 'ans':S_.ans[a.dataset.q]=a.dataset.v;return renderSheet();
-  case 'rApply':{const f=F();if(!f)return;f.lastCheck={date:todayISO(),suggested:S_.sug};const k=a.dataset.tier;
+  case 'rApply':{const f=F();if(!f)return;f.lastCheck={date:todayISO(),suggested:S_.sug,exp:S_.exp||''};const k=a.dataset.tier;
     if(k&&k!==f.tier){setTier(f,k);toast(`${esc(f.name)} → ${esc(tierOf(f).name)}`)}else saveFriend(f);
     ui.sheet={type:'person',id:f.id};renderSheet();$('#sheet').scrollTop=0;render();return}
   case 'iNext':S_.step++;return renderSheet();
@@ -1724,8 +1743,6 @@ document.addEventListener('click',e=>{
   case 'iDone':S.settings.onboarded=true;if(!a.dataset.tour)S.settings.toured=true;saveSettings();closeSheet();if(a.dataset.tour)setTimeout(()=>Tour.start(),350);else if(!S.friends.length)openSheet({type:'add'});return;
   case 'resetTiming':S.settings.timing=Object.assign({},DEFAULT_TIMING);saveSettings();render();toast('Timing reset');return;
   case 'resetTiers':if(ui.arm!=='reset'){ui.arm='reset';render();return}ui.arm=null;S.settings.tiers=JSON.parse(JSON.stringify(DEFAULT_TIERS));saveSettings();render();toast('Ladder reset');return;
-  case 'addField':{const inp=$('#newField');const v=inp&&inp.value.trim();if(!v)return;S.settings.fields.push({id:rid(),name:v});saveSettings();render();toast(`Added “${esc(v)}” to every person`);return}
-  case 'delField':{const id=a.dataset.id;const i=S.settings.fields.findIndex(x=>x.id===id);if(i<0)return;const [fd]=S.settings.fields.splice(i,1);saveSettings();render();toast(`Removed “${esc(fd.name)}”`,()=>{S.settings.fields.splice(i,0,fd);saveSettings();render()});return}
   case 'fileBackup':try{localStorage.setItem('orbit.lastBackup',todayISO())}catch(e){}download('orbit-backup-'+todayISO()+'.json',JSON.stringify({app:'orbit',v:5,exported:todayISO(),...S},null,1),'application/json').then(ok=>ok&&toast('Backup file saved'));return;
   case 'copyBackup':{const txt=JSON.stringify({app:'orbit',v:5,exported:todayISO(),...S});navigator.clipboard.writeText(txt).then(()=>toast('Backup copied. Paste it somewhere safe.'),()=>{$('#restore').value=txt;$('#restore').select();toast('Couldn’t copy automatically. It’s in the box below; copy it from there.')});return}
   case 'restore':{let p;try{p=JSON.parse($('#restore').value)}catch(err){toast('That doesn’t look like an Orbit backup.');return}
@@ -1883,10 +1900,11 @@ const Tour=(()=>{
 function route(){if(Tour.running)return;let h=location.hash.slice(1);if(h==='log'){ui.peopleMode='recent';h='people';history.replaceState(null,'','#people')}ui.view=TABS.some(t=>t[0]===h)?h:'reach';ui.arm=null;render();window.scrollTo(0,0)}
 window.addEventListener('hashchange',route);
 {const t=$('#toast');['mouseenter','focusin'].forEach(e=>t.addEventListener(e,toastHold));['mouseleave','focusout'].forEach(e=>t.addEventListener(e,()=>{if(t.classList.contains('show'))toastArm(Math.max(4000,toastMs))}))}
+migrateFields();
 route();
 initSync();
 if(!S.settings.onboarded)setTimeout(()=>{if(!S.settings.onboarded&&!ui.sheet)openSheet({type:'intro',step:0})},IN_CLAUDE?1500:300);
-else setTimeout(()=>{if(S.settings.onboarded&&!S.settings.toured&&!ui.sheet&&!Tour.running)Tour.start()},IN_CLAUDE?2500:700);
+else{const tryTour=()=>{if(Sync.state==='loading')return setTimeout(tryTour,800);if(S.settings.onboarded&&!S.settings.toured&&!ui.sheet&&!Tour.running)Tour.start()};setTimeout(tryTour,IN_CLAUDE?2500:700)}
 try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}
 try{if('serviceWorker' in navigator&&location.protocol==='https:'&&!IN_CLAUDE)navigator.serviceWorker.register('sw.js').catch(()=>{})}catch(e){}
 </script>
