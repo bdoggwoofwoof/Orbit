@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#F5F1E8" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#161614" media="(prefers-color-scheme: dark)">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -18,7 +18,7 @@
 <style>
 /* ---------- tokens ---------- */
 :root{
-  --paper:#F5F1E8;--surface:#FBF8F1;--ink:#222522;--ink2:#5A564E;--stone:#8B877E;--rule:#E2DBCC;
+  --paper:#F5F1E8;--surface:#FBF8F1;--ink:#222522;--ink2:#5A564E;--stone:#6F6B63;--rule:#E2DBCC;
   --teal:#315E60;--on-teal:#fff;--teal-soft:#E1EAE7;--other:#8973A7;--other-ink:#6E5890;--other-soft:#ECE6F3;
   --amber:#A87836;--amber-ink:#7C5518;--amber-soft:#F3E7D1;
   --t-xs:12px;--t-sm:13px;--t-md:15px;--t-lg:17px;--t-xl:21px;--t-2xl:28px;
@@ -28,12 +28,12 @@
   --ease:cubic-bezier(.2,.8,.2,1);--dur:.26s;color-scheme:light;
 }
 :root[data-theme=dark]{
-  --paper:#161614;--surface:#1F1E1B;--ink:#EEEAE1;--ink2:#B4AEA3;--stone:#7D786F;--rule:#34312B;
+  --paper:#161614;--surface:#1F1E1B;--ink:#EEEAE1;--ink2:#B4AEA3;--stone:#928C82;--rule:#34312B;
   --teal:#8CBFC0;--on-teal:#10201F;--teal-soft:#22383A;--other:#B7A3D6;--other-ink:#C6B5E2;--other-soft:#2E2840;
   --amber:#D9A75C;--amber-ink:#E5B76F;--amber-soft:#3A2E1A;color-scheme:dark;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme=light]){
-  --paper:#161614;--surface:#1F1E1B;--ink:#EEEAE1;--ink2:#B4AEA3;--stone:#7D786F;--rule:#34312B;
+  --paper:#161614;--surface:#1F1E1B;--ink:#EEEAE1;--ink2:#B4AEA3;--stone:#928C82;--rule:#34312B;
   --teal:#8CBFC0;--on-teal:#10201F;--teal-soft:#22383A;--other:#B7A3D6;--other-ink:#C6B5E2;--other-soft:#2E2840;
   --amber:#D9A75C;--amber-ink:#E5B76F;--amber-soft:#3A2E1A;color-scheme:dark;
 }}
@@ -61,6 +61,17 @@
 .olist .chip{min-height:34px;font-size:var(--t-sm)}
 .grp{border-bottom:1px solid var(--rule)}
 .addsplit{display:grid;grid-template-columns:1fr auto;gap:var(--s2);align-items:end}
+.btn.sm{min-height:36px;padding:0 12px;font-size:var(--t-sm)}
+.qacts{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.linkbtn{border:0;background:none;color:var(--teal);font:600 var(--t-sm) var(--sans);padding:8px 0;min-height:36px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.homenote{border:1px solid var(--rule);border-left:3px solid var(--amber);padding:var(--s3);margin:var(--s2) 0 var(--s3);font-size:var(--t-sm);color:var(--ink2)}.homenote b{color:var(--ink)}
+.dupnote{border-left:3px solid var(--amber);padding:6px var(--s3);margin-top:var(--s3);font-size:var(--t-sm)}
+input.saved,select.saved{border-color:var(--teal)!important;box-shadow:0 0 0 2px var(--teal-soft)}
+.h3s{font:600 var(--t-md) var(--sans);margin:var(--s5) 0 0}
+details.later{margin-top:var(--s4);border-top:1px solid var(--rule)}details.later>summary{padding:var(--s3) 0;font-weight:600;cursor:pointer}
+details.ps-fold{padding:var(--s4) 0;border-bottom:1px solid var(--rule)}details.ps-fold>summary{display:flex;flex-direction:column;gap:2px;cursor:pointer;list-style:none}details.ps-fold>summary::-webkit-details-marker{display:none}details.ps-fold>summary h4{margin:0}details.ps-fold>summary h4::after{content:" ›";color:var(--stone)}details.ps-fold[open]>summary h4::after{content:" ⌄"}
+.orbitbtn{display:block;margin:0 auto;background:none;border:0;padding:0;cursor:pointer;border-radius:50%}
+.orbit .cnt{fill:#fff;font:700 12px var(--sans)}
 /* tour */
 .demo-banner{border:1px dashed var(--teal);color:var(--teal);border-radius:var(--r-md);padding:8px 12px;font-size:var(--t-sm);font-weight:600;margin:var(--s2) 0 var(--s3)}
 .tour{position:fixed;inset:0;z-index:200}
@@ -125,7 +136,7 @@ header.top h1{font-size:var(--t-2xl);display:flex;align-items:center;gap:10px}
 
 /* ---------- marks ---------- */
 .tags{display:inline-flex;gap:4px;margin-left:6px;vertical-align:2px;flex-wrap:wrap}
-.tag{font-size:11px;font-weight:600;padding:1px 7px;border-radius:99px;border:1px solid var(--rule);color:var(--ink2);white-space:nowrap;letter-spacing:.01em}
+.tag{font-size:12px;font-weight:600;padding:1px 7px;border-radius:99px;border:1px solid var(--rule);color:var(--ink2);white-space:nowrap;letter-spacing:.01em}
 .tag.bf{border-color:var(--teal);color:var(--teal)}
 .st{font-size:var(--t-xs);font-weight:600;white-space:nowrap;padding-top:4px;display:flex;align-items:center;gap:6px;color:var(--ink2)}
 .st i{width:8px;height:8px;border-radius:50%;background:var(--stone);display:inline-block}
@@ -136,7 +147,7 @@ header.top h1{font-size:var(--t-2xl);display:flex;align-items:center;gap:10px}
 .av{width:36px;height:36px;border-radius:50%;flex:none;display:grid;place-items:center;font:600 13px/1 var(--sans);color:#fff;overflow:hidden;margin-top:2px}
 .av img{width:100%;height:100%;object-fit:cover}
 .av.lg{width:56px;height:56px;font-size:19px}
-.who{font-size:11px;font-weight:700;padding:2px 7px;border-radius:6px;white-space:nowrap}
+.who{font-size:12px;font-weight:700;padding:2px 7px;border-radius:6px;white-space:nowrap}
 .who.me{background:var(--teal-soft);color:var(--teal)} .who.them{background:var(--other-soft);color:var(--other-ink)} .who.mutual{background:var(--rule);color:var(--ink2)}
 .tones{display:grid;grid-template-columns:1fr;gap:var(--s2)}
 @media (min-width:560px){.tones{grid-template-columns:1fr 1fr}}
@@ -149,7 +160,7 @@ header.top h1{font-size:var(--t-2xl);display:flex;align-items:center;gap:10px}
 .dims{display:grid;grid-template-columns:auto 1fr;gap:4px var(--s3);margin:0;font-size:var(--t-md)}
 .dims dt{font-size:var(--t-xs);text-transform:uppercase;letter-spacing:.06em;color:var(--ink2);font-weight:600;padding-top:3px}
 .dims dd{margin:0}
-.chips.wrap{flex-wrap:wrap;overflow:visible}
+
 ul.plain{margin:4px 0 var(--s2);padding-left:20px}ul.plain li{margin:3px 0}
 ul.plain.watch li::marker{color:var(--amber)}
 .pair{background:var(--teal-soft);border-radius:var(--r-md);padding:var(--s3) var(--s4);margin:var(--s3) 0;font-size:var(--t-md)}
@@ -209,8 +220,9 @@ details.fold>summary{cursor:pointer;list-style:none;min-height:var(--hit);displa
 details.fold>summary::-webkit-details-marker{display:none}
 details.fold>summary::before{content:"";width:7px;height:7px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(-45deg);transition:transform var(--dur)}
 details.fold[open]>summary::before{transform:rotate(45deg)}
-.hint{position:relative;background:var(--teal-soft);border-radius:var(--r-md);padding:var(--s3) 48px var(--s3) var(--s4);margin:var(--s4) 0;font-size:var(--t-sm)}
-.hint>b:first-child{display:block;font-size:var(--t-md);margin-bottom:2px}
+.hint{position:relative;border-left:3px solid var(--teal);padding:6px 44px 6px var(--s3);margin:var(--s3) 0;font-size:var(--t-sm);color:var(--ink2)}
+.hint>b:first-child{color:var(--ink)}
+.hint .x{min-height:36px;min-width:36px;top:50%!important;transform:translateY(-50%)}
 .hint .x{position:absolute;top:0;right:0}
 .reality{border-left:3px solid var(--amber);padding:2px 0 2px var(--s3);margin:var(--s3) 0}
 .reality p{margin:6px 0;font-size:var(--t-md)}
@@ -226,7 +238,7 @@ details.fold[open]>summary::before{transform:rotate(45deg)}
 .orbitbox{margin:var(--s2) 0 var(--s4);text-align:center}
 .orbit{display:block;margin:0 auto;max-width:100%;height:auto;overflow:visible}
 .orbit .ring{fill:none;stroke:var(--rule);stroke-width:1}
-.orbit .rl{font:600 9px var(--sans);fill:var(--stone);letter-spacing:.06em;text-transform:uppercase}
+.orbit .rl{font:600 11px var(--sans);fill:var(--ink2);letter-spacing:.06em;text-transform:uppercase}
 .orbit .you{fill:var(--ink)}
 .orbit .youl{font:600 10px var(--sans);fill:var(--paper)}
 .orbit .od{cursor:pointer}
@@ -243,7 +255,7 @@ details.fold[open]>summary::before{transform:rotate(45deg)}
 /* ---------- nav ---------- */
 nav.tabs{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--rule);display:flex;justify-content:center;padding-bottom:env(safe-area-inset-bottom);z-index:5}
 nav.tabs .in{display:flex;max-width:680px;width:100%}
-nav.tabs a{flex:1;text-align:center;padding:8px 2px 9px;min-height:56px;font-size:11px;color:var(--ink2);text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:3px;font-weight:500;position:relative}
+nav.tabs a{flex:1;text-align:center;padding:8px 2px 9px;min-height:56px;font-size:12px;color:var(--ink2);text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:3px;font-weight:500;position:relative}
 nav.tabs a svg{width:22px;height:22px}
 nav.tabs a.on{color:var(--teal)}
 nav.tabs a.on::before{content:"";position:absolute;top:0;left:30%;right:30%;height:2px;background:var(--teal);border-radius:2px}
@@ -279,7 +291,7 @@ nav.tabs .badge{position:absolute;top:5px;left:calc(50% + 6px);background:var(--
 .tierpick{display:flex;flex-direction:column}
 .tierpick label{display:flex;gap:var(--s3);align-items:flex-start;padding:var(--s3) 0;border-bottom:1px solid var(--rule);cursor:pointer}
 .tierpick input{margin-top:4px;accent-color:var(--teal);width:20px;height:20px;flex:none}
-.tierpick b{display:block}.tierpick span{font-size:var(--t-sm);color:var(--ink2)}
+.tierpick b{display:block}.tierpick span{font-size:var(--t-sm);color:var(--ink2);display:block}.tierpick .bn{display:none;margin-top:2px}.tierpick.showbn .bn{display:block}
 .intro{text-align:left;padding-top:var(--s4)}
 .intro h3{font-size:var(--t-2xl);margin-bottom:var(--s3)}
 .intro p{font-size:var(--t-lg);line-height:1.5}
@@ -430,16 +442,18 @@ const QUIZ=[
  {lvl:4,q:"You could show up at their place, or call at 2am, and it'd be welcome."},
  {lvl:4,q:"They've shown up for you in a hard moment."}
 ];
-const ORBIT_VIEWS=[
- ['header','Above the People list','A compact orbit at the top of People, the list underneath. (The design direction’s starting point.)'],
- ['full','As the People screen','A large orbit with names; the list sits below it.'],
- ['toggle','Switch: Orbit or List','People opens as a list with a switch to a large orbit.'],
- ['sheet','On each person’s page','A small orbit on each person’s page showing where they sit.'],
- ['off','Off','Lists only.']
-];
 const AV_COLORS=['#315E60','#8973A7','#A87836','#5E7A4F','#7A5A4A','#4F6A86','#8B5E73','#6B6F3A'];
 
-function defaultSettings(){return {tiers:JSON.parse(JSON.stringify(DEFAULT_TIERS)),fields:[],timing:Object.assign({},DEFAULT_TIMING),tone:'gentle',orbitView:'header',avatars:'initials',onboarded:false,hints:[],reminders:{inapp:true,calendar:true,push:false},me:null,groups:[],distance:{near:null,far:null},colorBy:'tier',theme:'system',orbitNames:true,toured:false,v:4}}
+const BUILTIN_GROUPS=[{id:'near',name:'Nearby',kind:'place',color:'#4369A0',cadence:null,off:false,builtin:true},{id:'far',name:'Long-distance',kind:'place',color:'#A05838',cadence:null,off:false,builtin:true}];
+function mergeBuiltins(gs,dist){const out=gs.slice();BUILTIN_GROUPS.forEach(b=>{let g=out.find(x=>x.id===b.id);if(!g){g=Object.assign({},b);if(dist&&dist[b.id]!=null&&dist[b.id]!=='')g.cadence=Number(dist[b.id]);out.unshift(g)}g.builtin=true});
+  return BUILTIN_GROUPS.map(b=>out.find(x=>x.id===b.id)).concat(out.filter(x=>!x.builtin))}
+/* v5: distance became two built-in groups; old people get a created date */
+function normalizeFriend(f){if(!f||typeof f!=='object')return f;
+  if(!f.created)f.created=((f.contacts||[]).map(c=>c.date).sort()[0])||todayISO();
+  if(f.distance==='near'||f.distance==='far'){const g=f.groups||[];if(!g.includes(f.distance))f.groups=[f.distance].concat(g.filter(x=>x!=='near'&&x!=='far'))}
+  delete f.distance;if(!Array.isArray(f.groups))f.groups=[];return f}
+function distOf(f){return(f.groups||[]).includes('far')?'far':(f.groups||[]).includes('near')?'near':''}
+function defaultSettings(){return {tiers:JSON.parse(JSON.stringify(DEFAULT_TIERS)),fields:[],timing:Object.assign({},DEFAULT_TIMING),tone:'gentle',avatars:'initials',onboarded:false,hints:[],reminders:{inapp:true,calendar:true,push:false},me:null,groups:BUILTIN_GROUPS.map(g=>Object.assign({},g)),colorBy:'tier',theme:'system',orbitNames:true,toured:false,dailyCap:5,homeNote:false,v:5}}
 function normalizeSettings(s){
   const d=defaultSettings(); if(!s||typeof s!=='object')return d;
   const st=Array.isArray(s.tiers)?s.tiers:[];
@@ -449,26 +463,26 @@ function normalizeSettings(s){
     fields:Array.isArray(s.fields)?s.fields.filter(x=>x&&x.id&&x.name):[],
     timing:Object.assign({},DEFAULT_TIMING,(s.timing&&typeof s.timing==='object')?s.timing:{}),
     tone:['gentle','plain'].includes(s.tone)?s.tone:'gentle',
-    orbitView:ORBIT_VIEWS.some(o=>o[0]===s.orbitView)?s.orbitView:'header',
-    avatars:['off','initials','photos'].includes(s.avatars)?s.avatars:'initials',
+    avatars:s.avatars==='photos'?'photos':'initials',
     onboarded:!!s.onboarded,
     hints:Array.isArray(s.hints)?s.hints:[],
     reminders:Object.assign({},d.reminders,s.reminders||{}),
     me:s.me&&typeof s.me==='object'?s.me:null,
-    groups:Array.isArray(s.groups)?s.groups.filter(g=>g&&g.id&&g.name):[],
-    distance:Object.assign({near:null,far:null},s.distance||{}),
-    colorBy:['tier','group','distance','none'].includes(s.colorBy)?s.colorBy:'tier',
+    groups:mergeBuiltins(Array.isArray(s.groups)?s.groups.filter(g=>g&&g.id&&g.name):[],s.distance),
+    colorBy:['tier','group','none'].includes(s.colorBy)?s.colorBy:'tier',
     theme:['system','light','dark'].includes(s.theme)?s.theme:'system',
     orbitNames:s.orbitNames!==false,
     toured:!!s.toured,
-    v:4
+    dailyCap:Math.max(1,parseInt(s.dailyCap,10)||5),
+    homeNote:!!s.homeNote,
+    v:5
   };
 }
 
 /* ---------- state ---------- */
 let S={friends:[],settings:defaultSettings()};
 const LS='orbit.v1';
-try{const raw=localStorage.getItem(LS);if(raw){const p=JSON.parse(raw);S.friends=Array.isArray(p.friends)?p.friends:[];S.settings=normalizeSettings(p.settings)}}catch(e){}
+try{const raw=localStorage.getItem(LS);if(raw){const p=JSON.parse(raw);S.friends=(Array.isArray(p.friends)?p.friends:[]).map(normalizeFriend);S.settings=normalizeSettings(p.settings)}}catch(e){}
 function cacheLocal(){if(window.TOUR_DEMO)return;try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}}
 let ui={view:'reach',filter:'all',q:'',sheet:null,arm:null,pick:0,peopleMode:'list',lastFocus:null};
 
@@ -499,21 +513,18 @@ function cadenceInfo(f){
   const gs=groupsOf(f),withC=gs.filter(g=>!g.off&&g.cadence!=null&&g.cadence!=='');
   if(withC.length){const g=withC.reduce((a,b)=>Number(b.cadence)<Number(a.cadence)?b:a);return{days:Number(g.cadence),src:g.name}}
   if(gs.length&&gs.every(g=>g.off))return{days:0,src:gs[0].name+' (no reminders)'};
-  const dc=f.distance&&S.settings.distance[f.distance];
-  if(dc!=null&&dc!=='')return{days:Number(dc),src:f.distance==='far'?'Long-distance':'Nearby'};
   return{days:Number(tierOf(f).cadence)||0,src:tierOf(f).name};
 }
 function cadenceOf(f){return cadenceInfo(f).days}
-const TIER_COLORS={homie:'#315E60',good:'#4F8079',friend:'#7C9A6B',casual:'#A87836',acq:'#8B877E'};
-const DIST_COLORS={near:'#315E60',far:'#A87836'};
+const TIER_COLORS={homie:'#407173',good:'#447A70',friend:'#5A7A3E',casual:'#8F6428',acq:'#716C64'};
+const NOCOLOR='#716C64';
 function colorOf(f){
   if(f.color)return f.color;const by=S.settings.colorBy;
-  if(by==='group'){const g=groupsOf(f).find(g=>g.color);return g?g.color:'#8B877E'}
-  if(by==='distance')return DIST_COLORS[f.distance]||'#8B877E';
-  if(by==='none')return '#315E60';
-  return TIER_COLORS[f.tier]||'#8B877E';
+  if(by==='group'){const g=groupsOf(f).find(g=>g.color&&!g.builtin)||groupsOf(f).find(g=>g.color);return g?g.color:NOCOLOR}
+  if(by==='none')return TIER_COLORS.homie;
+  return TIER_COLORS[f.tier]||NOCOLOR;
 }
-const GROUP_COLORS=['#315E60','#A87836','#7C9A6B','#8973A7','#4F6A86','#8B5E73','#B5654A','#6B6F3A'];
+const GROUP_COLORS=['#7B5CA2','#4369A0','#9E5070','#A05838','#63702F','#58687E','#806A1E','#2F7287'];
 const KINDS=[['group','Friend group'],['place','Place'],['season','Season of life']];
 function applyTheme(){const t=S.settings.theme;const r=document.documentElement;
   if(t==='dark'||t==='light')r.dataset.theme=t;else delete r.dataset.theme;
@@ -522,8 +533,7 @@ function addGroup(name,kind){const g={id:rid(),name,kind:kind||'group',color:GRO
 function colorLegend(){
   const by=S.settings.colorBy;let it=[];
   if(by==='tier')it=tiersTop().map(t=>[TIER_COLORS[t.key],t.name]);
-  else if(by==='group'){it=S.settings.groups.filter(g=>g.color).map(g=>[g.color,g.name]);it.push(['#8B877E','No group'])}
-  else if(by==='distance')it=[[DIST_COLORS.near,'Nearby'],[DIST_COLORS.far,'Long-distance'],['#8B877E','Not set']];
+  else if(by==='group'){it=S.settings.groups.filter(g=>g.color).map(g=>[g.color,g.name]);it.push([NOCOLOR,'No group'])}
   return it.map(([c,l])=>`<span><i style="background:${c}"></i>${esc(l)}</span>`).join('');
 }
 function expectList(f){if(!Array.isArray(f.expectations)){f.expectations=f.expect?[{id:rid(),text:f.expect,date:todayISO()}]:[]}return f.expectations}
@@ -535,16 +545,19 @@ function exItem(f,e){const t=tierOf(f);const all=EXCHECK.every(([k])=>e[k]);
   <div class="exchk" role="group" aria-label="Checks for this expectation">${EXCHECK.map(([k])=>`<button class="chip ${e[k]?'on':''}" data-act="exChk" data-id="${f.id}" data-e="${e.id}" data-k="${k}" aria-pressed="${!!e[k]}">${esc(lbl[k])}</button>`).join('')}</div>
   <p class="exn">${esc(exNote(e))}</p></div>`}
 function aboutHTML(f){
-  const gs=S.settings.groups;
+  const gs=S.settings.groups.filter(g=>!g.builtin),dist=distOf(f);
+  const bits=[dist==='far'?'Long-distance':dist==='near'?'Nearby':'',...groupsOf(f).filter(g=>!g.builtin).map(g=>g.name),...MARKERS.filter(m=>f[m.key]).map(m=>m.name)].filter(Boolean);
   return `<div class="ps" id="aboutSec"><h4>About ${esc(f.name)}</h4>
-   <label class="f" style="margin-top:0">Where they live</label>
-   <div class="seg" role="group" aria-label="Where they live">${[['near','Nearby'],['far','Long-distance'],['','Not set']].map(([v,l])=>`<button data-act="dist" data-id="${f.id}" data-v="${v}" class="${(f.distance||'')===v?'on':''}" aria-pressed="${(f.distance||'')===v}">${l}</button>`).join('')}</div>
+   <p style="margin:0">${bits.length?esc(bits.join(' · ')):'<span class="muted">Where they live, groups and tags aren’t set yet.</span>'}</p>
+   <details class="fold" ${ui.sheet&&ui.sheet.aboutOpen?'open':''} id="aboutFold"><summary>Change where they live, groups and tags</summary>
+   <label class="f" style="margin-top:var(--s2)">Where they live</label>
+   <div class="seg" role="group" aria-label="Where they live">${[['near','Nearby'],['far','Long-distance'],['','Not set']].map(([v,l])=>`<button data-act="dist" data-id="${f.id}" data-v="${v}" class="${dist===v?'on':''}" aria-pressed="${dist===v}">${l}</button>`).join('')}</div>
    <label class="f">Groups</label>
-   ${gs.length?`<div class="chips wrap" role="group" aria-label="Groups">${gs.map(g=>{const on=(f.groups||[]).includes(g.id);return `<button class="chip ${on?'on':''}" data-act="grpTog" data-id="${f.id}" data-g="${g.id}" aria-pressed="${on}"><i class="gdot" style="background:${g.color}"></i>${esc(g.name)}</button>`}).join('')}</div>`:'<p class="note" style="margin-top:0">Groups are friend groups, places or seasons, each with its own timing.</p>'}
+   ${gs.length?`<div class="chips wrap" role="group" aria-label="Groups">${gs.map(g=>{const on=(f.groups||[]).includes(g.id);return `<button class="chip ${on?'on':''}" data-act="grpTog" data-id="${f.id}" data-g="${g.id}" aria-pressed="${on}"><i class="gdot" style="background:${g.color}"></i>${esc(g.name)}</button>`}).join('')}</div>`:'<p class="note" style="margin-top:0">Friend groups, places or seasons, each with its own timing.</p>'}
    <form class="addrow" id="pNewGroup"><input type="text" placeholder="New group, e.g. College friends" aria-label="New group name"><button class="btn" type="submit">Add</button></form>
-   <label class="f">Markers</label>
-   <div class="chips wrap" role="group" aria-label="Markers">${MARKERS.map(m=>`<button class="chip ${f[m.key]?'on':''}" data-act="mkTog" data-id="${f.id}" data-k="${m.key}" aria-pressed="${!!f[m.key]}">${esc(m.name)}</button>`).join('')}</div>
-   <ul class="small muted" style="margin:var(--s2) 0 0;padding-left:1.1em">${MARKERS.map(m=>`<li><b>${esc(m.name)}:</b> ${esc(m.short)}</li>`).join('')}</ul></div>`}
+   <label class="f">Tags</label>
+   <div class="chips wrap" role="group" aria-label="Tags">${MARKERS.map(m=>`<button class="chip ${f[m.key]?'on':''}" data-act="mkTog" data-id="${f.id}" data-k="${m.key}" aria-pressed="${!!f[m.key]}">${esc(m.name)}</button>`).join('')}</div>
+   <ul class="small muted" style="margin:var(--s2) 0 0;padding-left:1.1em">${MARKERS.map(m=>`<li><b>${esc(m.name)}:</b> ${esc(m.short)}</li>`).join('')}</ul></details></div>`}
 function exNote(e){const miss=EXCHECK.filter(([k])=>!e[k]).map(x=>x[0]);
   if(!miss.length)return'On solid ground: reasonable, said out loud, and agreed on.';
   if(miss.includes('reasonable'))return'Check it against the fair list for their tier.';
@@ -615,7 +628,7 @@ function say(key,v){
    newf:g?`You've known them less than ${v.days} days. Closeness at this level usually takes a lot of time together, so hold expectations loosely while it builds.`
          :`Known under ${v.days} days. ${v.tier} usually takes much longer; expect less for now.`,
    moved:g?`You moved them up recently with only a few contacts logged. Reflecting on it might help you see whether what's happening matches.`
-          :`Moved up ${v.days} days ago with under 5 contacts. Check the placement.`,
+          :`Moved up ${v.days} days ago with under 5 contacts. Check the tier.`,
    noreply:g?`${v.name} hasn't answered ${v.none} of your last ${v.n} messages. People get busy, and replies aren't everything, but at ${v.tier} it's fair to hope for answers most of the time. It may be worth noticing.`
             :`${v.none} of your last ${v.n} messages to ${v.name} got no reply. A ${v.tier} usually answers most of the time.`,
    check:g?`Your last reflection (${v.date}) pointed to ${v.tier}. It's fine to hope for more; just expect what a ${v.tier} gives for now.`
@@ -623,7 +636,7 @@ function say(key,v){
    resLower:g?`You've placed them as ${v.cur}. Hoping it grows is okay. For now, expecting what a ${v.sug} gives is the kinder setting, for both of you.`
              :`Placed as ${v.cur}, but this matches ${v.sug}. Set expectations at ${v.sug}.`,
    resHigher:g?`You've placed them as ${v.cur}, but it sounds like the friendship is further along than that.`:`This matches ${v.sug}, above where you placed them (${v.cur}).`,
-   resSame:g?`That matches where you placed them. Your expectations have solid ground.`:`Matches your placement.`,
+   resSame:g?`That matches their tier. Your expectations have solid ground.`:`Matches their tier.`,
    unfair:g?`You said what you expected may be more than a ${v.tier} usually gives. That doesn't make the hurt less real; it may mean the expectation needs a conversation, or a different tier.`
            :`Your expectation is above what a ${v.tier} usually gives. Talk about it, or adjust the tier.`
   };
@@ -671,7 +684,7 @@ function applySnap(snap){
   }
   const fr=[];let st=null;
   snap.docs.forEach(d=>{const v=d.data();if(!v)return;if(d.id==='settings')st=v;else if(d.id.indexOf('f_')===0)fr.push(clone(v))});
-  S.friends=fr;if(st)S.settings=normalizeSettings(clone(st));
+  S.friends=fr.map(normalizeFriend);if(st)S.settings=normalizeSettings(clone(st));
   cacheLocal();if(Sync.state!=='readonly')setSync('cloud');softRender();
 }
 function writeDoc(id,data){if(window.TOUR_DEMO)return;
@@ -684,7 +697,7 @@ function writeDoc(id,data){if(window.TOUR_DEMO)return;
     else if(c==='unavailable')setTimeout(()=>writeDoc(id,data),800+Math.random()*1200);
   });
 }
-function saveFriend(f){const i=S.friends.findIndex(x=>x.id===f.id);if(i<0)S.friends.push(f);else S.friends[i]=f;cacheLocal();writeDoc('f_'+f.id,f)}
+function saveFriend(f){if(!window.TOUR_DEMO)f.updated=Date.now();const i=S.friends.findIndex(x=>x.id===f.id);if(i<0)S.friends.push(f);else S.friends[i]=f;cacheLocal();writeDoc('f_'+f.id,f)}
 function removeFriend(id){S.friends=S.friends.filter(f=>f.id!==id);cacheLocal();writeDoc('f_'+id,null)}
 function saveSettings(){cacheLocal();writeDoc('settings',S.settings)}
 
@@ -704,18 +717,20 @@ function setBest(f,val){
   if(moved.length)toast(`${esc(moved.join(', '))} is no longer your overarching best friend (one at a time).`);
 }
 function dismissHint(id){if(!S.settings.hints.includes(id)){S.settings.hints.push(id);saveSettings()}}
+let hintShown=false;
 function hint(id,title,body){
-  if(S.settings.hints.includes(id))return'';
-  return `<div class="hint" role="note"><b>${title}</b>${body}<button class="x" data-act="hint" data-id="${id}" aria-label="Dismiss this tip">✕</button></div>`;
+  if(S.settings.hints.includes(id)||hintShown)return'';hintShown=true;
+  return `<div class="hint" role="note"><b>${title}</b> ${body}<button class="x" data-act="hint" data-id="${id}" aria-label="Dismiss this tip">✕</button></div>`;
 }
-
 /* ---------- toast ---------- */
-let toastT;
+let toastT,toastMs=0;
+function toastArm(ms){toastMs=ms;clearTimeout(toastT);toastT=setTimeout(()=>$('#toast').classList.remove('show'),ms)}
+function toastHold(){clearTimeout(toastT)}
 function toast(msg,undo){
   const t=$('#toast');
   t.innerHTML=`<span>${msg}</span>${undo?'<button class="tb undo" id="tUndo">Undo</button>':''}`;
   if(undo)$('#tUndo').onclick=()=>{undo();t.classList.remove('show')};
-  t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),5000);
+  t.classList.add('show');toastArm(undo?10000:4000);
 }
 function toastLog(f,c){
   const t=$('#toast');
@@ -723,9 +738,9 @@ function toastLog(f,c){
   const draw=()=>{t.innerHTML=`<span>${label} · ${esc(f.name)}</span><button class="tb" id="tMore">Details</button><button class="tb undo" id="tUndo">Undo</button><div class="ms" role="group" aria-label="How?">${QUICK_MODES.map(m=>`<button class="tb ${c.mode===m?'on':''}" data-m="${m}" aria-pressed="${c.mode===m}">${m}</button>`).join('')}</div>`;
     $('#tUndo').onclick=()=>{f.contacts=f.contacts.filter(x=>x.id!==c.id);saveFriend(f);t.classList.remove('show');render();renderSheet()};
     $('#tMore').onclick=()=>{t.classList.remove('show');openSheet({type:'checkin',id:f.id,cid:c.id,back:ui.sheet&&ui.sheet.type==='person'})};
-    t.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{c.mode=b.dataset.m;if(c.who==='me'&&(c.reply==='waiting'||!c.reply))c.reply=defaultReply(c);saveFriend(f);draw();renderSheet();clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),3500)});
+    t.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{c.mode=b.dataset.m;if(c.who==='me'&&(c.reply==='waiting'||!c.reply))c.reply=defaultReply(c);saveFriend(f);draw();renderSheet();toastArm(10000)});
   };
-  draw();t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),6000);
+  draw();t.classList.add('show');toastArm(10000);
 }
 
 /* ---------- files: calendar + backup ---------- */
@@ -770,36 +785,34 @@ function tagsHTML(f){
   if(f.soulmate)h+='<span class="tag">Soulmate</span>';
   if(f.tempered)h+='<span class="tag">Tempered</span>';
   if(f.dormant)h+='<span class="tag">Dormant</span>';
-  if(f.distance==='far')h+='<span class="tag">Long-distance</span>';
-  groupsOf(f).forEach(g=>{h+=`<span class="tag"><i class="gdot" style="background:${g.color||'#8B877E'}"></i>${esc(g.name)}</span>`});
+  groupsOf(f).filter(g=>g.id!=='near').forEach(g=>{h+=`<span class="tag"><i class="gdot" style="background:${g.color||'#8B877E'}"></i>${esc(g.name)}</span>`});
   return h?`<span class="tags">${h}</span>`:'';
 }
 function statusHTML(d){
-  const m={overdue:['due',d.dueIn===0?'Due today':(-d.dueIn)+'d past'],soon:['soon','In '+d.dueIn+'d'],never:['due','Not logged'],ok:['ok','In '+d.dueIn+'d'],snoozed:['off','Snoozed'],off:['off','No reminder']}[d.state];
+  const m={overdue:['due',d.dueIn===0?'Due today':-d.dueIn>60?'A while':(-d.dueIn)+'d past'],soon:['soon','In '+d.dueIn+'d'],never:['due','Not logged'],ok:['ok','In '+d.dueIn+'d'],snoozed:['off','Snoozed'],off:['off','No reminder']}[d.state];
   return `<span class="st ${m[0]}"><i></i>${m[1]}</span>`;
 }
 function lastLine(f){const l=lastContact(f);if(!l)return'No contact logged yet';return `${rel(l.date)} · ${l.who==='me'?'you reached out':l.who==='them'?'they reached out':'mutual'}`}
 function nextLine(f){const d=dueInfo(f);
   if(d.state==='snoozed')return 'Snoozed until '+fmtDate(d.until);
   if(d.state==='off')return f.dormant?'Paused (Dormant)':'No reminder set';
-  if(d.dueIn<=0)return d.dueIn===0?'Due today':'Due '+(-d.dueIn)+' days ago';
+  if(d.dueIn<=0)return d.dueIn===0?'Due today':-d.dueIn>60?'Due for a while now':'Due '+(-d.dueIn)+' days ago';
   return 'In '+d.dueIn+' days ('+fmtDate(d.dueDate)+')'+(d.never?', counting from when you added them':'');
 }
 function waitLine(f){const w=waitingOf(f)[0];if(!w)return'';const n=daysSince(w.date);return `<div class="meta" style="color:var(--other-ink)">Waiting on a reply to your ${esc(w.mode.toLowerCase())} · ${n===0?'today':n===1?'1 day':n+' days'}</div>`}
 function row(f,opts={}){
-  const d=dueInfo(f);const fu=openFollowups(f);
+  const d=dueInfo(f);const fu=openFollowups(f);const ci=cadenceInfo(f);const fromTier=ci.src===tierOf(f).name;
   return `<li class="r" id="row-${f.id}">${avatarHTML(f)}
     <div class="main">
       <button class="name" data-act="open" data-id="${f.id}">${esc(f.name)}</button>${tagsHTML(f)}
-      <div class="meta">${esc(tierOf(f).name)} · ${lastLine(f)}${opts.bal&&balanceWords(balance(f),1)?' · '+balanceWords(balance(f),1):''}</div>
+      <div class="meta">${esc(tierOf(f).name)} · ${lastLine(f)}${opts.quick&&!fromTier&&ci.days?' · '+esc(ci.src)+' timing':''}${opts.bal&&balanceWords(balance(f),1)?' · '+balanceWords(balance(f),1):''}</div>
       ${opts.quick&&fu.length?`<div class="ask"><b>Ask about</b> ${esc(fu[0].text)}${fu.length>1?` <span class="muted">+${fu.length-1}</span>`:''}</div>`:''}
       ${opts.quick||opts.waiting?waitLine(f):''}
-      ${opts.quick?`<div class="acts"><button class="btn primary" data-act="quick" data-who="me" data-id="${f.id}">I reached out</button><button class="btn them" data-act="quick" data-who="them" data-id="${f.id}">They did</button>${waitingOf(f).length?`<button class="btn" data-act="replied" data-id="${f.id}">They replied</button>`:''}</div>`:''}
-      ${opts.waiting?`<div class="acts"><button class="btn primary" data-act="replied" data-id="${f.id}">They replied</button><button class="btn" data-act="noreply" data-id="${f.id}">No reply</button></div>`:''}
-      ${opts.firstlog?`<div class="acts"><button class="btn" data-act="open" data-id="${f.id}" data-focus="log">Log last contact</button></div>`:''}
+      ${opts.quick?`<div class="qacts"><button class="btn sm primary" data-act="quick" data-who="me" data-id="${f.id}">I reached out</button><button class="btn sm them" data-act="quick" data-who="them" data-id="${f.id}">They did</button>${waitingOf(f).length?`<button class="btn sm" data-act="replied" data-id="${f.id}">They replied</button>`:''}</div>`:''}
+      ${opts.stale?`<div class="qacts"><span class="note" style="margin:0;align-self:center">It’s been a while.</span><button class="btn sm quiet" data-act="snooze" data-id="${f.id}" data-n="30">Snooze a month</button><button class="btn sm quiet" data-act="mkTog" data-id="${f.id}" data-k="dormant">Mark dormant</button></div>`:''}
+      ${opts.waiting?`<div class="qacts"><button class="btn sm primary" data-act="replied" data-id="${f.id}">They replied</button><button class="btn sm" data-act="noreply" data-id="${f.id}">No reply</button></div>`:''}
     </div>${opts.nostatus?'':statusHTML(d)}</li>`;
 }
-
 /* ---------- orbit drawing ---------- */
 function orbitSVG(list,size,opts={}){
   const ts=tiers(),n=ts.length,c=size/2,R=size/2-(opts.labels?26:14);
@@ -808,6 +821,12 @@ function orbitSVG(list,size,opts={}){
   ts.forEach((t,i)=>{const r=rOf(i);rings+=`<circle class="ring" cx="${c}" cy="${c}" r="${r}"/>`;
     if(opts.ringLabels)rings+=`<text class="rl" x="${c}" y="${c-r-4}" text-anchor="middle">${esc(t.name)}</text>`});
   const big=size>=300;
+  if(opts.counts){
+    let b='';ts.forEach((t,i)=>{const k=list.filter(f=>f.tier===t.key).length;if(!k)return;const r=rOf(i),a=-Math.PI/2+i*0.95,x=c+r*Math.cos(a),y=c+r*Math.sin(a);
+      b+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="13" style="fill:${TIER_COLORS[t.key]||NOCOLOR}"/><text x="${x.toFixed(1)}" y="${(y+4).toFixed(1)}" text-anchor="middle" class="cnt">${k}</text>`});
+    const counts=tiersTop().map(t=>{const k=list.filter(f=>f.tier===t.key).length;return k?`${k} ${t.name}${k>1?'s':''}`:''}).filter(Boolean).join(', ');
+    return `<svg class="orbit" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" role="img" aria-label="${esc(counts)}">${rings}<circle class="you" cx="${c}" cy="${c}" r="11"/><text class="youl" x="${c}" y="${c+3.5}" text-anchor="middle">You</text>${b}</svg>`;
+  }
   ts.forEach((t,i)=>{
     const people=list.filter(f=>f.tier===t.key).sort((a,b)=>a.name.localeCompare(b.name));if(!people.length)return;
     const r=rOf(i);let dr=big?11:7;const circ=2*Math.PI*r;
@@ -820,10 +839,11 @@ function orbitSVG(list,size,opts={}){
       const gap=opts.ringLabels?0.42:0;const a=-Math.PI/2+gap+((off+kk*(2*Math.PI-2*gap)/per)%(2*Math.PI-2*gap||2*Math.PI));const x=c+rr*Math.cos(a),y=c+rr*Math.sin(a);
       const d=dueInfo(f);const due=d.state==='overdue';
       const cls=['od',f.dormant?'dorm':''].join(' ');
-      const lab=`${f.name}, ${t.name}${due?', due':''}${f.dormant?', dormant':''}`;
-      const showIni=dr>=10&&S.settings.avatars!=='off';
+      const gl=groupsOf(f).map(g=>g.name).join(', ');const lab=`${f.name}, ${t.name}${gl?', '+gl:''}${due?', due':''}${f.dormant?', dormant':''}`;
+      const showIni=dr>=10;
       const showName=false;if(opts.names)pts.push({f,x,y,dr});
       dots+=`<g class="${cls}" role="button" tabindex="0" data-act="open" data-id="${f.id}" aria-label="${esc(lab)}"><title>${esc(lab)}</title>
+        <circle class="hit" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${Math.max(13,dr+3)}" fill="transparent"/>
         ${due?`<circle class="halo" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${dr+3}"/>`:''}
         <circle class="d" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${dr}" style="fill:${f.dormant?'transparent':colorOf(f)}${f.dormant?';stroke:'+colorOf(f):''}"/>
         ${showIni&&!f.dormant?`<text x="${x.toFixed(1)}" y="${(y+3).toFixed(1)}" text-anchor="middle">${esc(initials(f.name))}</text>`:''}
@@ -838,8 +858,8 @@ function orbitSVG(list,size,opts={}){
     pts.forEach(p=>{const nm=p.f.name.split(' ')[0];const w=nm.length*fs*.6+2,hh=fs+2;
       const cand=[[p.x,p.y+p.dr+hh,'middle'],[p.x,p.y-p.dr-3,'middle'],[p.x+p.dr+3,p.y+fs/2-1,'start'],[p.x-p.dr-3,p.y+fs/2-1,'end']];
       const box=([x,y,an])=>{const l=an==='middle'?x-w/2:an==='start'?x:x-w;return{l,r:l+w,t:y-fs,b:y+2}};
-      let pick=cand.find(cd=>{const bx=box(cd);return bx.l>=0&&bx.r<=size&&bx.t>=0&&bx.b<=size&&!placed.some(q=>hit(q,bx))&&!circ.some(q=>hit(q,bx))})||cand[0];
-      placed.push(box(pick));
+      const pick=cand.find(cd=>{const bx=box(cd);return bx.l>=0&&bx.r<=size&&bx.t>=0&&bx.b<=size&&!placed.some(q=>hit(q,bx))&&!circ.some(q=>hit(q,bx))});
+      if(!pick)return;placed.push(box(pick));
       labs+=`<text class="nm${fs<10?' sm':''}" x="${pick[0].toFixed(1)}" y="${pick[1].toFixed(1)}" text-anchor="${pick[2]}" aria-hidden="true" style="pointer-events:none">${esc(nm)}</text>`});
     dots+=labs;
   }
@@ -849,66 +869,65 @@ function orbitSVG(list,size,opts={}){
 }
 function orbitLegend(){return `<div class="olegend" aria-hidden="true">${colorLegend()}<span><i style="border:2px solid var(--amber)"></i>due</span><span><i style="border:1.5px dashed var(--stone)"></i>dormant</span></div>`}
 function orbitTools(){const on=S.settings.orbitNames;return `<div class="otools"><button class="chip ${on?'on':''}" data-act="orbitNames" aria-pressed="${on}">Names</button><button class="chip" data-act="orbitBig">Bigger orbit</button></div>`}
-function miniOrbit(f){
-  const size=92,ts=tiers(),n=ts.length,c=size/2,R=size/2-6;const rOf=i=>R*(0.26+0.74*(n-1-i)/(n-1));
-  let s=ts.map((t,i)=>`<circle class="ring" cx="${c}" cy="${c}" r="${rOf(i)}"${t.key===f.tier?' style="stroke:var(--teal);stroke-width:1.5"':''}/>`).join('');
-  const r=rOf(tierIdx(f));const a=-Math.PI/4;
-  (f.tierHistory||[]).slice(-3).forEach((m,j)=>{const fi=ts.findIndex(x=>x.key===m.from);if(fi<0)return;const rr=rOf(fi);const aa=a-(0.5+j*.35);s+=`<circle cx="${(c+rr*Math.cos(aa)).toFixed(1)}" cy="${(c+rr*Math.sin(aa)).toFixed(1)}" r="3" fill="none" stroke="var(--stone)" stroke-dasharray="2 1.5"/>`});
-  s+=`<circle class="you" cx="${c}" cy="${c}" r="7"/><circle cx="${(c+r*Math.cos(a)).toFixed(1)}" cy="${(c+r*Math.sin(a)).toFixed(1)}" r="6" fill="var(--teal)"/>`;
-  return `<svg class="orbit" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" role="img" aria-label="${esc(f.name)} sits on the ${esc(tierOf(f).name)} ring${(f.tierHistory||[]).length?'; faint dots show where they were before':''}.">${s}</svg>`;
-}
 
 /* ---------- views ---------- */
 const TABS=[
- ['reach','Reach out','<circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>'],
+ ['reach','Today','<circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>'],
  ['people','People','<circle cx="12" cy="12" r="2.4" fill="currentColor"/><circle cx="12" cy="12" r="6" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".6"/><circle cx="18" cy="12" r="1.8" fill="currentColor"/>'],
- ['log','Log','<path d="M6 4h12v16H6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 9h6M9 13h6M9 17h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>'],
  ['guide','Guide','<path d="M4 5.5C6.5 4 9.5 4 12 5.5 14.5 4 17.5 4 20 5.5V19c-2.5-1.5-5.5-1.5-8 0-2.5-1.5-5.5-1.5-8 0z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 5.5V19" stroke="currentColor" stroke-width="1.6"/>'],
- ['more','More','<circle cx="6" cy="12" r="1.7" fill="currentColor"/><circle cx="12" cy="12" r="1.7" fill="currentColor"/><circle cx="18" cy="12" r="1.7" fill="currentColor"/>']
+ ['more','Settings','<circle cx="6" cy="12" r="1.7" fill="currentColor"/><circle cx="12" cy="12" r="1.7" fill="currentColor"/><circle cx="18" cy="12" r="1.7" fill="currentColor"/>']
 ];
 function renderTabs(){
   const n=S.friends.filter(f=>dueInfo(f).state==='overdue').length;
   $('#tabs').innerHTML=TABS.map(([k,l,svg])=>`<a href="#${k}" class="${ui.view===k?'on':''}" ${ui.view===k?'aria-current="page"':''}><svg viewBox="0 0 24 24" aria-hidden="true">${svg}</svg>${k==='reach'&&n?`<span class="badge" aria-label="${n} due">${n}</span>`:''}${l}</a>`).join('');
   $('#fab').style.display=(ui.view==='reach'||ui.view==='people')?'':'none';
+  const n2=Math.min(n,S.settings.dailyCap);const b=document.querySelector('#tabs .badge');if(b){b.textContent=n2;b.setAttribute('aria-label',n2+' for today')}
 }
 function emptyStart(){
   return `<div class="sec" style="margin-top:var(--s4)"><p class="lede">Your orbit is empty.</p><p>Add the people in your life, place them on the ladder, and Orbit will gently tell you who might like to hear from you.</p><div class="acts"><button class="btn primary" data-act="add">Add a person</button><a class="btn" href="#guide">Read the Guide</a></div></div>`;
 }
+function homeBanner(){
+  if(!IN_CLAUDE||S.settings.homeNote)return'';
+  return `<div class="homenote" role="note"><b>Your main Orbit is the web app.</b> This copy saves to your Claude account but doesn’t sync with it. To move people over: Settings → Your data → Save a backup file, then restore it there.<div class="qacts"><a class="btn sm primary" href="https://orbit-theta-amber.vercel.app" target="_blank" rel="noopener">Open the web app</a><button class="btn sm quiet" data-act="homeOk">Got it</button></div></div>`;
+}
+function isStale(d){return d.state==='overdue'&&-d.dueIn>=d.cad}
 function vReach(){
-  if(!S.friends.length)return emptyStart();
+  if(!S.friends.length)return homeBanner()+emptyStart();
   const all=S.friends.map(f=>({f,d:dueInfo(f)}));
-  const over=all.filter(x=>x.d.state==='overdue').sort((a,b)=>b.d.ratio-a.d.ratio);
+  const over=all.filter(x=>x.d.state==='overdue').sort((a,b)=>(isStale(a.d)-isStale(b.d))||(b.d.ratio-a.d.ratio));
   const soon=all.filter(x=>x.d.state==='soon').sort((a,b)=>a.d.dueIn-b.d.dueIn);
-  const fresh=S.friends.filter(f=>!(f.contacts||[]).length).length;
-  const pool=over.concat(soon).map(x=>x.f);
+  const cap=S.settings.dailyCap;const today=over.slice(0,cap),later=over.slice(cap);
+  const pool=(today.length?today:soon.slice(0,1)).map(x=>x.f);
   const feat=pool.length?pool[ui.pick%pool.length]:null;
   const skip=x=>!feat||x.f.id!==feat.id;
   const bdays=S.friends.map(f=>({f,n:bdayIn(f)})).filter(x=>x.n!=null&&x.n<=pT(x.f,'bdayDays')).sort((a,b)=>a.n-b.n);
   const look=S.friends.filter(f=>{if(f.dormant)return false;const b=balance(f,T('balanceDays'));const n=b.me+b.them;return n>=T('balanceMin')&&Math.max(b.me,b.them)/n>=T('balancePct')/100});
   const sd=T('statsDays');const m=S.friends.reduce((a,f)=>{const b=balance(f,sd);a.me+=b.me;a.them+=b.them;return a},{me:0,them:0});
-  let h=`<p class="lede">${over.length?`${over.length} ${over.length===1?'person':'people'} might like to hear from you.`:'Everyone’s in touch. Nice.'} <span class="small" style="font-family:var(--sans)">Last ${sd} days: you reached out ${m.me} time${m.me===1?'':'s'}, they did ${m.them}.</span></p>`;
-  h+=hint('reach-buttons','Two buttons, one habit',`After any contact, tap <b>I reached out</b> or <b>They did</b>. Who starts matters: it’s how Orbit notices one-sided friendships. You can pick Call, In person and so on in the note that pops up.`);
-  let lb=null;try{lb=localStorage.getItem('orbit.lastBackup')}catch(e){}
-  if(Sync.state==='local'&&S.friends.length>=3&&(!lb||daysSince(lb)>30))h+=`<div class="hint"><b>Back up your orbit?</b>Everything lives on this device only. ${lb?'Last backup '+rel(lb)+'.':'No backup yet.'}<div class="acts"><button class="btn" data-act="fileBackup">Save a backup file</button></div></div>`;
+  let h=homeBanner();
+  h+=`<p class="lede">${today.length?`${today.length} for today.`:'Nobody is due today. Nice.'}</p><p class="note" style="margin-top:-4px">Last ${sd} days: you reached out ${m.me} time${m.me===1?'':'s'}, they did ${m.them}.</p>`;
   if(feat){
-    const fu=openFollowups(feat);
-    h+=`<div class="feature" id="row-${feat.id}">${avatarHTML(feat,1)}<div class="main" style="flex:1;min-width:0"><div class="q">Who would benefit from hearing from you?</div>
+    const fu=openFollowups(feat);const fd=dueInfo(feat);
+    h+=`<div class="feature" id="row-${feat.id}">${avatarHTML(feat,1)}<div class="main" style="flex:1;min-width:0"><div class="q">${fd.state==='overdue'?'Who would benefit from hearing from you?':'Coming up soon'}</div>
       <button class="name" data-act="open" data-id="${feat.id}">${esc(feat.name)}</button>${tagsHTML(feat)}
       <div class="meta">${esc(tierOf(feat).name)} · ${lastLine(feat)}</div>
       ${fu.length?`<div class="ask"><b>Ask about</b> ${esc(fu[0].text)}</div>`:''}
       <div class="acts"><button class="btn primary" data-act="quick" data-who="me" data-id="${feat.id}">I reached out</button><button class="btn them" data-act="quick" data-who="them" data-id="${feat.id}">They did</button>${pool.length>1?`<button class="btn quiet" data-act="pickNext">Someone else</button>`:''}</div></div></div>`;
   }
-  const o2=over.filter(skip),s2=soon.filter(skip);
-  if(o2.length)h+=`<section class="sec"><h2>Also due<small>${o2.length}</small></h2><ul class="rows">${o2.map(x=>row(x.f,{quick:1})).join('')}</ul></section>`;
-  if(s2.length)h+=`<section class="sec"><h2>Coming up<small>${s2.length}</small></h2><ul class="rows">${s2.map(x=>row(x.f,{quick:1})).join('')}</ul></section>`;
+  h+=hint('reach-buttons','Two buttons, one habit.',`After any contact, tap I reached out or They did. You can pick Call, In person and so on in the note that pops up.`);
+  let lb=null;try{lb=localStorage.getItem('orbit.lastBackup')}catch(e){}
+  if(!hintShown&&Sync.state==='local'&&S.friends.length>=3&&(!lb||daysSince(lb)>30)){hintShown=true;h+=`<div class="hint"><b>Back up your orbit?</b> Everything lives on this device only. ${lb?'Last backup '+rel(lb)+'.':'No backup yet.'} <button class="linkbtn" data-act="fileBackup">Save a backup file</button></div>`}
+  const t2=today.filter(skip);
+  if(t2.length)h+=`<section class="sec"><h2>Also today<small>${t2.length}</small></h2><ul class="rows">${t2.map(x=>row(x.f,{quick:1,stale:isStale(x.d)})).join('')}</ul></section>`;
+  if(later.length)h+=`<details class="fold later"><summary>${later.length} more when you’re ready</summary><ul class="rows">${later.map(x=>row(x.f,{quick:1,stale:isStale(x.d)})).join('')}</ul></details>`;
+  const s2=soon.filter(skip);
+  if(s2.length)h+=`<details class="fold later"><summary>Coming up · ${s2.length}</summary><ul class="rows">${s2.map(x=>row(x.f,{quick:1})).join('')}</ul></details>`;
   const wait=S.friends.filter(f=>!f.dormant&&waitingOf(f).some(c=>daysSince(c.date)>T('replyDays'))&&skip({f}));
   if(wait.length)h+=`<section class="sec"><h2>Waiting on a reply<small>${wait.length}</small></h2><p class="sub">You reached out over ${T('replyDays')} days ago. Did they answer?</p><ul class="rows">${wait.map(f=>row(f,{waiting:1,nostatus:1})).join('')}</ul></section>`;
   const talks=[];S.friends.forEach(f=>(f.plans||[]).forEach(pl=>{if(pl.status==='open'&&pl.path!=='letgo'&&(!pl.when||pl.when<=addDays(todayISO(),2)))talks.push({f,pl})}));
   if(talks.length)h+=`<section class="sec"><h2>Conversations to have<small>${talks.length}</small></h2><ul class="rows">${talks.map(({f,pl})=>`<li class="r">${avatarHTML(f)}<div class="main"><button class="name" data-act="viewPlan" data-id="${f.id}" data-p="${pl.id}">${esc(f.name)}</button><div class="meta">${esc(PATHS[pl.path].n)}${pl.how?' · '+esc(pl.how):''}${pl.when?' · '+(pl.when===todayISO()?'today':pl.when<todayISO()?'planned '+fmtDate(pl.when):fmtDate(pl.when)):''}</div></div></li>`).join('')}</ul></section>`;
-  if(fresh)h+=hint('no-backlog','No need to catch up on everyone',`Reminders for people with nothing logged count from the day you added them, so no one is due on day one. Put people in groups (like a city or a friend group) to give a whole group its own timing in More → Groups &amp; places.`);
-  if(!feat&&!o2.length&&!s2.length)h+=`<p class="muted">Nobody is due. The next reminders show up here a few days ahead.</p>`;
   if(bdays.length)h+=`<section class="sec"><h2>Birthdays</h2><ul class="rows">${bdays.map(x=>`<li class="r">${avatarHTML(x.f)}<div class="main"><button class="name" data-act="open" data-id="${x.f.id}">${esc(x.f.name)}</button><div class="meta">${x.n===0?'Today':x.n===1?'Tomorrow':'In '+x.n+' days'} · ${fmtDate(addDays(todayISO(),x.n))}</div></div></li>`).join('')}</ul></section>`;
   if(look.length)h+=`<section class="sec"><h2>Worth a look</h2><p class="sub">Friendships where one side starts almost everything (last ${T('balanceDays')} days).</p><ul class="rows">${look.map(f=>{const b=balance(f,T('balanceDays'));const mine=b.me>b.them;return `<li class="r">${avatarHTML(f)}<div class="main"><button class="name" data-act="open" data-id="${f.id}">${esc(f.name)}</button><div class="meta">${mine?`You started ${b.me} of the last ${b.me+b.them}. Is this one mostly you carrying it?`:`They started ${b.them} of the last ${b.me+b.them}. Maybe be the one to reach out next.`}</div></div></li>`}).join('')}</ul></section>`;
+  if(!hintShown&&S.friends.some(f=>!(f.contacts||[]).length))h+=hint('no-backlog','No need to catch up on everyone.',`Reminders for people with nothing logged count from the day you added them. Give a whole group its own timing in Settings → Groups &amp; timing.`);
   return h;
 }
 function peopleList(list){
@@ -922,7 +941,6 @@ function peopleList(list){
 function filterDefs(){
   const c=[['all','All']];
   S.settings.groups.forEach(g=>c.push(['g:'+g.id,g.name,g.color]));
-  if(S.friends.some(f=>f.distance)||S.settings.groups.length)c.push(['d:near','Nearby'],['d:far','Long-distance']);
   c.push(['sep']);tiersTop().forEach(t=>c.push([t.key,t.name]));
   c.push(['best','Best friends'],['soulmate','Soulmates'],['tempered','Tempered'],['dormant','Dormant']);
   return c;
@@ -936,33 +954,32 @@ function filtered(){
   if(fl==='best')list=list.filter(f=>f.best);
   else if(['soulmate','tempered','dormant'].includes(fl))list=list.filter(f=>f[fl]);
   else if(fl.startsWith('g:'))list=list.filter(f=>(f.groups||[]).includes(fl.slice(2)));
-  else if(fl.startsWith('d:'))list=list.filter(f=>f.distance===fl.slice(2));
   else if(fl!=='all')list=list.filter(f=>f.tier===fl);
   return list;
 }
+function smallOrbit(list){
+  const size=Math.max(200,Math.min(window.innerWidth-32,240));
+  if(list.length>15)return `<button class="orbitbtn" data-act="orbitBig" aria-label="Open the bigger orbit with names">${orbitSVG(list,size,{counts:true})}</button><p class="note" style="text-align:center;margin-top:0">${list.length} people. Tap for the bigger orbit with names.</p>${orbitLegend()}`;
+  return orbitSVG(list,size,{names:S.settings.orbitNames})+orbitLegend()+orbitTools();
+}
 function vPeople(){
   if(!S.friends.length)return emptyStart();
-  const ov=S.settings.orbitView;
-  let list=filtered();const fl=ui.filter;
-  let h=hint('orbit-meaning','Closer rings are closer friendships',`Not more important people. Tiers describe how close things are right now, and people move both ways over time.`);
-  let showOrbit=false,size=230,full=false;
-  if(ov==='header'){showOrbit=true}
-  else if(ov==='full'){showOrbit=true;full=true}
-  else if(ov==='toggle'){h+=`<div class="seg" role="group" aria-label="View" style="max-width:260px;margin-bottom:var(--s3)"><button class="${ui.peopleMode==='list'?'on':''}" data-act="pmode" data-m="list" aria-pressed="${ui.peopleMode==='list'}">List</button><button class="${ui.peopleMode==='orbit'?'on':''}" data-act="pmode" data-m="orbit" aria-pressed="${ui.peopleMode==='orbit'}">Orbit</button></div>`;if(ui.peopleMode==='orbit'){showOrbit=true;full=true}}
-  if(showOrbit){
-    const w=Math.min(window.innerWidth-32,full?520:220);size=Math.max(200,Math.floor(w));
-    h+=filterChips();
-    h+=`<div class="orbitbox${full?' full':''}" id="orbitBox">${orbitSVG(list,size,{labels:full,ringLabels:full,names:S.settings.orbitNames})}${orbitLegend()}${orbitTools()}</div>`;
-  }else h+=filterChips();
+  const recent=ui.peopleMode==='recent';
+  let h=`<div class="seg" role="group" aria-label="View" style="max-width:280px;margin-bottom:var(--s3)"><button class="${recent?'':'on'}" data-act="pmode" data-m="list" aria-pressed="${!recent}">People</button><button class="${recent?'on':''}" data-act="pmode" data-m="recent" aria-pressed="${recent}">Recent</button></div>`;
+  if(recent)return h+recentHTML();
+  const list=filtered();
+  h+=hint('orbit-meaning','Closer rings are closer friendships,',`not more important people. People move both ways over time.`);
+  h+=filterChips();
+  h+=`<div class="orbitbox" id="orbitBox">${smallOrbit(list)}</div>`;
   h+=`<label class="sr" for="q">Search people</label><input type="search" id="q" placeholder="Search names and notes" value="${esc(ui.q)}" style="margin-top:var(--s2)">`;
-  h+=peopleList(list);
+  h+=`<div id="plist" aria-live="polite">${peopleList(list)}</div>`;
   return h;
 }
-function vLog(){
+function recentHTML(){
   const items=[];S.friends.forEach(f=>(f.contacts||[]).forEach(c=>items.push({f,c})));
   if(!items.length)return `<p class="lede">Nothing recorded yet.</p><p class="muted">Every “I reached out” and “They did” lands here, month by month.</p>`;
   items.sort((a,b)=>b.c.date.localeCompare(a.c.date));
-  let h=`<p class="lede">A record of who reached out, month by month.</p>`;let cur='';
+  let h=`<p class="note" style="margin-top:0">Who reached out, month by month.</p>`;let cur='';
   items.slice(0,500).forEach(({f,c})=>{
     const d=pd(c.date);const m=MONL[d.getMonth()]+' '+d.getFullYear();
     if(m!==cur){if(cur)h+='</ul></section>';cur=m;
@@ -984,13 +1001,13 @@ function vGuide(){
   <section class="sec"><h2>The ladder</h2><p class="sub">Every tier is described the same four ways: <b>Contact</b> (why and how you see each other), <b>Knowing</b> (how well you know each other), <b>Asking</b> (what you could fairly ask of them) and <b>Effort</b> (who starts things). Each step up adds one thing: chosen, then planned, then go-to, then family. The <b>big-news test</b> under each tier asks: if something big happened to you, good or bad, what would happen with this person?</p>`;
   tiersTop().forEach(t=>{
     const n=S.friends.filter(f=>f.tier===t.key).length;
-    h+=`<div class="rung"><h3>${esc(t.name)} <small>${n?n+' '+(n===1?'person':'people')+' · ':''}${t.cadence?'nudge every '+t.cadence+' days':'no reminder'}</small></h3>${tierDef(t)}${t.test?`<div class="test"><b>Big-news test:</b> ${esc(t.test)}</div>`:''}${t.ex?`<p class="small muted" style="margin-top:var(--s2)">Examples: ${esc(t.ex)}</p>`:''}
+    h+=`<div class="rung"><h3>${esc(t.name)} <small>${n?n+' '+(n===1?'person':'people')+' · ':''}${t.cadence?'reminder every '+t.cadence+' days':'no reminder'}</small></h3>${tierDef(t)}${t.test?`<div class="test"><b>Big-news test:</b> ${esc(t.test)}</div>`:''}${t.ex?`<p class="small muted" style="margin-top:var(--s2)">Examples: ${esc(t.ex)}</p>`:''}
     <details class="fold"><summary>What to expect</summary><div class="exp"><h4>Fair to expect</h4><ul>${lines(t.expect).map(x=>`<li>${esc(x)}</li>`).join('')}</ul><h4>Not fair to expect yet</h4><ul>${notyetHTML(t)}</ul></div></details></div>`;
   });
   h+=`<div class="rung"><h3>Stranger</h3><p style="margin-top:6px">Someone you haven’t met. Not tracked here, but any stranger could end up anywhere on this ladder.</p></div></section>
   <section class="sec"><h2>Best friend</h2><div class="prose" style="margin-top:var(--s3)"><p>The top spot, taken literally: your <b>best</b> friend. Usually a Homie and often a Platonic soulmate. Everything a best friend should be, with grace, because everyone is human.</p>
   <ul><li><b>Overarching:</b> your best friend across your whole life right now. Only one at a time, and it can change.</li><li><b>Of a season:</b> the best friend of a setting or stretch of life (college, a job, a city). You can have one per context.</li></ul></div></section>
-  <section class="sec"><h2>Markers</h2><p class="sub">These sit on top of the ladder rather than on it, because they describe something other than closeness.</p>`;
+  <section class="sec"><h2>Tags</h2><p class="sub">Tags sit on top of the ladder rather than on it, because they describe something other than closeness.</p>`;
   MARKERS.forEach(m=>{h+=`<div class="rung"><h3>${esc(m.name)}</h3><p style="margin-top:6px">${esc(m.desc)}</p></div>`});
   h+=`</section><section class="sec"><h2>How people connect</h2><div class="prose" style="margin-top:var(--s3)">
    <p>Attachment research suggests people tend to lean toward a few patterns in close relationships. Orbit uses plain names for them. They’re rough tendencies, not types or diagnoses, and the same person can look different with different people or under stress.</p>
@@ -1024,57 +1041,49 @@ function guideOrbit(){
 function toneBlock(intro){
   const s=S.settings.tone;
   const ex=[
-    {k:'gentle',t:'Gentle',d:'Softer, with room for other explanations. Good if notes like this sting, or you’re in a tender season.',
+    {k:'gentle',t:'Gentle',d:'Softer, leaves room for other explanations.',
      q:say0('gentle','quiet',{name:'Sam',days:90,me:6,tier:'Good friend',lower:'Friend'}),q2:say0('gentle','resLower',{cur:'Good friend',sug:'Friend'})},
-    {k:'plain',t:'Straightforward',d:'Short and direct, just the facts. Good if you’d rather not read between the lines.',
+    {k:'plain',t:'Straightforward',d:'Short and direct, just the facts.',
      q:say0('plain','quiet',{name:'Sam',days:90,me:6,tier:'Good friend',lower:'Friend'}),q2:say0('plain','resLower',{cur:'Good friend',sug:'Friend'})}
   ];
   return `<label class="f" style="${intro?'margin-top:var(--s4)':''}">${intro?'How should Orbit word its notes?':'Tone of notes'}</label>
-  <p class="note" style="margin-top:0">Orbit sometimes adds a short note when what’s happening doesn’t match where you placed someone, like when only one of you has been reaching out, or after you Reflect on a friendship. The tone changes how those notes are worded, not what they notice.</p>
-  <div class="tones" role="radiogroup" aria-label="Tone of notes">${ex.map(e=>`<button class="tone ${s===e.k?'on':''}" role="radio" aria-checked="${s===e.k}" data-act="tone" data-v="${e.k}"><b>${e.t}</b><span class="td">${e.d}</span><span class="tq">“${esc(e.q)}”</span><span class="tq">“${esc(e.q2)}”</span></button>`).join('')}</div>`;
+  <p class="note" style="margin-top:0">When what’s happening doesn’t match someone’s tier, Orbit adds a short note. This sets how it’s worded.</p>
+  <div class="tones" role="radiogroup" aria-label="Tone of notes">${ex.map(e=>`<button class="tone ${s===e.k?'on':''}" role="radio" aria-checked="${s===e.k}" data-act="tone" data-v="${e.k}"><b>${e.t}</b><span class="td">${e.d}</span><span class="tq">“${esc(e.q)}”</span></button>`).join('')}</div>`;
 }
 function say0(tone,key,v){const o=S.settings.tone;S.settings.tone=tone;const r=say(key,v);S.settings.tone=o;return r}
 function vMore(){
   const st={cloud:'Saved to your Claude account. It’s private to you and follows you to any device where you open this page.',local:'Saved on this device only (no account, nothing sent anywhere). Save a backup file now and then so a lost or reset phone doesn’t lose it.',loading:'Connecting…',slow:'Can’t reach your account storage yet. Changes are kept on this device for now.',error:'Account storage hit an error. Changes are kept on this device; reload later.',readonly:'Your account storage is read-only here, so changes stay on this device.'}[Sync.state]||'';
   const s=S.settings;
-  let h=`<section class="sec" style="margin-top:var(--s2)" id="moreLook"><h2>Make it yours</h2>
+  const tm=[['soonDays','Heads-up before someone is due','days ahead'],['bdayDays','Birthday heads-up','days ahead'],['replyDays','“Waiting on a reply” after','days with no answer']];
+  let h=`<section class="sec" style="margin-top:var(--s2)" id="moreGroups"><h2>Groups &amp; timing</h2>
+   <p class="sub">A person’s reminder comes from a time set on them, else their groups (the shortest wins), else their tier. Nearby and Long-distance are groups too.</p>
+   ${s.groups.map(g=>`<details class="fold grp"><summary><i class="gdot" style="background:${g.color}"></i>${esc(g.name)} <span class="muted small" style="font-weight:400">${esc((KINDS.find(k=>k[0]===g.kind)||KINDS[0])[1])} · ${(n=>n+(n===1?' person':' people'))(S.friends.filter(f=>(f.groups||[]).includes(g.id)).length)} · ${g.off?'no reminders':g.cadence!=null?'every '+g.cadence+' days':'ladder timing'}</span></summary>
+    <div style="padding-bottom:var(--s4)"><div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s2)"><div><label class="f" for="gn_${g.id}" style="margin-top:0">Name</label><input type="text" id="gn_${g.id}" value="${esc(g.name)}" data-g="${g.id}" data-gf="name" ${g.builtin?'readonly':''}></div>
+    <div ${g.builtin?'hidden':''}><label class="f" for="gk_${g.id}" style="margin-top:0">Kind</label><select id="gk_${g.id}" data-g="${g.id}" data-gf="kind">${KINDS.map(([v,l])=>`<option value="${v}" ${g.kind===v?'selected':''}>${l}</option>`).join('')}</select></div></div>
+    <label class="f" for="gc_${g.id}">Reminder every … days</label><input type="number" min="0" inputmode="numeric" id="gc_${g.id}" value="${g.cadence??''}" placeholder="Blank uses each person’s tier" data-g="${g.id}" data-gf="cadence">
+    <label class="tg"><div><b>No reminders for this group</b><span>Good for people you just want sorted, not tracked</span></div><input type="checkbox" class="sw" data-g="${g.id}" data-gf="off" ${g.off?'checked':''}></label>
+    <label class="f">Color</label><div class="swatches">${GROUP_COLORS.map(c=>`<button class="swc ${g.color===c?'on':''}" style="background:${c}" data-act="gColor" data-g="${g.id}" data-v="${c}" aria-label="Color ${c}" aria-pressed="${g.color===c}"></button>`).join('')}</div>
+    <div class="acts"><button class="btn quiet" data-act="gFilter" data-g="${g.id}">See them</button>${g.builtin?'':`<button class="btn danger" data-act="delGroup" data-g="${g.id}">Delete group</button>`}</div></div></details>`).join('')||'<p class="muted" style="margin-top:var(--s3)">No groups yet.</p>'}
+   <form id="newGroupForm" class="addsplit" style="margin-top:var(--s3)"><div><label class="f" for="newGroup" style="margin-top:0">New group</label><input type="text" id="newGroup" placeholder="e.g. College friends, Denver, Summer camp"></div><div style="display:flex;gap:var(--s2)"><select id="newGroupKind" aria-label="Kind">${KINDS.map(([v,l])=>`<option value="${v}">${l}</option>`).join('')}</select><button class="btn" type="submit">Add</button></div></form>
+   <h3 class="h3s">Today</h3>
+   <div class="tg"><div><b>People per day</b><span>Today shows this many; the rest wait in a fold</span></div><input type="number" min="1" inputmode="numeric" class="num" id="dailyCap" value="${s.dailyCap}" aria-label="People per day"></div>
+   ${tm.map(([k,l,u])=>`<div class="tg"><div><b>${esc(l)}</b><span>${esc(u)}</span></div><input type="number" min="0" inputmode="numeric" class="num" data-timing="${k}" value="${T(k)}" aria-label="${esc(l)} (${esc(u)})"></div>`).join('')}
+   ${IN_CLAUDE?'':`<div class="tg"><div><b>Calendar</b><span>Add everyone’s next due date and birthdays to your calendar app</span></div><button class="btn" data-act="icsAll">Add all</button></div>`}
+  </section>
+  <section class="sec" id="moreLook"><h2>Look &amp; tone</h2>
    <label class="f">Light or dark</label>
    <div class="seg" role="group" aria-label="Light or dark">${[['system','Match device'],['light','Light'],['dark','Dark']].map(([v,l])=>`<button data-act="theme" data-v="${v}" class="${s.theme===v?'on':''}" aria-pressed="${s.theme===v}">${l}</button>`).join('')}</div>
    <label class="f" for="colorBy">Color people by</label>
-   <select id="colorBy">${[['tier','Ladder tier'],['group','Group'],['distance','Nearby or long-distance'],['none','One color']].map(([v,l])=>`<option value="${v}" ${s.colorBy===v?'selected':''}>${l}</option>`).join('')}</select>
+   <select id="colorBy">${[['tier','Ladder tier'],['group','Group'],['none','One color']].map(([v,l])=>`<option value="${v}" ${s.colorBy===v?'selected':''}>${l}</option>`).join('')}</select>
    <div class="olegend" style="justify-content:flex-start">${colorLegend()}</div>
-   <p class="note">Shows on avatars and orbit dots. You can pick a color for one person on their Edit page.</p>
-   ${toneBlock()}
-   <label class="f" for="ov">Orbit view</label>
-   <select id="ov">${ORBIT_VIEWS.map(o=>`<option value="${o[0]}" ${s.orbitView===o[0]?'selected':''}>${o[1]}</option>`).join('')}</select>
-   <p class="note">${esc((ORBIT_VIEWS.find(o=>o[0]===s.orbitView)||ORBIT_VIEWS[0])[2])} Try each one; this is the choice still being decided.</p>
-   <label class="f">Pictures for people</label>
-   <div class="seg" role="group" aria-label="Pictures"><button data-act="avatars" data-v="off" class="${s.avatars==='off'?'on':''}" aria-pressed="${s.avatars==='off'}">Names only</button><button data-act="avatars" data-v="initials" class="${s.avatars==='initials'?'on':''}" aria-pressed="${s.avatars==='initials'}">Initials</button><button data-act="avatars" data-v="photos" class="${s.avatars==='photos'?'on':''}" aria-pressed="${s.avatars==='photos'}">Initials & photos</button></div>
-   <p class="note">Photos are added from a person’s page → Edit. They’re shrunk to a small square and stay private.</p></section>
+   <label class="f">Pictures</label>
+   <div class="seg" role="group" aria-label="Pictures"><button data-act="avatars" data-v="initials" class="${s.avatars!=='photos'?'on':''}" aria-pressed="${s.avatars!=='photos'}">Initials</button><button data-act="avatars" data-v="photos" class="${s.avatars==='photos'?'on':''}" aria-pressed="${s.avatars==='photos'}">Initials &amp; photos</button></div>
+   <p class="note">Add a photo from a person’s page → Edit.</p>
+   ${toneBlock()}</section>
   <section class="sec"><h2>How you connect</h2>
    ${myStyle()?`<p class="tsum">${esc(STYLES[myStyle()].name)}</p><p>${esc(STYLES[myStyle()].you)}</p><p class="note">From your check on ${fmtDate(S.settings.me.date)}. Used for the “Strength &amp; fit” notes on each person’s page.</p>`:`<p style="margin-top:var(--s3)">A 2-minute check, inspired by attachment research, about how you tend to connect. It shapes the fit notes and conflict tips on each person’s page. Not a diagnosis.</p>`}
    <div class="acts"><button class="btn${myStyle()?'':' primary'}" data-act="meQuiz">${myStyle()?'Retake the check':'Take the check'}</button>${myStyle()?`<button class="btn quiet" data-act="meClear">Clear</button>`:''}</div></section>
-  <section class="sec"><h2>Reminders</h2>
-   <div class="tg"><div><b>In the app</b><span>Reach out list and the badge on its tab</span></div><input type="checkbox" class="sw" checked disabled aria-label="In-app reminders (always on)"></div>
-   <div class="tg"><div><b>Calendar</b><span>${IN_CLAUDE?'Calendar files work in the installed web-app version (not on claude.ai yet).':'Add next reach-out dates and birthdays to your calendar app.'}</span></div>${IN_CLAUDE?'':`<button class="btn" data-act="icsAll">Add all</button>`}</div>
-   <div class="tg"><div><b>Phone notifications</b><span>Coming with the web-app version of Orbit.</span></div><input type="checkbox" class="sw" disabled aria-label="Phone notifications (not available yet)"></div>
-   <details class="fold" style="margin-top:var(--s2)"><summary>Timing</summary><p class="note" style="margin-top:0">Defaults for everyone. The ones marked “per person” can be changed on a person’s page → Edit.</p>
-   ${TIMING_META.map(([k,l,u,per])=>`<div class="tg"><div><b>${esc(l)}</b><span>${esc(u)}${per?' · per person too':''}</span></div><input type="number" min="0" inputmode="numeric" class="num" data-timing="${k}" value="${T(k)}" aria-label="${esc(l)} (${esc(u)})"></div>`).join('')}
-   <div class="acts"><button class="btn quiet" data-act="resetTiming">Reset timing</button></div></details></section>
-  <section class="sec" id="moreGroups"><h2>Groups &amp; places</h2><p class="sub">Sort people into friend groups, places or seasons of life. Each one can have its own reminder timing, and you can filter People and the orbit by them.</p>
-   ${s.groups.map(g=>`<details class="fold grp"><summary><i class="gdot" style="background:${g.color}"></i>${esc(g.name)} <span class="muted small" style="font-weight:400">${esc((KINDS.find(k=>k[0]===g.kind)||KINDS[0])[1])} · ${(n=>n+(n===1?' person':' people'))(S.friends.filter(f=>(f.groups||[]).includes(g.id)).length)} · ${g.off?'no reminders':g.cadence!=null?'every '+g.cadence+' days':'ladder timing'}</span></summary>
-    <div style="padding-bottom:var(--s4)"><div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s2)"><div><label class="f" for="gn_${g.id}" style="margin-top:0">Name</label><input type="text" id="gn_${g.id}" value="${esc(g.name)}" data-g="${g.id}" data-gf="name"></div>
-    <div><label class="f" for="gk_${g.id}" style="margin-top:0">Kind</label><select id="gk_${g.id}" data-g="${g.id}" data-gf="kind">${KINDS.map(([v,l])=>`<option value="${v}" ${g.kind===v?'selected':''}>${l}</option>`).join('')}</select></div></div>
-    <label class="f" for="gc_${g.id}">Nudge every … days</label><input type="number" min="0" inputmode="numeric" id="gc_${g.id}" value="${g.cadence??''}" placeholder="Blank uses each person’s tier" data-g="${g.id}" data-gf="cadence">
-    <label class="tg"><div><b>No reminders for this group</b><span>Good for people you just want sorted, not tracked</span></div><input type="checkbox" class="sw" data-g="${g.id}" data-gf="off" ${g.off?'checked':''}></label>
-    <label class="f">Color</label><div class="swatches">${GROUP_COLORS.map(c=>`<button class="swc ${g.color===c?'on':''}" style="background:${c}" data-act="gColor" data-g="${g.id}" data-v="${c}" aria-label="Color ${c}" aria-pressed="${g.color===c}"></button>`).join('')}</div>
-    <div class="acts"><button class="btn quiet" data-act="gFilter" data-g="${g.id}">See them</button><button class="btn danger" data-act="delGroup" data-g="${g.id}">${ui.arm==='g'+g.id?'Tap again to delete this group':'Delete group'}</button></div></div></details>`).join('')||'<p class="muted" style="margin-top:var(--s3)">No groups yet.</p>'}
-   <form id="newGroupForm" class="addsplit" style="margin-top:var(--s3)"><div><label class="f" for="newGroup" style="margin-top:0">New group</label><input type="text" id="newGroup" placeholder="e.g. College friends, Denver, Summer camp"></div><div style="display:flex;gap:var(--s2)"><select id="newGroupKind" aria-label="Kind">${KINDS.map(([v,l])=>`<option value="${v}">${l}</option>`).join('')}</select><button class="btn" type="submit">Add</button></div></form>
-   <p class="note">Someone in more than one group uses the shortest timing. A time set on a person beats their groups; groups beat near or far; near or far beats the ladder.</p>
-   <h3 style="font:600 var(--t-md) var(--sans);margin:var(--s5) 0 0">Near or far</h3>
-   <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s3)"><div><label class="f" for="dNear">Nearby: nudge every … days</label><input type="number" min="0" inputmode="numeric" id="dNear" data-dist="near" value="${s.distance.near??''}" placeholder="Tier timing"></div><div><label class="f" for="dFar">Long-distance: every … days</label><input type="number" min="0" inputmode="numeric" id="dFar" data-dist="far" value="${s.distance.far??''}" placeholder="Tier timing"></div></div>
-   <p class="note">Blank uses the ladder. Set where someone lives on their page, under About.</p></section>
-  <section class="sec"><h2>The ladder</h2><p class="sub">Rename tiers, change their reminder days, and rewrite what each one means and what’s fair to expect.</p>`;
+  <section class="sec"><h2>The ladder</h2><p class="sub">Rename tiers, set each tier’s reminder days, and rewrite what each one means and what’s fair to expect.</p>`;
   tiersTop().forEach(t=>{
     h+=`<details class="fold" style="border-bottom:1px solid var(--rule)"><summary>${esc(t.name)} <span class="muted small" style="font-weight:400">${t.cadence?'every '+t.cadence+' days':'no reminder'}</span></summary>
     <div style="padding-bottom:var(--s4)"><div style="display:grid;grid-template-columns:1fr 96px;gap:var(--s2)"><div><label class="f" for="tn_${t.key}" style="margin-top:0">Name</label><input type="text" id="tn_${t.key}" value="${esc(t.name)}" data-tier="${t.key}" data-field="name"></div><div><label class="f" for="tc_${t.key}" style="margin-top:0">Days</label><input type="number" min="0" inputmode="numeric" id="tc_${t.key}" value="${t.cadence}" data-tier="${t.key}" data-field="cadence"></div></div>
@@ -1085,8 +1094,8 @@ function vMore(){
     <label class="f" for="ty_${t.key}">Not fair to expect yet <span class="muted" style="font-weight:400">(one per line)</span></label><textarea id="ty_${t.key}" data-tier="${t.key}" data-field="notyet">${esc(t.notyet||'')}</textarea></div></details>`;
   });
   h+=`<div class="acts"><button class="btn quiet" data-act="resetTiers">${ui.arm==='reset'?'Tap again to reset all tier text':'Reset the ladder to defaults'}</button></div></section>
-  <section class="sec"><h2>Your own fields</h2><p class="sub">Fields that show on every person, like coffee order, love language or their kids’ names.</p>
-   <div style="margin-top:var(--s2)">${s.fields.map(fd=>`<div class="li"><span>${esc(fd.name)}</span><button class="btn quiet" data-act="delField" data-id="${fd.id}">${ui.arm==='fld'+fd.id?'Tap again to remove':'Remove'}</button></div>`).join('')}</div>
+  <section class="sec"><h2>Extra fields</h2><p class="sub">Fields that show on every person, like coffee order, love language or their kids’ names.</p>
+   <div style="margin-top:var(--s2)">${s.fields.map(fd=>`<div class="li"><span>${esc(fd.name)}</span><button class="btn quiet" data-act="delField" data-id="${fd.id}">Remove</button></div>`).join('')}</div>
    <div class="addrow"><input type="text" id="newField" placeholder="e.g. Coffee order" aria-label="New field name"><button class="btn" data-act="addField">Add</button></div></section>
   <section class="sec"><h2>Your data</h2><p style="margin-top:var(--s3)">${st}</p>
    <div class="acts"><button class="btn primary" data-act="fileBackup">Save a backup file</button><button class="btn" data-act="copyBackup">Copy backup</button></div>
@@ -1094,10 +1103,9 @@ function vMore(){
    <label class="f" for="restore">Or paste a backup</label><textarea id="restore" placeholder="Paste a backup here"></textarea>
    <div class="acts"><button class="btn" data-act="restore" data-mode="merge">Merge in</button><button class="btn danger" data-act="restore" data-mode="replace">${ui.arm==='replace'?'Tap again to replace everything':'Replace everything'}</button></div></section>
   <section class="sec"><h2>About</h2><div class="acts" style="margin-top:var(--s3)"><button class="btn primary" data-act="tour">Take the tour</button><button class="btn" data-act="intro">Replay the intro</button><button class="btn" data-act="hintsReset">Show tips again</button></div>
-   <p class="small muted" style="margin-top:var(--s4)">Orbit · v4 · Nov 9, 2026 · ${S.friends.length} ${S.friends.length===1?'person':'people'}</p></section>`;
+   <p class="small muted" style="margin-top:var(--s4)">Orbit · v5 · Nov 10, 2026 · ${S.friends.length} ${S.friends.length===1?'person':'people'}</p></section>`;
   return h;
 }
-
 /* ---------- sheets ---------- */
 function openSheet(s){
   if(!ui.sheet)ui.lastFocus=document.activeElement;
@@ -1116,7 +1124,7 @@ function sheetHead(title,back){
   return `<div class="grab"></div><div class="in"><div class="hd">${back?`<button class="back" data-act="${back.act}" data-id="${back.id||''}">‹ ${esc(back.label)}</button>`:`<span></span>`}<button class="x" data-act="close" aria-label="Close">✕</button></div>${title?`<h3 id="sheetTitle" tabindex="-1">${title}</h3>`:''}`;
 }
 function renderSheet(){
-  const s=ui.sheet;if(!s)return;const el=$('#sheet');
+  hintShown=false;const s=ui.sheet;if(!s)return;const el=$('#sheet');
   if(s.type==='add')return sheetAdd(el);
   if(s.type==='intro')return sheetIntro(el);
   if(s.type==='me')return sheetMe(el);
@@ -1130,7 +1138,7 @@ function renderSheet(){
   sheetPerson(el,f);
 }
 function sheetOrbit(el){
-  const list=filtered();const size=Math.max(260,Math.min(window.innerWidth-40,640));
+  const list=filtered();const size=Math.max(240,Math.min((el.clientWidth||window.innerWidth)-48,640));
   el.innerHTML=sheetHead('Your orbit')+`${filterChips()}
   <div class="orbitbox full" style="margin-top:var(--s3)">${orbitSVG(list,size,{labels:true,ringLabels:true,names:true})}${orbitLegend()}</div>
   <div class="olist">${tiersTop().map(t=>{const g=list.filter(f=>f.tier===t.key).sort((a,b)=>a.name.localeCompare(b.name));return g.length?`<div><h4>${esc(t.name)} · ${g.length}</h4><div class="chips">${g.map(f=>`<button class="chip" data-act="open" data-id="${f.id}"><i class="gdot" style="background:${colorOf(f)}"></i>${esc(f.name)}</button>`).join('')}</div></div>`:''}).join('')||'<p class="muted">No one matches.</p>'}</div></div>`;
@@ -1143,15 +1151,17 @@ function sheetAdd(el){
   <div id="nMany" hidden><label class="f" for="nNames">Names</label><textarea id="nNames" placeholder="One per line, or separated by commas" style="min-height:120px"></textarea>
   <p class="note">Everyone here gets the same tier, place and groups. You can change anyone later.</p></div>
   <label class="f">Where are they on the ladder?</label>
-  <div class="tierpick" role="radiogroup" aria-label="Tier">${tiersTop().map(t=>`<label><input type="radio" name="nTier" value="${t.key}" ${t.key==='friend'?'checked':''}><div><b>${esc(t.name)}</b><span>${esc(t.summary||'')} Big news: ${esc(t.test||'')}</span></div></label>`).join('')}</div>
+  <div class="tierpick" role="radiogroup" aria-label="Tier">${tiersTop().map(t=>`<label><input type="radio" name="nTier" value="${t.key}" ${t.key==='friend'?'checked':''}><div><b>${esc(t.name)}</b><span>${esc(t.summary||'')}</span><span class="bn">Big news: ${esc(t.test||'')}</span></div></label>`).join('')}</div>
+  <button type="button" class="linkbtn" data-act="bnTog">Show the big-news test for each</button>
   <p class="note">Not sure? Place them by what’s happening now, not what you hope. You can reflect on it later.</p>
   <label class="f">Where they live</label><div class="seg" id="nDist" role="group" aria-label="Where they live">${[['near','Nearby'],['far','Long-distance'],['','Not set']].map(([v,l])=>`<button type="button" data-v="${v}" class="${v===''?'on':''}" aria-pressed="${v===''}">${l}</button>`).join('')}</div>
   <label class="f">Groups (optional)</label>
-  <div class="chips wrap" id="nGroups" role="group" aria-label="Groups">${gs.map(g=>`<button type="button" class="chip" data-g="${g.id}" aria-pressed="false"><i class="gdot" style="background:${g.color}"></i>${esc(g.name)}</button>`).join('')}</div>
+  <div class="chips wrap" id="nGroups" role="group" aria-label="Groups">${gs.filter(g=>!g.builtin).map(g=>`<button type="button" class="chip" data-g="${g.id}" aria-pressed="false"><i class="gdot" style="background:${g.color}"></i>${esc(g.name)}</button>`).join('')}</div>
   <div class="addrow" style="margin-top:var(--s2)"><input type="text" id="nNewGroup" placeholder="New group, e.g. Denver crew" aria-label="New group name"><button type="button" class="btn" id="nAddGroup">Add group</button></div>
   <div id="nOneLast"><label class="f" for="nLast">Last time you were in touch (optional)</label><input type="date" id="nLast" max="${todayISO()}">
   <label class="f">Who reached out that time?</label><div class="seg" id="nWho" role="group">${['me','them','mutual'].map((w,i)=>`<button type="button" data-w="${w}" class="${i===0?'on':''}" aria-pressed="${i===0}">${WHO[w]}</button>`).join('')}</div>
   <p class="note">Skip it if you don’t remember. Reminders count from today until you log something.</p></div>
+  <div id="nDup" class="dupnote" role="alert" hidden></div>
   <div class="acts" style="margin-top:var(--s5)"><button class="btn primary block" type="submit" id="nSubmit">Add to my orbit</button></div></form></div>`;
   const segPick=(id,attr)=>{$(id).onclick=e=>{const b=e.target.closest('button');if(!b)return;$(id).querySelectorAll('button').forEach(x=>{x.classList.toggle('on',x===b);x.setAttribute('aria-pressed',x===b)});if(id==='#nMode'){const many=b.dataset.m==='many';$('#nOne').hidden=many;$('#nOneLast').hidden=many;$('#nMany').hidden=!many;(many?$('#nNames'):$('#nName')).focus()}}};
   segPick('#nWho');segPick('#nDist');segPick('#nMode');
@@ -1164,73 +1174,77 @@ function sheetAdd(el){
     const many=!$('#nMany').hidden;
     const names=many?$('#nNames').value.split(/[\n,]+/).map(x=>x.trim()).filter(Boolean):[$('#nName').value.trim()].filter(Boolean);
     if(!names.length){(many?$('#nNames'):$('#nName')).focus();return}
+    const key=n=>n.trim().toLowerCase();const seen=new Set();const dups=[];
+    names.forEach(n=>{if(S.friends.some(f=>key(f.name)===key(n))||seen.has(key(n)))dups.push(n);seen.add(key(n))});
+    const sig=names.join('|');const dn=$('#nDup');
+    if(dups.length&&dn.dataset.ok!==sig){dn.dataset.ok=sig;dn.hidden=false;dn.innerHTML=`<b>Already in your orbit${dups.length>1?' or listed twice':''}:</b> ${esc([...new Set(dups)].join(', '))}. Tap Add again to add anyway, or take them off the list.`;dn.focus&&dn.scrollIntoView({block:'nearest'});return}
     const tier=(document.querySelector('input[name=nTier]:checked')||{}).value||'friend';
     const distance=($('#nDist .on')||{dataset:{v:''}}).dataset.v||'';
-    const groups=[...$('#nGroups').querySelectorAll('[aria-pressed=true]')].map(b=>b.dataset.g);
-    const made=names.map(name=>{const f={id:rid(),name,tier,created:todayISO(),contacts:[],tierHistory:[],notes:'',met:'',best:'',bestContext:'',birthday:'',cadence:null,tempered:false,soulmate:false,dormant:false,distance,groups:groups.slice(),expectations:[]};
+    const groups=(distance?[distance]:[]).concat([...$('#nGroups').querySelectorAll('[aria-pressed=true]')].map(b=>b.dataset.g));
+    const made=names.map(name=>{const f={id:rid(),name,tier,created:todayISO(),contacts:[],tierHistory:[],notes:'',met:'',best:'',bestContext:'',birthday:'',cadence:null,tempered:false,soulmate:false,dormant:false,groups:groups.slice(),expectations:[]};
       if(!many){const last=$('#nLast').value;if(last)f.contacts.push({id:rid(),date:last,who:$('#nWho .on').dataset.w,mode:'Other',note:''})}
       saveFriend(f);return f});
     if(made.length===1){ui.sheet={type:'person',id:made[0].id,justAdded:true};renderSheet();$('#sheet').scrollTop=0;render();toast(`Added ${esc(made[0].name)}`)}
     else{closeSheet();if(ui.view!=='people')location.hash='people';else render();toast(`Added ${made.length} people`)}};
 }
 function sheetPerson(el,f){
+  hintShown=false;
   const t=tierOf(f),d=dueInfo(f),b=balance(f);
   const s=ui.sheet;const sel=s.mode||lastMode(f);
-  const rn=realityNotes(f);
+  const rn=realityNotes(f);const ci=cadenceInfo(f);
   const hist=[...(f.contacts||[]).map(c=>({k:'c',date:c.date,c})),...(f.tierHistory||[]).map(m=>({k:'t',date:m.date,m}))].sort((a,b)=>b.date.localeCompare(a.date));
   const showAll=s.allHist;const H=showAll?hist:hist.slice(0,6);
+  const fair=lines(t.expect),ny=lines(t.notyet);
+  const enough=(f.contacts||[]).length>=3;
   el.innerHTML=sheetHead('')+`
   <div class="ident">${avatarHTML(f,1)}<div style="flex:1;min-width:0"><h3 id="sheetTitle" tabindex="-1">${esc(f.name)}</h3>
-    <button class="tierbtn" data-act="edit" data-id="${f.id}" aria-label="${esc(t.name)}. Change placement">${esc(t.name)} ›</button>${tagsHTML(f)}</div>
-    ${S.settings.orbitView==='sheet'?`<div style="flex:none">${miniOrbit(f)}</div>`:''}</div>
-  ${s.justAdded?hint('after-add','Expectations come with the tier',`Every tier lists what’s fair to expect, and what isn’t yet. They’re below, under Expectations. If ${esc(f.name)} ever lets you down, start with <b>Reflect on this friendship</b>.`):''}
+    <button class="tierbtn" data-act="edit" data-id="${f.id}" aria-label="${esc(t.name)}. Change tier">${esc(t.name)} ›</button>${tagsHTML(f)}</div></div>
   <dl class="facts">
     <dt>Last contact</dt><dd>${lastLine(f)}</dd>
-    <dt>Next nudge</dt><dd>${nextLine(f)}${d.state!=='off'&&d.state!=='snoozed'?` <span class="muted small">· every ${d.cad} days (${esc(cadenceInfo(f).src)})</span>`:''}</dd>
-    <dt>Balance</dt><dd>${balanceWords(b)}${b.mutual?` <span class="muted small">· ${b.mutual} mutual</span>`:''}</dd>
-    ${replyWords(f)?`<dt>Replies</dt><dd>${replyWords(f)}</dd>`:''}
-    ${waitingOf(f).length?`<dt>Waiting</dt><dd>${waitLine(f)}<div class="acts" style="margin-top:4px"><button class="btn" data-act="replied" data-id="${f.id}">They replied</button><button class="btn quiet" data-act="noreply" data-id="${f.id}">No reply</button></div></dd>`:''}
+    <dt>Next reminder</dt><dd>${nextLine(f)}${d.state!=='off'&&d.state!=='snoozed'?` <span class="muted small">· every ${d.cad} days (${esc(ci.src)})</span>`:''}</dd>
+    ${waitingOf(f).length?`<dt>Waiting</dt><dd>${waitLine(f)}<div class="qacts"><button class="btn sm" data-act="replied" data-id="${f.id}">They replied</button><button class="btn sm quiet" data-act="noreply" data-id="${f.id}">No reply</button></div></dd>`:''}
   </dl>
-  ${aboutHTML(f)}
-  <div class="ps" id="logSec"><h4>Log contact</h4>
-    <div class="methods" role="group" aria-label="How">${QUICK_MODES.map(m=>`<button class="chip ${sel===m?'on':''}" data-act="mode" data-m="${m}" aria-pressed="${sel===m}">${mIcon(m)} ${m}</button>`).join('')}</div>
+  <div class="ps" id="logSec"><h4 class="sr">Log contact</h4>
+    <div class="logbtns"><button class="btn primary" data-act="logFull" data-who="me" data-id="${f.id}">I reached out</button><button class="btn them" data-act="logFull" data-who="them" data-id="${f.id}">They did</button></div>
+    <div class="methods" role="group" aria-label="How (optional)" style="margin-top:var(--s2)">${QUICK_MODES.map(m=>`<button class="chip ${sel===m?'on':''}" data-act="mode" data-m="${m}" aria-pressed="${sel===m}">${mIcon(m)} ${m}</button>`).join('')}</div>
     <details class="fold" ${s.detailsOpen?'open':''} id="logMore"><summary>Add a date or note</summary>
       <div style="display:grid;grid-template-columns:1fr;gap:0"><label class="f" for="logDate" style="margin-top:0">Date</label><input type="date" id="logDate" value="${s.logDate||todayISO()}" max="${todayISO()}">
       <label class="f" for="logNote">Note</label><input type="text" id="logNote" value="${esc(s.logNote||'')}" placeholder="What you talked about, anything to follow up on"></div>
       <div class="acts"><button class="btn" data-act="logFull" data-who="mutual" data-id="${f.id}">Log as mutual</button></div></details>
-    <div class="logbtns" style="margin-top:var(--s2)"><button class="btn primary" data-act="logFull" data-who="me" data-id="${f.id}">I reached out</button><button class="btn them" data-act="logFull" data-who="them" data-id="${f.id}">They did</button></div>
   </div>
+  ${s.justAdded?hint('after-add','Expectations come with the tier.',`Each tier lists what’s fair to expect. If ${esc(f.name)} ever lets you down, open Understand this friendship → Reflect.`):''}
+  ${aboutHTML(f)}
   <div class="ps"><h4>Expectations</h4>
     ${rn.length?`<div class="reality">${rn.map(x=>`<p>${esc(x)}</p>`).join('')}</div>`:''}
-    <div class="exp"><h4>Fair to expect from a ${esc(t.name)}</h4><ul>${lines(t.expect).map(x=>`<li>${esc(x)}</li>`).join('')}</ul>
-    <h4>Not fair to expect yet</h4><ul>${notyetHTML(t)}</ul></div>
+    <div id="exList">${expectList(f).map(e=>exItem(f,e)).join('')||`<p class="note" style="margin-top:0">What do you expect from ${esc(f.name)}? Write it down, then check it’s reasonable, said out loud, and agreed on.</p>`}</div>
+    <form class="addrow" id="exAdd"><input type="text" placeholder="e.g. Text back within a couple of days" aria-label="Add something you expect from ${esc(f.name)}"><button class="btn" type="submit">Add</button></form>
+    <details class="fold"><summary>Fair for a ${esc(t.name)}: ${fair.length} things${ny.length?` · not yet: ${ny.length}`:''}</summary><div class="exp"><h4>Fair to expect</h4><ul>${fair.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><h4>Not fair to expect yet</h4><ul>${notyetHTML(t)}</ul></div></details>
     ${neverHTML()}
-    <label class="f" id="exLabel">What I expect from ${esc(f.name)}</label>
-    <p class="note" style="margin-top:0">Check each one: is it reasonable for where they are, have you said it out loud, and have they agreed to it?</p>
-    <div id="exList">${expectList(f).map(e=>exItem(f,e)).join('')}</div>
-    <form class="addrow" id="exAdd"><input type="text" placeholder="e.g. Text back within a couple of days" aria-labelledby="exLabel"><button class="btn" type="submit">Add</button></form>
     <label class="f" for="fNeeds">What they’ve told me they need</label><textarea id="fNeeds" placeholder="e.g. text before calling, don’t drop by unannounced">${esc(f.needs||'')}</textarea>
-    <div class="acts" style="margin-top:var(--s3)"><button class="btn primary" data-act="reflect" data-id="${f.id}">Reflect on this friendship</button><button class="btn" data-act="repair" data-id="${f.id}">Work through something</button></div>
-    ${f.lastCheck?`<p class="note">Last reflected ${fmtDate(f.lastCheck.date)}.</p>`:''}
   </div>
-  ${plansHTML(f)}
-  ${strengthHTML(f)}
-  <div class="ps"><h4>Remember</h4>
+  <details class="fold ps-fold" ${(f.notes||openFollowups(f).length||(f.gifts||[]).some(x=>!x.done))?'':''}><summary><h4>Remember</h4><span class="muted small">${[openFollowups(f).length?openFollowups(f).length+' to ask about':'',(f.gifts||[]).filter(x=>!x.done).length?(f.gifts||[]).filter(x=>!x.done).length+' gift ideas':'',f.notes?'notes':''].filter(Boolean).join(' · ')||'Ask about, gift ideas, notes'}</span></summary>
     ${listBlock(f,'followups','Ask about next time','e.g. how the job interview went')}
     ${listBlock(f,'gifts','Gift ideas','e.g. the book they mentioned')}
     <label class="f" for="fNotes">Notes</label><textarea id="fNotes" placeholder="Their people (partner, kids, pets), what they care about, what helps when they’re down">${esc(f.notes||'')}</textarea>
     ${S.settings.fields.map(fd=>`<label class="f" for="cf_${fd.id}">${esc(fd.name)}</label><input type="text" id="cf_${fd.id}" data-cf="${fd.id}" value="${esc((f.custom||{})[fd.id]||'')}">`).join('')}
     ${f.birthday||f.met?`<p class="note">${f.birthday?'Birthday '+fmtDate(f.birthday).replace(/, \d{4}$/,''):''}${f.birthday&&f.met?' · ':''}${f.met?'Met: '+esc(f.met):''}</p>`:''}
-  </div>
+  </details>
+  <details class="fold ps-fold" ${(f.plans||[]).some(p=>p.status!=='resolved')?'open':''}><summary><h4>Understand this friendship</h4><span class="muted small">Reflect, work through something${enough?', strength and fit':''}</span></summary>
+    <div class="acts" style="margin-top:var(--s2)"><button class="btn" data-act="reflect" data-id="${f.id}">Reflect on this friendship</button><button class="btn" data-act="repair" data-id="${f.id}">Work through something</button></div>
+    <p class="note">Reflect checks an expectation against what’s really happening. Work through something builds a plan for a hard conversation.${f.lastCheck?` Last reflected ${fmtDate(f.lastCheck.date)}.`:''}</p>
+    ${plansHTML(f)}
+    ${enough?strengthHTML(f):`<p class="note">Strength and fit shows up after a few logged contacts.</p>`}
+    <dl class="facts"><dt>Balance</dt><dd>${balanceWords(b)}${b.mutual?` <span class="muted small">· ${b.mutual} mutual</span>`:''}</dd>${replyWords(f)?`<dt>Replies</dt><dd>${replyWords(f)}</dd>`:''}</dl>
+  </details>
   <div class="ps"><h4>History <span class="muted small" style="font-family:var(--sans);font-weight:400">${(f.contacts||[]).length} contacts</span></h4>
     ${H.length?`<ul class="rows">${H.map(x=>x.k==='c'?`<li class="r" style="align-items:center"><span class="who ${x.c.who}">${WHO[x.c.who]}</span><button class="main hbtn" data-act="checkin" data-id="${f.id}" data-c="${x.c.id}" aria-label="Edit ${esc(x.c.mode)} on ${fmtDate(x.c.date)}"><div>${mIcon(x.c.mode)} ${esc(x.c.mode)} · ${fmtDate(x.c.date)}</div>${extrasText(x.c)?`<div class="meta">${esc(extrasText(x.c))}</div>`:''}${x.c.note?`<div class="meta">${esc(x.c.note)}</div>`:''}</button><button class="x" data-act="delContact" data-id="${f.id}" data-c="${x.c.id}" aria-label="Delete ${esc(x.c.mode)} on ${fmtDate(x.c.date)}">✕</button></li>`
       :`<li class="r"><span class="who mutual">Moved</span><div class="main">${esc(tierOf({tier:x.m.from}).name)} → ${esc(tierOf({tier:x.m.to}).name)} · ${fmtDate(x.m.date)}</div></li>`).join('')}</ul>`:'<p class="muted">Nothing logged yet.</p>'}
     ${hist.length>6&&!showAll?`<button class="btn quiet" data-act="allHist">Show all ${hist.length}</button>`:''}
     ${H.length?'<p class="note">Tap an entry to add how it went, a reply, or a note.</p>':''}
   </div>
-  <div class="acts" style="margin:var(--s5) 0 var(--s2)"><button class="btn block" data-act="edit" data-id="${f.id}">Edit relationship</button></div>
-  <p class="note" style="text-align:center">Placement, markers, timing, birthday and other details</p></div>`;
+  <div class="acts" style="margin:var(--s5) 0 var(--s2)"><button class="btn block" data-act="edit" data-id="${f.id}">Edit tier, timing and details</button></div></div>`;
   bindPerson(el,f);
+  const af=el.querySelector('#aboutFold');if(af)af.ontoggle=()=>{ui.sheet.aboutOpen=af.open};
 }
 function listBlock(f,k,title,ph){
   const items=f[k]||[];const open=items.filter(x=>!x.done),done=items.filter(x=>x.done).slice(-5).reverse();
@@ -1254,25 +1268,23 @@ function sheetEdit(el,f){
   const t=tierOf(f);
   el.innerHTML=sheetHead('Edit '+esc(f.name),{act:'open',id:f.id,label:f.name})+`
   <div class="ps"><h4>Place on the ladder</h4>
-    <div class="tierpick" role="radiogroup" aria-label="Tier">${tiersTop().map(x=>`<label><input type="radio" name="eTier" value="${x.key}" ${x.key===f.tier?'checked':''}><div><b>${esc(x.name)}</b><span>${esc(x.summary||'')} Big news: ${esc(x.test||'')}</span></div></label>`).join('')}</div>
+    <div class="tierpick" role="radiogroup" aria-label="Tier">${tiersTop().map(x=>`<label><input type="radio" name="eTier" value="${x.key}" ${x.key===f.tier?'checked':''}><div><b>${esc(x.name)}</b><span>${esc(x.summary||'')}</span><span class="bn">Big news: ${esc(x.test||'')}</span></div></label>`).join('')}</div>
+    <button type="button" class="linkbtn" data-act="bnTog">Show the big-news test for each</button>
     <label class="f">Best friend</label>
     <div class="seg" role="group" aria-label="Best friend">${[['','No'],['temporal','Of a season'],['overarching','Overarching']].map(([v,l])=>`<button data-act="best" data-id="${f.id}" data-v="${v}" class="${(f.best||'')===v?'on':''}" aria-pressed="${(f.best||'')===v}">${l}</button>`).join('')}</div>
     ${f.best==='temporal'?`<input type="text" id="fBestCtx" style="margin-top:var(--s2)" placeholder="Which season or setting? e.g. college, the café" value="${esc(f.bestContext||'')}" aria-label="Season or setting">`:''}
-    <p class="note">Markers (Tempered, Soulmate, Dormant), groups and near or far are on ${esc(f.name)}’s page under About.</p>
+    <p class="note">Where they live, groups and tags (Tempered, Soulmate, Dormant) are on ${esc(f.name)}’s page under About.</p>
   </div>
-  <div class="ps"><h4>Timing</h4><p class="note" style="margin-top:0">Blank uses the default, shown in grey. Change defaults in More → Reminders.</p>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 var(--s3)">
-     <div><label class="f" for="fCad">Nudge every … days</label><input type="number" min="0" inputmode="numeric" id="fCad" value="${f.cadence??''}" placeholder="${t.cadence||0} (${esc(t.name)})"></div>
-     <div><label class="f" for="pt_soonDays">Heads-up … days before</label><input type="number" min="0" inputmode="numeric" id="pt_soonDays" data-pt="soonDays" value="${(f.timing||{}).soonDays??''}" placeholder="${T('soonDays')}"></div>
-     <div><label class="f" for="pt_bdayDays">Birthday heads-up (days)</label><input type="number" min="0" inputmode="numeric" id="pt_bdayDays" data-pt="bdayDays" value="${(f.timing||{}).bdayDays??''}" placeholder="${T('bdayDays')}"></div>
-     <div><label class="f" for="pt_quietDays">“Haven’t reached out” after</label><input type="number" min="1" inputmode="numeric" id="pt_quietDays" data-pt="quietDays" value="${(f.timing||{}).quietDays??''}" placeholder="${T('quietDays')} days"></div>
+  <div class="ps"><h4>Timing</h4><p class="note" style="margin-top:0">A time set here beats their groups and tier.</p>
+    <div>
+     <div><label class="f" for="fCad">Reminder every … days</label><input type="number" min="0" inputmode="numeric" id="fCad" value="${f.cadence??''}" placeholder="${cadenceInfo(Object.assign({},f,{cadence:null})).days||0} (${esc(cadenceInfo(Object.assign({},f,{cadence:null})).src)})"></div>
     </div>
-    <p class="note">Nudge 0 = no reminders for this person.</p>
+    <p class="note">Blank uses their groups or tier. 0 = no reminders for this person.</p>
     <label class="f" for="fSnooze">Snooze until</label>
     <div class="addrow" style="margin-top:0"><input type="date" id="fSnooze" min="${todayISO()}" value="${esc(f.snooze||'')}">${f.snooze?`<button class="btn" data-act="unsnooze" data-id="${f.id}">Clear</button>`:''}</div>
     <div class="acts">${[7,14,30].map(n=>`<button class="btn" data-act="snooze" data-id="${f.id}" data-n="${n}">${n} days</button>`).join('')}</div>
     <label class="tg" style="margin-top:var(--s2)"><div><b>Expectation notes</b><span>The notes at the top of Expectations</span></div><input type="checkbox" class="sw" id="fChecks" ${f.noChecks?'':'checked'}></label>
-    <div class="acts">${IN_CLAUDE?'':`<button class="btn" data-act="ics" data-id="${f.id}">Add next nudge to my calendar</button>`}${(f.cadence!=null&&f.cadence!=='')||Object.keys(f.timing||{}).length?`<button class="btn quiet" data-act="resetPT" data-id="${f.id}">Use all defaults</button>`:''}</div>
+    <div class="acts">${IN_CLAUDE?'':`<button class="btn" data-act="ics" data-id="${f.id}">Add next reminder to my calendar</button>`}${(f.cadence!=null&&f.cadence!=='')||Object.keys(f.timing||{}).length?`<button class="btn quiet" data-act="resetPT" data-id="${f.id}">Use all defaults</button>`:''}</div>
   </div>
   <div class="ps"><h4>Details</h4>
     <label class="f" for="fName" style="margin-top:0">Name</label><input type="text" id="fName" value="${esc(f.name)}">
@@ -1592,30 +1604,28 @@ function wrapT(t,x,yc,max){const w=t.split(' ');const L=[];let c='';w.forEach(x2
 function sheetIntro(el){
   const s=ui.sheet;s.step=s.step||0;
   const P=[
-   {h:'Welcome to your orbit',b:`<p>Orbit is a quiet place to keep track of the people in your life: how close you are, who reached out last, and what’s fair to expect.</p>${guideOrbit()}<p class="muted" style="margin-top:var(--s3)">Five rings, from Acquaintance on the outside to Homie closest to you. Closer means closer, not more important.</p>`},
-   {h:'Four ways to describe a friendship',b:`<p>Every tier on the ladder is described the same four ways, so it’s easier to tell them apart:</p><dl class="dims" style="margin:var(--s3) 0">${DIMS.map(([k,l,d])=>`<dt>${l}</dt><dd>${d.charAt(0).toUpperCase()+d.slice(1)}</dd>`).join('')}</dl><p>Each step up the ladder adds one thing: <b>chosen</b>, then <b>planned</b>, then <b>go-to</b>, then <b>family</b>.</p><p>Each tier also has a <b>big-news test</b>: if something big happened to you, good or bad, what would happen with this person?</p>`},
-   {h:'The ladder',b:`<p class="muted">From closest to least close. Place people by what’s happening now, not what you hope. You can move anyone, any time.</p>${tiersTop().map(t=>`<div class="rung"><h3>${esc(t.name)}</h3>${tierDef(t)}${t.test?`<div class="test"><b>Big-news test:</b> ${esc(t.test)}</div>`:''}</div>`).join('')}`},
-   {h:'Two buttons, one habit',b:`<div class="logbtns" aria-hidden="true"><span class="btn primary">I reached out</span><span class="btn them">They did</span></div><p style="margin-top:var(--s4)">After any text, call or hangout, tap one. That’s the whole habit.</p><p>Who starts matters. It’s how Orbit notices when one person is carrying a friendship, and it’s what the gentle reminders are built on.</p>`},
-   {h:'Expectations, kindly',b:`<p>Every tier says what’s fair to expect and what isn’t yet. When someone lets you down, <b>Reflect on this friendship</b> helps you check the expectation against what’s really happening.</p>${toneBlock(1)}<p class="note">You can change this any time in More.</p>`}
+   {h:'Welcome to your orbit',b:`<p>Orbit keeps track of the people in your life: how close you are, who reached out last, and what’s fair to expect.</p>${guideOrbit()}<p class="muted" style="margin-top:var(--s3)">Five rings, from Acquaintance on the outside to Homie closest to you. Closer means closer, not more important. Each step in adds one thing: <b>chosen</b>, <b>planned</b>, <b>go-to</b>, <b>family</b>. The Guide explains each one.</p>`},
+   {h:'Two buttons, one habit',b:`<div class="logbtns" aria-hidden="true"><span class="btn primary">I reached out</span><span class="btn them">They did</span></div><p style="margin-top:var(--s4)">After any text, call or hangout, tap one. That’s the whole habit. Who starts matters: it’s how Orbit notices when one person is carrying a friendship.</p><p>Today shows a few people at a time, never a backlog.</p>`},
+   {h:'Expectations, kindly',b:`<p>Every tier says what’s fair to expect and what isn’t yet. Write down what you expect from someone and check it: reasonable, said out loud, agreed on.</p>${toneBlock(1)}`}
   ];
-  const p=P[s.step];
+  const p=P[s.step];const last=s.step===P.length-1;
   el.innerHTML=sheetHead('')+`<div class="steps" aria-hidden="true">${P.map((_,i)=>`<i class="${i<=s.step?'on':''}"></i>`).join('')}</div><div class="intro"><h3 id="sheetTitle" tabindex="-1">${p.h}</h3>${p.b}</div>
-  <div class="acts" style="margin-top:var(--s5)">${s.step>0?`<button class="btn quiet" data-act="iBack">Back</button>`:`<button class="btn quiet" data-act="iDone">Skip</button>`}<button class="btn primary" data-act="${s.step<P.length-1?'iNext':'iDone'}" style="flex:1">${s.step<P.length-1?'Next':(S.friends.length?'Done':'Add your first person')}</button></div></div>`;
+  <div class="acts" style="margin-top:var(--s5)">${s.step>0?`<button class="btn quiet" data-act="iBack">Back</button>`:`<button class="btn quiet" data-act="iDone">Skip</button>`}${last?`<button class="btn" data-act="iDone">Not now</button><button class="btn primary" data-act="iDone" data-tour="1" style="flex:1">Take the 1-minute tour</button>`:`<button class="btn primary" data-act="iNext" style="flex:1">Next</button>`}</div></div>`;
 }
-
 /* ---------- render ---------- */
+function flash(x){if(!x)return;x.classList.add('saved');setTimeout(()=>x.classList.remove('saved'),1400)}
 function render(){
   applyTheme();
-  const v={reach:vReach,people:vPeople,log:vLog,guide:vGuide,more:vMore}[ui.view]||vReach;
+  hintShown=false;
+  const v={reach:vReach,people:vPeople,guide:vGuide,more:vMore}[ui.view]||vReach;
   $('#view').innerHTML=(window.TOUR_DEMO?'<div class="demo-banner">Sample people for the tour. Your own orbit comes back when it ends.</div>':'')+v();renderTabs();
-  const q=$('#q');if(q)q.oninput=()=>{ui.q=q.value;const pos=q.selectionStart;render();const n=$('#q');n.focus();try{n.setSelectionRange(pos,pos)}catch(e){}};
-  const ov=$('#ov');if(ov)ov.onchange=()=>{S.settings.orbitView=ov.value;saveSettings();render();toast('Orbit view: '+esc((ORBIT_VIEWS.find(o=>o[0]===ov.value)||[])[1]||''))};
-  document.querySelectorAll('[data-timing]').forEach(x=>x.onchange=()=>{S.settings.timing[x.dataset.timing]=Math.max(0,parseInt(x.value,10)||0);saveSettings();toast('Saved')});
+  const q=$('#q');if(q)q.oninput=()=>{ui.q=q.value;const L=filtered();$('#plist').innerHTML=peopleList(L);const ob=$('#orbitBox');if(ob)ob.innerHTML=smallOrbit(L)};
+  document.querySelectorAll('[data-timing]').forEach(x=>x.onchange=()=>{S.settings.timing[x.dataset.timing]=Math.max(0,parseInt(x.value,10)||0);saveSettings();flash(x)});
+  const dc=$('#dailyCap');if(dc)dc.onchange=()=>{S.settings.dailyCap=Math.max(1,parseInt(dc.value,10)||5);saveSettings();flash(dc);renderTabs()};
   const rf=$('#restoreFile');if(rf)rf.onchange=()=>{const fl=rf.files[0];if(!fl)return;fl.text().then(t=>{$('#restore').value=t;toast('Backup loaded. Tap Merge in or Replace everything.')})};
-  document.querySelectorAll('[data-tier]').forEach(x=>x.onchange=()=>{const t=tiers().find(t=>t.key===x.dataset.tier);if(!t)return;const fld=x.dataset.field;t[fld]=fld==='cadence'?Math.max(0,parseInt(x.value,10)||0):x.value;saveSettings();toast('Saved')});
+  document.querySelectorAll('[data-tier]').forEach(x=>x.onchange=()=>{const t=tiers().find(t=>t.key===x.dataset.tier);if(!t)return;const fld=x.dataset.field;t[fld]=fld==='cadence'?Math.max(0,parseInt(x.value,10)||0):x.value;saveSettings();flash(x)});
   document.querySelectorAll('#view [data-gf]').forEach(x=>x.onchange=()=>{const g=S.settings.groups.find(g=>g.id===x.dataset.g);if(!g)return;const k=x.dataset.gf;
-    if(k==='cadence')g.cadence=x.value===''?null:Math.max(0,parseInt(x.value,10)||0);else if(k==='off')g.off=x.checked;else if(k==='name'){if(x.value.trim())g.name=x.value.trim()}else g[k]=x.value;saveSettings();render();toast('Saved')});
-  document.querySelectorAll('#view [data-dist]').forEach(x=>x.onchange=()=>{S.settings.distance[x.dataset.dist]=x.value===''?null:Math.max(0,parseInt(x.value,10)||0);saveSettings();toast('Saved')});
+    if(k==='cadence')g.cadence=x.value===''?null:Math.max(0,parseInt(x.value,10)||0);else if(k==='off')g.off=x.checked;else if(k==='name'){if(x.value.trim())g.name=x.value.trim()}else g[k]=x.value;saveSettings();const id=x.id;render();flash($('#'+id));const d=$('#'+id)&&$('#'+id).closest('details');if(d)d.open=true});
   const cb=$('#colorBy');if(cb)cb.onchange=()=>{S.settings.colorBy=cb.value;saveSettings();render()};
   const ng=$('#newGroupForm');if(ng)ng.onsubmit=e=>{e.preventDefault();const v=$('#newGroup').value.trim();if(!v)return;addGroup(v,$('#newGroupKind').value);render();toast(`Added “${esc(v)}”`);const n=$('#newGroup');if(n)n.focus()};
 }
@@ -1647,8 +1657,10 @@ document.addEventListener('click',e=>{
   case 'tour':return Tour.start();
   case 'gColor':{const g=S.settings.groups.find(g=>g.id===a.dataset.g);if(g){g.color=a.dataset.v;saveSettings();render()}return}
   case 'gFilter':ui.filter='g:'+a.dataset.g;location.hash='people';return;
-  case 'delGroup':{const id=a.dataset.g;if(ui.arm!=='g'+id){ui.arm='g'+id;render();return}ui.arm=null;S.settings.groups=S.settings.groups.filter(g=>g.id!==id);saveSettings();S.friends.forEach(f=>{if((f.groups||[]).includes(id)){f.groups=f.groups.filter(x=>x!==id);saveFriend(f)}});if(ui.filter==='g:'+id)ui.filter='all';render();toast('Group deleted');return}
-  case 'dist':{const f=F();if(!f)return;f.distance=a.dataset.v;saveFriend(f);renderSheet();render();return}
+  case 'delGroup':{const id=a.dataset.g;const g=S.settings.groups.find(x=>x.id===id);if(!g||g.builtin)return;const gi=S.settings.groups.indexOf(g);const had=S.friends.filter(f=>(f.groups||[]).includes(id));S.settings.groups.splice(gi,1);saveSettings();had.forEach(f=>{f.groups=f.groups.filter(x=>x!==id);saveFriend(f)});if(ui.filter==='g:'+id)ui.filter='all';render();toast(`Deleted ${esc(g.name)}`,()=>{S.settings.groups.splice(gi,0,g);saveSettings();had.forEach(f=>{f.groups=(f.groups||[]).concat([id]);saveFriend(f)});render()});return}
+  case 'dist':{const f=F();if(!f)return;f.groups=(f.groups||[]).filter(x=>x!=='near'&&x!=='far');if(a.dataset.v)f.groups.unshift(a.dataset.v);saveFriend(f);renderSheet();render();return}
+  case 'homeOk':S.settings.homeNote=true;saveSettings();render();return;
+  case 'bnTog':{const on=!document.querySelector('#sheet .tierpick').classList.contains('showbn');document.querySelectorAll('#sheet .tierpick').forEach(x=>x.classList.toggle('showbn',on));a.textContent=on?'Hide the big-news test':'Show the big-news test for each';return}
   case 'grpTog':{const f=F();if(!f)return;const g=a.dataset.g;const L=f.groups||[];f.groups=L.includes(g)?L.filter(x=>x!==g):L.concat([g]);saveFriend(f);renderSheet();render();return}
   case 'mkTog':{const f=F();if(!f)return;const k=a.dataset.k;f[k]=!f[k];saveFriend(f);renderSheet();render();if(k==='dormant'&&f.dormant)toast(`${esc(f.name)} is Dormant. Reminders are paused.`);return}
   case 'fColor':{const f=F();if(!f)return;f.color=a.dataset.v||'';saveFriend(f);renderSheet();render();return}
@@ -1657,7 +1669,7 @@ document.addEventListener('click',e=>{
   case 'pmode':ui.peopleMode=a.dataset.m;return render();
   case 'pickNext':ui.pick++;return render();
   case 'tone':S.settings.tone=a.dataset.v;saveSettings();render();if(S_)renderSheet();return;
-  case 'avatars':S.settings.avatars=a.dataset.v;saveSettings();render();return;
+  case 'avatars':S.settings.avatars=a.dataset.v==='photos'?'photos':'initials';saveSettings();render();return;
   case 'quick':{const f=F();if(!f)return;addContact(f,{who:a.dataset.who});ui.pick=0;render();const r=document.getElementById('row-'+f.id);if(r)r.classList.add('flash');return}
   case 'mode':S_.mode=a.dataset.m;return renderSheet();
   case 'logFull':{const f=F();if(!f)return;const d=($('#logDate')||{}).value||todayISO();const note=(($('#logNote')||{}).value||'').trim();
@@ -1688,7 +1700,7 @@ document.addEventListener('click',e=>{
     if(pl.outcome==='repaired'&&!f.tempered&&tierIdx(f)>=2){const t=$('#toast');t.innerHTML=`<span>Glad it’s repaired. Working through hard things is what Tempered means. Mark ${esc(f.name)} as Tempered?</span><button class="tb" id="tTemp">Mark Tempered</button>`;t.classList.add('show');$('#tTemp').onclick=()=>{f.tempered=true;saveFriend(f);t.classList.remove('show');renderSheet();render()};clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),8000)}
     else toast('Noted. Thanks for doing the hard thing.');return}
   case 'planReopen':{const f=F();const pl=f&&(f.plans||[]).find(x=>x.id===a.dataset.p);if(!pl)return;pl.status='open';delete pl.outcome;saveFriend(f);renderSheet();render();return}
-  case 'planDelete':{const f=F();if(!f)return;const pid=a.dataset.p;if(ui.arm!=='plan'+pid){ui.arm='plan'+pid;renderSheet();return}ui.arm=null;f.plans=(f.plans||[]).filter(x=>x.id!==pid);saveFriend(f);ui.sheet={type:'person',id:f.id};renderSheet();render();return}
+  case 'planDelete':{const f=F();if(!f)return;const pid=a.dataset.p;const i=(f.plans||[]).findIndex(x=>x.id===pid);if(i<0)return;const [pl]=f.plans.splice(i,1);saveFriend(f);ui.sheet={type:'person',id:f.id};renderSheet();render();toast('Gameplan deleted',()=>{f.plans.splice(i,0,pl);saveFriend(f);renderSheet();render()});return}
   case 'allHist':S_.allHist=true;return renderSheet();
   case 'delContact':{const f=F();if(!f)return;const c=f.contacts.find(x=>x.id===a.dataset.c);f.contacts=f.contacts.filter(x=>x.id!==a.dataset.c);saveFriend(f);if(S_&&S_.type==='checkin')ui.sheet={type:'person',id:f.id};renderSheet();render();toast('Entry deleted',()=>{f.contacts.push(c);saveFriend(f);renderSheet();render()});return}
   case 'delItem':{const f=F();if(!f)return;const k=a.dataset.k;const it=(f[k]||[]).find(x=>x.id===a.dataset.i);f[k]=(f[k]||[]).filter(x=>x.id!==a.dataset.i);saveFriend(f);renderSheet();render();toast('Deleted',()=>{f[k].push(it);saveFriend(f);renderSheet();render()});return}
@@ -1709,19 +1721,28 @@ document.addEventListener('click',e=>{
     ui.sheet={type:'person',id:f.id};renderSheet();$('#sheet').scrollTop=0;render();return}
   case 'iNext':S_.step++;return renderSheet();
   case 'iBack':S_.step--;return renderSheet();
-  case 'iDone':S.settings.onboarded=true;saveSettings();closeSheet();if(!S.settings.toured)setTimeout(()=>Tour.start(),350);else if(!S.friends.length)openSheet({type:'add'});return;
+  case 'iDone':S.settings.onboarded=true;if(!a.dataset.tour)S.settings.toured=true;saveSettings();closeSheet();if(a.dataset.tour)setTimeout(()=>Tour.start(),350);else if(!S.friends.length)openSheet({type:'add'});return;
   case 'resetTiming':S.settings.timing=Object.assign({},DEFAULT_TIMING);saveSettings();render();toast('Timing reset');return;
   case 'resetTiers':if(ui.arm!=='reset'){ui.arm='reset';render();return}ui.arm=null;S.settings.tiers=JSON.parse(JSON.stringify(DEFAULT_TIERS));saveSettings();render();toast('Ladder reset');return;
   case 'addField':{const inp=$('#newField');const v=inp&&inp.value.trim();if(!v)return;S.settings.fields.push({id:rid(),name:v});saveSettings();render();toast(`Added “${esc(v)}” to every person`);return}
-  case 'delField':{const id=a.dataset.id;if(ui.arm!=='fld'+id){ui.arm='fld'+id;render();return}S.settings.fields=S.settings.fields.filter(x=>x.id!==id);ui.arm=null;saveSettings();render();return}
-  case 'fileBackup':try{localStorage.setItem('orbit.lastBackup',todayISO())}catch(e){}download('orbit-backup-'+todayISO()+'.json',JSON.stringify({app:'orbit',v:3,exported:todayISO(),...S},null,1),'application/json').then(ok=>ok&&toast('Backup file saved'));return;
-  case 'copyBackup':{const txt=JSON.stringify({app:'orbit',v:3,exported:todayISO(),...S});navigator.clipboard.writeText(txt).then(()=>toast('Backup copied. Paste it somewhere safe.'),()=>{$('#restore').value=txt;$('#restore').select();toast('Couldn’t copy automatically. It’s in the box below; copy it from there.')});return}
+  case 'delField':{const id=a.dataset.id;const i=S.settings.fields.findIndex(x=>x.id===id);if(i<0)return;const [fd]=S.settings.fields.splice(i,1);saveSettings();render();toast(`Removed “${esc(fd.name)}”`,()=>{S.settings.fields.splice(i,0,fd);saveSettings();render()});return}
+  case 'fileBackup':try{localStorage.setItem('orbit.lastBackup',todayISO())}catch(e){}download('orbit-backup-'+todayISO()+'.json',JSON.stringify({app:'orbit',v:5,exported:todayISO(),...S},null,1),'application/json').then(ok=>ok&&toast('Backup file saved'));return;
+  case 'copyBackup':{const txt=JSON.stringify({app:'orbit',v:5,exported:todayISO(),...S});navigator.clipboard.writeText(txt).then(()=>toast('Backup copied. Paste it somewhere safe.'),()=>{$('#restore').value=txt;$('#restore').select();toast('Couldn’t copy automatically. It’s in the box below; copy it from there.')});return}
   case 'restore':{let p;try{p=JSON.parse($('#restore').value)}catch(err){toast('That doesn’t look like an Orbit backup.');return}
     if(!p||!Array.isArray(p.friends)){toast('That doesn’t look like an Orbit backup.');return}
     if(a.dataset.mode==='replace'){if(ui.arm!=='replace'){ui.arm='replace';render();return}S.friends.forEach(f=>writeDoc('f_'+f.id,null));S.friends=[];ui.arm=null}
-    p.friends.forEach(f=>{const ex=friend(f.id);if(ex){const ids=new Set((ex.contacts||[]).map(c=>c.id));(f.contacts||[]).forEach(c=>{if(!ids.has(c.id))ex.contacts.push(c)});saveFriend(ex)}else saveFriend(f)});
-    if(p.settings){S.settings=normalizeSettings(p.settings);saveSettings()}
-    toast(`Restored ${p.friends.length} people`);render();return}
+    const merge=a.dataset.mode!=='replace';let n=0;
+    p.friends.forEach(f0=>{const f=normalizeFriend(clone(f0));const ex=friend(f.id);n++;
+      if(!ex){saveFriend(f);return}
+      const theirs=(f.updated||0)>(ex.updated||0);const base=theirs?Object.assign({},ex,f):Object.assign({},f,ex);
+      ['contacts','expectations','followups','gifts','plans','tierHistory'].forEach(k=>{const m=new Map();(ex[k]||[]).concat(f[k]||[]).forEach(x=>{if(!x)return;const key=x.id||JSON.stringify(x);const prev=m.get(key);m.set(key,!prev?x:(theirs&&(f[k]||[]).includes(x)?x:prev))});base[k]=[...m.values()]});
+      base.groups=[...new Set((ex.groups||[]).concat(f.groups||[]))];
+      const keep=base.updated;Object.keys(ex).forEach(k=>delete ex[k]);Object.assign(ex,base);saveFriend(ex);if(!theirs)ex.updated=keep});
+    if(p.settings){const ps=normalizeSettings(p.settings);
+      if(merge){ps.groups.forEach(g=>{if(!S.settings.groups.some(x=>x.id===g.id))S.settings.groups.push(g)})}
+      else S.settings=ps;
+      saveSettings()}
+    toast(merge?`Merged ${n} people. Newer edits were kept on both sides.`:`Restored ${n} people`);render();return}
   }
 });
 document.addEventListener('keydown',e=>{
@@ -1741,33 +1762,29 @@ let rT;window.addEventListener('resize',()=>{clearTimeout(rT);rT=setTimeout(()=>
 /* ---------- tour (Ironwood-style spotlight walkthrough) ---------- */
 const Tour=(()=>{
   const STEPS=[
-    [null,'A quick look around','About a minute. Everything you’ll see is made-up sample people; your own orbit comes back when the tour ends.'],
-    ['.feature','Who could use a hello','Reach out shows one person at a time, the one who’s been waiting longest. Someone else skips to the next.',{view:'reach'}],
-    ['.feature .acts','Two buttons, one habit','After any contact, tap I reached out or They did. Who starts matters: it’s how Orbit notices one-sided friendships.',{view:'reach'}],
-    ['#orbitBox','Your orbit, with names','Closer rings are closer friendships. Colors follow the ladder (or groups, if you’d rather). Names turns labels on or off; Bigger orbit opens a full-size view.',{view:'people'}],
-    ['#pfilters','Groups, places and seasons','Filter the list and the orbit by a friend group, a city, a season of life, or nearby versus long-distance.',{view:'people'}],
-    ['#aboutSec','Everything about a person','Where they live, their groups, and markers like Dormant are right on their page. No digging.',{view:'people',sheet:'d1'}],
-    ['#exList','Expectations, checked','Write down what you expect, then check it: reasonable for their tier, clearly said, and agreed on. All three means you’re on solid ground.',{view:'people',sheet:'d1'}],
-    ['.rung','The ladder','The Guide explains every tier the same four ways, with a big-news test and what’s fair to expect.',{view:'guide'}],
-    ['#moreGroups','Timing by group','Give a whole group its own reminder timing, or none at all. Long-distance friends can run on a slower clock than people nearby.',{view:'more'}],
-    ['#moreLook','Make it yours','Light or dark, what colors mean, and how Orbit words its notes.',{view:'more'}],
-    [null,'That’s Orbit','Start small: add a few people, or a whole group at once with Several at once. You can retake this tour any time from More.']
+    [null,'A quick look around','About a minute, with made-up sample people. Your own orbit comes back when the tour ends.'],
+    ['.feature','Who could use a hello','Today shows a few people at a time. After any contact, tap I reached out or They did. Someone else skips to the next.',{view:'reach'}],
+    ['#orbitBox','Your orbit','Closer rings are closer friendships. Tap Bigger orbit for every name, and use the chips at the top to show one group, place or tier.',{view:'people'}],
+    ['#aboutSec','About a person','Where they live, their groups and tags like Dormant sit near the top of their page.',{view:'people',sheet:'d1'}],
+    ['#exList','Expectations, checked','Write down what you expect, then check it: reasonable for their tier, clearly said, and agreed on.',{view:'people',sheet:'d1'}],
+    ['#moreGroups','Timing by group','Give a group its own reminder timing, or none. Long-distance friends can run on a slower clock than people nearby.',{view:'more'}],
+    [null,'That’s Orbit','Start small: add a few people, or paste a whole group with Several at once. The tour is in Settings any time.']
   ];
-  const DG=[{id:'dg1',name:'Denver crew',kind:'place',color:'#A87836',cadence:30,off:false},{id:'dg2',name:'College',kind:'group',color:'#8973A7',cadence:null,off:false},{id:'dg3',name:'Camp ’23',kind:'season',color:'#7C9A6B',cadence:null,off:true}];
+  const DG=mergeBuiltins([{id:'far',name:'Long-distance',kind:'place',color:'#A05838',cadence:45,off:false},{id:'dg1',name:'Denver crew',kind:'place',color:'#806A1E',cadence:30,off:false},{id:'dg2',name:'College',kind:'group',color:'#7B5CA2',cadence:null,off:false},{id:'dg3',name:'Camp ’23',kind:'season',color:'#63702F',cadence:null,off:true}]);
   function demo(){
     const c=(d,who,mode)=>({id:rid(),date:addDays(todayISO(),-d),who,mode:mode||'Text',note:''});
     const P=(id,name,tier,o)=>Object.assign({id,name,tier,created:addDays(todayISO(),-200),contacts:[],tierHistory:[],notes:'',met:'',best:'',bestContext:'',birthday:'',cadence:null,tempered:false,soulmate:false,dormant:false,distance:'',groups:[],expectations:[]},o);
     return [
-      P('d1','Maya','homie',{best:'overarching',tempered:true,distance:'far',groups:['dg1'],contacts:[c(40,'me','Call'),c(55,'them')],expectations:[{id:'e1',text:'Call on my birthday',reasonable:true,said:true,agreed:true},{id:'e2',text:'Visit once a year',reasonable:true,said:true}]}),
-      P('d2','Jonah','good',{groups:['dg2'],distance:'near',contacts:[c(12,'them','In person')]}),
-      P('d3','Priya','good',{distance:'far',groups:['dg2'],contacts:[c(33,'me','Video')]}),
-      P('d4','Eli','friend',{distance:'near',contacts:[c(25,'me')]}),
-      P('d5','Sam','friend',{distance:'near',contacts:[c(4,'them')]}),
-      P('d6','Rosa','casual',{groups:['dg3'],distance:'far'}),
-      P('d7','Dev','friend',{dormant:true,distance:'far',groups:['dg2']}),
-      P('d8','Hana','casual',{distance:'near',contacts:[c(70,'mutual','In person')]}),
-      P('d9','Luis','acq',{distance:'near'}),
-      P('d10','Ava','friend',{distance:'far',groups:['dg1'],contacts:[c(50,'me','Call')]})
+      P('d1','Maya','homie',{best:'overarching',tempered:true,groups:['far','dg1'],contacts:[c(40,'me','Call'),c(55,'them')],expectations:[{id:'e1',text:'Call on my birthday',reasonable:true,said:true,agreed:true},{id:'e2',text:'Visit once a year',reasonable:true,said:true}]}),
+      P('d2','Jonah','good',{groups:['near','dg2'],contacts:[c(12,'them','In person')]}),
+      P('d3','Priya','good',{groups:['far','dg2'],contacts:[c(33,'me','Video')]}),
+      P('d4','Eli','friend',{groups:['near'],contacts:[c(25,'me')]}),
+      P('d5','Sam','friend',{groups:['near'],contacts:[c(4,'them')]}),
+      P('d6','Rosa','casual',{groups:['far','dg3']}),
+      P('d7','Dev','friend',{dormant:true,groups:['far','dg2']}),
+      P('d8','Hana','casual',{groups:['near'],contacts:[c(70,'mutual','In person')]}),
+      P('d9','Luis','acq',{groups:['near']}),
+      P('d10','Ava','friend',{groups:['far','dg1'],contacts:[c(50,'me','Call')]})
     ];
   }
   let saved=null,demoList=null,step=0,running=false,raf=0,els=null,side='bottom',mid=true,show=false,lastRect=null,token=0;
@@ -1789,7 +1806,7 @@ const Tour=(()=>{
     running=true;window.TOUR_DEMO=true;$('#toast').classList.remove('show');
     if(ui.sheet){ui.sheet=null;document.getElementById('app').classList.remove('open');$('#sheet').innerHTML=''}
     saved={friends:S.friends,settings:S.settings,filter:ui.filter,q:ui.q};demoList=demo();
-    S.friends=demoList;S.settings=Object.assign(JSON.parse(JSON.stringify(saved.settings)),{groups:DG,orbitView:'header',orbitNames:true,colorBy:'tier',avatars:'initials',hints:['reach-buttons','orbit-meaning','no-backlog','after-add','first-run']});
+    S.friends=demoList;S.settings=Object.assign(JSON.parse(JSON.stringify(saved.settings)),{groups:DG,orbitNames:true,colorBy:'tier',avatars:'initials',hints:['reach-buttons','orbit-meaning','no-backlog','after-add','first-run']});
     ui.filter='all';ui.q='';ui.pick=0;
     root.hidden=false;document.body.classList.add('tour-on');step=0;loop();go(0);
   }
@@ -1863,8 +1880,9 @@ const Tour=(()=>{
   }
   return{start,end,get running(){return running}};
 })();
-function route(){if(Tour.running)return;const h=location.hash.slice(1);ui.view=TABS.some(t=>t[0]===h)?h:'reach';ui.arm=null;render();window.scrollTo(0,0)}
+function route(){if(Tour.running)return;let h=location.hash.slice(1);if(h==='log'){ui.peopleMode='recent';h='people';history.replaceState(null,'','#people')}ui.view=TABS.some(t=>t[0]===h)?h:'reach';ui.arm=null;render();window.scrollTo(0,0)}
 window.addEventListener('hashchange',route);
+{const t=$('#toast');['mouseenter','focusin'].forEach(e=>t.addEventListener(e,toastHold));['mouseleave','focusout'].forEach(e=>t.addEventListener(e,()=>{if(t.classList.contains('show'))toastArm(Math.max(4000,toastMs))}))}
 route();
 initSync();
 if(!S.settings.onboarded)setTimeout(()=>{if(!S.settings.onboarded&&!ui.sheet)openSheet({type:'intro',step:0})},IN_CLAUDE?1500:300);

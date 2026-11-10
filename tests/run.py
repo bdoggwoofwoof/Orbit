@@ -1,0 +1,102 @@
+"""Orbit browser tests. Serve the repo root on :8765 (python3 -m http.server 8765), then: python3 tests/run.py [shots_dir]"""
+import asyncio,json,random,sys,os
+from playwright.async_api import async_playwright
+HERE=os.path.dirname(os.path.abspath(__file__))
+exec(open(os.path.join(HERE,'seed.py')).read())
+random.seed(3)
+names="Ana Ben Cleo Dan Eva Finn Gia Hugo Ivy Jack Kai Lena Milo Nia Omar Pia Quinn Rae Sol Tess Uma Vic Wes Xan Yara Zed Abe Bea Cal Dee Eli2 Fay Gus Hal Ida Jo Kit Liv Max Ned Ola Pat Ray Sue Tom Val Wyn Zoe Ari Bo".split()
+many=people+[P(100+i,n,random.choice(['acq','casual','friend','good','homie']),[C(random.randint(1,120),random.choice(['me','them']))] if i%3 else [],distance=random.choice(['near','far',''])) for i,n in enumerate(names)]
+U='http://localhost:8765/';O=(sys.argv[1] if len(sys.argv)>1 else '/tmp/orbit-shots')+'/';os.makedirs(O,exist_ok=True)
+FAIL=[]
+def check(ok,msg):
+    print(('PASS ' if ok else 'FAIL ')+msg)
+    if not ok:FAIL.append(msg)
+async def ctx_for(b,data,w=390,hgt=844,scheme='light'):
+    ctx=await b.new_context(viewport={'width':w,'height':hgt},device_scale_factor=2,color_scheme=scheme)
+    await ctx.add_init_script(f"if(!localStorage.getItem('orbit.v1'))localStorage.setItem('orbit.v1',{json.dumps(json.dumps(data))});")
+    await ctx.add_init_script("const _D=Date;Date=class extends _D{constructor(...a){if(a.length)super(...a);else super(2026,10,9,12)}static now(){return new _D(2026,10,9,12).getTime()}};")
+    pg=await ctx.new_page();errs=[];pg.on('pageerror',lambda e:errs.append(str(e)));pg.on('console',lambda m: m.type=='error' and errs.append(m.text))
+    return ctx,pg,errs
+async def main():
+    async with async_playwright() as p:
+        b=await p.chromium.launch()
+        # ---- small set, phone, light
+        ctx,pg,errs=await ctx_for(b,{'friends':people,'settings':{'onboarded':True,'toured':True}})
+        await pg.goto(U+'#reach');await pg.wait_for_timeout(500);await pg.screenshot(path=O+'today.png')
+        vp=await pg.evaluate("document.querySelector('meta[name=viewport]').content");check('maximum-scale' not in vp,'pinch-zoom allowed')
+        check(await pg.evaluate("[...document.querySelectorAll('#view .hint')].length")<=1,'at most one tip on Today')
+        check(await pg.evaluate("[...document.querySelectorAll('body *')].every(e=>e.closest('.chips')||e.getBoundingClientRect().right<=innerWidth+1)"),'no sideways overflow')
+        check(await pg.evaluate("document.querySelectorAll('#tabs a').length")==4,'four tabs')
+        # migration: distance -> groups (seed has none; add one via About)
+        await pg.goto(U+'#people');await pg.wait_for_timeout(300)
+        await pg.click('.rows [data-act=open][data-id=p4]');await pg.wait_for_timeout(400)
+        y=await pg.evaluate("document.querySelector('#logSec .logbtns').getBoundingClientRect().bottom");check(y<844,'log buttons visible without scrolling (bottom %d)'%y)
+        await pg.click('#aboutFold summary');await pg.click('[data-act=dist][data-v=far]');await pg.wait_for_timeout(200)
+        g=await pg.evaluate("JSON.parse(localStorage.getItem('orbit.v1')).friends.find(f=>f.id==='p4').groups");check(g==['far'],'Long-distance stored as a group')
+        await pg.screenshot(path=O+'person.png');await pg.evaluate("document.querySelector('#sheet').scrollTop=600");await pg.screenshot(path=O+'person2.png')
+        await pg.fill('#exAdd input','Text back within a day');await pg.press('#exAdd input','Enter');await pg.wait_for_timeout(200)
+        await pg.click('[data-act=exChk][data-k=reasonable]');await pg.wait_for_timeout(150)
+        check('out loud' in (await pg.inner_text('.exn')).lower(),'expectation note asks to say it out loud')
+        await pg.click('.exi [data-act=exDel]');await pg.wait_for_timeout(200)
+        await pg.wait_for_timeout(7000);check(await pg.evaluate("document.querySelector('#toast').classList.contains('show')"),'Undo still showing after 7 s')
+        await pg.click('#tUndo');await pg.wait_for_timeout(200);check(await pg.locator('.exi').count()==1,'Undo restores expectation')
+        await pg.keyboard.press('Escape');await pg.wait_for_timeout(300)
+        # group timing via settings
+        await pg.goto(U+'#more');await pg.wait_for_timeout(300)
+        check((await pg.evaluate("document.querySelector('#view h2').textContent")).startswith('Groups'),'Settings opens with Groups & timing')
+        await pg.fill('#newGroup','Denver');await pg.click('#newGroupForm button[type=submit]');await pg.wait_for_timeout(200)
+        await pg.click('#moreGroups details.grp >> nth=1');await pg.fill('[data-gf=cadence] >> nth=1','60');await pg.press('[data-gf=cadence] >> nth=1','Tab');await pg.wait_for_timeout(300)
+        await pg.screenshot(path=O+'settings.png')
+        check(await pg.evaluate("document.querySelectorAll('[data-timing]').length")==3,'timing cut to 3 fields')
+        # bulk add + duplicates
+        await pg.goto(U+'#people');await pg.wait_for_timeout(300);await pg.click('#fab');await pg.wait_for_timeout(300)
+        await pg.click('#nMode [data-m=many]');await pg.fill('#nNames','Maya\nZed, Yan');await pg.click('#nDist [data-v=near]');await pg.click('#nSubmit');await pg.wait_for_timeout(200)
+        check(await pg.is_visible('#nDup'),'duplicate warning shown');await pg.screenshot(path=O+'dup.png')
+        await pg.fill('#nNames','Zed, Yan');await pg.click('#nSubmit');await pg.wait_for_timeout(400)
+        n=await pg.evaluate("JSON.parse(localStorage.getItem('orbit.v1')).friends.filter(f=>['Zed','Yan'].includes(f.name)).map(f=>f.groups.join())");check(n==['near','near'],'bulk add puts both in Nearby')
+        # merge restore keeps newer edits
+        bk=await pg.evaluate("localStorage.getItem('orbit.v1')")
+        await pg.evaluate("(()=>{const f=S.friends.find(x=>x.id==='p2');f.notes='edited after backup';saveFriend(f)})()")
+        await pg.goto(U+'#more');await pg.wait_for_timeout(300);await pg.fill('#restore',bk);await pg.click('[data-act=restore][data-mode=merge]');await pg.wait_for_timeout(300)
+        check(await pg.evaluate("S.friends.find(x=>x.id==='p2').notes")=='edited after backup','merge keeps the newer edit')
+        check(await pg.evaluate("S.settings.groups.some(g=>g.name==='Denver')"),'merge keeps current groups')
+        # recent view + #log redirect
+        await pg.goto(U+'#log');await pg.wait_for_timeout(300);check('Recent' in await pg.inner_text('#view .seg .on'),'#log opens People → Recent')
+        # theme dark
+        await pg.goto(U+'#more');await pg.wait_for_timeout(200);await pg.click('[data-act=theme][data-v=dark]');await pg.goto(U+'#reach');await pg.wait_for_timeout(300);await pg.screenshot(path=O+'today_dark.png')
+        # tour
+        await pg.goto(U+'#more');await pg.wait_for_timeout(300);await pg.click('[data-act=tour]');await pg.wait_for_timeout(900)
+        steps=int((await pg.inner_text('.tour-n')).split(' of ')[1]);check(steps==7,'tour has 7 steps')
+        for i in range(steps):
+            await pg.screenshot(path=O+f'tour{i}.png');await pg.click('.tour-next');await pg.wait_for_timeout(1000)
+        check(await pg.evaluate("!window.TOUR_DEMO && S.friends.some(f=>f.id==='p1')"),'tour restores real data')
+        check(not errs,'no console errors (small set): '+'; '.join(errs[:3]));await ctx.close()
+        # ---- big set
+        ctx,pg,errs=await ctx_for(b,{'friends':many,'settings':{'onboarded':True,'toured':True,'distance':{'far':45}}})
+        await pg.goto(U+'#reach');await pg.wait_for_timeout(500);await pg.screenshot(path=O+'today_many.png')
+        hgt=await pg.evaluate("document.documentElement.scrollHeight");check(hgt<3500,'Today height with 59 people: %d px'%hgt)
+        check(await pg.evaluate("document.querySelectorAll('#view .feature, #view .sec:first-of-type .rows > li').length")<=5,'Today shows at most 5 open')
+        mig=await pg.evaluate("(()=>{const g=S.settings.groups.find(g=>g.id==='far');return g&&g.cadence})()");check(mig==45,'old Long-distance timing migrated to group')
+        await pg.goto(U+'#people');await pg.wait_for_timeout(400);await pg.screenshot(path=O+'people_many.png')
+        check(await pg.locator('#orbitBox .orbitbtn').count()==1,'small orbit switches to counts above 15 people')
+        await pg.fill('#q','ma');await pg.wait_for_timeout(200);check(await pg.evaluate("document.activeElement.id")=='q','search keeps focus')
+        await pg.fill('#q','')
+        await pg.click('[data-act=orbitBig]');await pg.wait_for_timeout(400);await pg.screenshot(path=O+'bigorbit.png')
+        small=await pg.evaluate("[...document.querySelectorAll('#sheet .orbit .hit')].filter(c=>c.getBoundingClientRect().width<24).length");check(small==0,'orbit hit areas >= 24 px')
+        check(not errs,'no console errors (big set)');await ctx.close()
+        # ---- desktop
+        ctx,pg,errs=await ctx_for(b,{'friends':people,'settings':{'onboarded':True,'toured':True}},1440,900)
+        for v in ['reach','people','guide','more']:
+            await pg.goto(U+'#'+v);await pg.wait_for_timeout(300);await pg.screenshot(path=O+f'd_{v}.png')
+        check(not errs,'no console errors (desktop)');await ctx.close()
+        # ---- first run: intro -> tour
+        ctx,pg,errs=await ctx_for(b,{'friends':[],'settings':{}})
+        await pg.goto(U);await pg.wait_for_timeout(800)
+        check(await pg.locator('#sheet .steps i').count()==3,'intro has 3 screens')
+        await pg.click('[data-act=iNext]');await pg.click('[data-act=iNext]');await pg.wait_for_timeout(200);await pg.screenshot(path=O+'intro3.png')
+        await pg.click('[data-act=iDone][data-tour]');await pg.wait_for_timeout(1200);check(await pg.is_visible('.tour-card'),'intro hands off to the tour')
+        await pg.keyboard.press('Escape');await pg.wait_for_timeout(800);check(await pg.is_visible('#nName'),'after tour, empty orbit opens Add')
+        check(not errs,'no console errors (first run)');await ctx.close()
+        await b.close()
+    print('\n%d failed'%len(FAIL));sys.exit(1 if FAIL else 0)
+asyncio.run(main())
