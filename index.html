@@ -12,12 +12,16 @@
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="icon" href="icon-192.png">
 <title>Orbit</title>
-<script>try{var _s=JSON.parse(localStorage.getItem("orbit.v1")||"{}").settings;if(_s&&(_s.theme==="dark"||_s.theme==="light"))document.documentElement.dataset.theme=_s.theme}catch(e){}</script>
+<script>try{var _s=JSON.parse(localStorage.getItem("orbit.v1")||"{}").settings;if(_s&&(_s.theme==="dark"||_s.theme==="light"))document.documentElement.dataset.theme=_s.theme;if(_s&&_s.lang==="ar"){document.documentElement.lang="ar";document.documentElement.dir="rtl"}}catch(e){}</script>
 <style>
 @font-face{font-family:Fraunces;font-style:normal;font-display:swap;font-weight:100 900;src:url(fonts/fraunces-latin-opsz-normal.woff2) format('woff2')}
 @font-face{font-family:Inter;font-style:normal;font-display:swap;font-weight:400;src:url(fonts/inter-latin-400-normal.woff2) format('woff2')}
 @font-face{font-family:Inter;font-style:normal;font-display:swap;font-weight:500;src:url(fonts/inter-latin-500-normal.woff2) format('woff2')}
 @font-face{font-family:Inter;font-style:normal;font-display:swap;font-weight:600 700;src:url(fonts/inter-latin-600-normal.woff2) format('woff2')}
+@font-face{font-family:PlexAr;font-style:normal;font-display:swap;font-weight:400;src:url(fonts/ibm-plex-sans-arabic-arabic-400-normal.woff2) format('woff2');unicode-range:U+0600-06FF,U+0750-077F,U+0870-08FF,U+FB50-FDFF,U+FE70-FEFF,U+200C-200E,U+2010-2011,U+204F,U+2E41}
+@font-face{font-family:PlexAr;font-style:normal;font-display:swap;font-weight:500;src:url(fonts/ibm-plex-sans-arabic-arabic-500-normal.woff2) format('woff2');unicode-range:U+0600-06FF,U+0750-077F,U+0870-08FF,U+FB50-FDFF,U+FE70-FEFF,U+200C-200E,U+2010-2011,U+204F,U+2E41}
+@font-face{font-family:PlexAr;font-style:normal;font-display:swap;font-weight:600 700;src:url(fonts/ibm-plex-sans-arabic-arabic-600-normal.woff2) format('woff2');unicode-range:U+0600-06FF,U+0750-077F,U+0870-08FF,U+FB50-FDFF,U+FE70-FEFF,U+200C-200E,U+2010-2011,U+204F,U+2E41}
+@font-face{font-family:NaskhAr;font-style:normal;font-display:swap;font-weight:400 700;src:url(fonts/noto-naskh-arabic-arabic-wght-normal.woff2) format('woff2');unicode-range:U+0600-06FF,U+0750-077F,U+0870-08FF,U+FB50-FDFF,U+FE70-FEFF,U+200C-200E,U+2010-2011,U+204F,U+2E41}
 /* ---------- tokens ---------- */
 :root{
   --paper:#F5F1E8;--surface:#FBF8F1;--ink:#222522;--ink2:#5A564E;--stone:#6F6B63;--rule:#E2DBCC;
@@ -26,7 +30,7 @@
   --t-xs:12px;--t-sm:13px;--t-md:15px;--t-lg:17px;--t-xl:21px;--t-2xl:28px;
   --s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:24px;--s6:32px;
   --r-sm:8px;--r-md:12px;--r-lg:20px;--hit:44px;
-  --serif:Fraunces,Georgia,serif;--sans:Inter,system-ui,sans-serif;
+  --serif:Fraunces,NaskhAr,Georgia,serif;--sans:Inter,PlexAr,system-ui,sans-serif;--arserif:NaskhAr,Fraunces,serif;
   --ease:cubic-bezier(.2,.8,.2,1);--dur:.26s;color-scheme:light;
 }
 :root[data-theme=dark]{
@@ -71,10 +75,13 @@
 input.saved,select.saved{border-color:var(--teal)!important;box-shadow:0 0 0 2px var(--teal-soft)}
 .h3s{font:600 var(--t-md) var(--sans);margin:var(--s5) 0 0}
 details.later{margin-top:var(--s4);border-top:1px solid var(--rule)}details.later>summary{padding:var(--s3) 0;font-weight:600;cursor:pointer}
-details.ps-fold{padding:var(--s4) 0;border-bottom:1px solid var(--rule)}details.ps-fold>summary{display:flex;flex-direction:column;gap:2px;cursor:pointer;list-style:none}details.ps-fold>summary::-webkit-details-marker{display:none}details.ps-fold>summary h4{margin:0}details.ps-fold>summary h4::after{content:" ›";color:var(--stone)}details.ps-fold[open]>summary h4::after{content:" ⌄"}
+details.ps-fold{padding:var(--s4) 0;border-bottom:1px solid var(--rule)}details.ps-fold>summary{display:flex;flex-direction:column;gap:2px;cursor:pointer;list-style:none}details.ps-fold>summary::-webkit-details-marker{display:none}details.ps-fold>summary::before{display:none!important}details.ps-fold>summary h4{margin:0}details.ps-fold>summary h4::after{content:" ›";color:var(--stone)}details.ps-fold[open]>summary h4::after{content:" ⌄"}
 .orbitbtn{display:block;margin:0 auto;background:none;border:0;padding:0;cursor:pointer;border-radius:50%}
 .orbit .cnt{fill:#fff;font:700 12px var(--sans)}
 .toc{display:flex;flex-wrap:wrap;gap:0 var(--s4);margin:0 0 var(--s3)}
+.arw{font-family:var(--arserif);font-size:1.15em;font-weight:600}
+.arlad{padding-inline-start:1.3em;margin:var(--s3) 0}.arlad li{margin:6px 0}
+.arq{margin:var(--s3) 0;padding:var(--s2) var(--s3);border-inline-start:3px solid var(--amber)}.arq p{margin:0}.arq .arw{font-size:1.3em}
 /* tour */
 .demo-banner{border:1px dashed var(--teal);color:var(--teal);border-radius:var(--r-md);padding:8px 12px;font-size:var(--t-sm);font-weight:600;margin:var(--s2) 0 var(--s3)}
 .tour{position:fixed;inset:0;z-index:200}
@@ -314,6 +321,23 @@ nav.tabs .badge{position:absolute;top:5px;left:calc(50% + 6px);background:var(--
 .rung .test{font-size:var(--t-sm);margin:var(--s2) 0 0;padding-left:var(--s3);border-left:2px solid var(--teal)}
 .prose ul{padding-left:20px;margin:var(--s2) 0}.prose li{margin:6px 0}
 
+/* ---------- right-to-left (Arabic) ---------- */
+[dir=rtl] .gdot,[dir=rtl] .olegend i{margin-right:0;margin-left:4px}
+[dir=rtl] .homenote,[dir=rtl] .dupnote,[dir=rtl] .hint,[dir=rtl] .reality{border-left:0;border-right:3px solid var(--amber)}
+[dir=rtl] .hint{border-right-color:var(--teal);padding:6px var(--s3) 6px 44px}
+[dir=rtl] .hint .x{right:auto;left:0}
+[dir=rtl] .name,[dir=rtl] .tone,[dir=rtl] .hbtn,[dir=rtl] .intro{text-align:right}
+[dir=rtl] .tags{margin-left:0;margin-right:6px}
+[dir=rtl] .tone .tq{border-left:0;padding-left:0;border-right:2px solid var(--rule);padding-right:var(--s2)}
+[dir=rtl] ul.plain,[dir=rtl] .pair ul,[dir=rtl] .exp ul,[dir=rtl] .prose ul{padding-left:0;padding-right:20px}
+[dir=rtl] .seg button+button{border-left:0;border-right:1px solid var(--rule)}
+[dir=rtl] .sw::after{left:auto;right:3px;transition:right var(--dur) var(--ease)}[dir=rtl] .sw:checked::after{left:auto;right:21px}
+[dir=rtl] details.fold>summary::before{transform:rotate(135deg)}[dir=rtl] details.fold[open]>summary::before{transform:rotate(45deg)}
+[dir=rtl] .rung .test{padding-left:0;border-left:0;padding-right:var(--s3);border-right:2px solid var(--teal)}
+[dir=rtl] nav.tabs .badge{left:auto;right:calc(50% + 6px)}
+[dir=rtl] .fab{right:auto;left:max(16px,calc(50% - 324px))}
+[dir=rtl] .orbit,[dir=rtl] .flowbox svg{direction:ltr}
+[dir=rtl] body{font-size:16px;line-height:1.6}
 /* ---------- tablet & desktop ---------- */
 @media (min-width:760px){
   nav.tabs{top:0;bottom:0;right:auto;width:96px;border-top:0;border-right:1px solid var(--rule);flex-direction:column;justify-content:flex-start;padding:calc(var(--s5) + env(safe-area-inset-top)) 0 0}
@@ -322,12 +346,19 @@ nav.tabs .badge{position:absolute;top:5px;left:calc(50% + 6px);background:var(--
   nav.tabs a.on::before{top:12px;bottom:12px;left:0;right:auto;width:3px;height:auto}
   .wrap{margin-left:max(96px,calc(50% - 340px + 48px));padding-bottom:var(--s6)}
   .fab{bottom:var(--s5);right:var(--s5)}
+  [dir=rtl] nav.tabs{right:0;left:auto;border-right:0;border-left:1px solid var(--rule)}
+  [dir=rtl] nav.tabs a.on::before{left:auto;right:0}
+  [dir=rtl] .wrap{margin-left:auto;margin-right:max(96px,calc(50% - 340px + 48px))}
+  [dir=rtl] .fab{right:auto;left:var(--s5)}
 }
 @media (min-width:1100px){
   .wrap{margin-left:calc(96px + var(--s6));margin-right:auto;max-width:640px}
   .sheet{left:auto;top:0;bottom:0;width:460px;max-height:none;border-radius:0;transform:translateX(100%);border-left:1px solid var(--rule)}
   .sheet .grab{display:none}
   .open .sheet{transform:none}
+  [dir=rtl] .wrap{margin-right:calc(96px + var(--s6));margin-left:auto}
+  [dir=rtl] .sheet{left:0;right:auto;transform:translateX(-100%);border-left:0;border-right:1px solid var(--rule)}
+  [dir=rtl] .open .sheet{transform:none}
   .scrim{background:rgba(20,20,18,.12)}
   .orbitbox.full .orbit{max-width:520px}
 }
@@ -349,6 +380,7 @@ nav.tabs .badge{position:absolute;top:5px;left:calc(50% + 6px);background:var(--
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 </div>
 
+<script src="ar.js"></script>
 <script>
 /* =========================================================
    Orbit v3 — a quiet field journal for friendships
@@ -413,6 +445,7 @@ const MARKERS=[
  {key:'soulmate',name:'Platonic soulmate',short:"It clicked right away",desc:"It clicked right away and it feels like you've known each other for years. This is about fit, not history: someone you met last month can be a soulmate while still being a Friend on the ladder. Soulmate + Tempered is an earned platonic soulmate."},
  {key:'dormant',name:'Dormant',short:"Close once, quiet for now; pauses reminders",desc:"Someone you were close to but aren't in regular touch with right now (moved away, a busy season). Their tier stays as the closeness you had; reminders pause."}
 ];
+const MODE_AR_OF={'Text':'رسالتك','Call':'مكالمتك','In person':'لقائك','Video':'مكالمة الفيديو','Social media':'رسالتك','Letter / card':'بطاقتك','Other':'تواصلك'};
 const MODES=['Text','Call','In person','Video','Social media','Letter / card','Other'];
 const QUICK_MODES=['Text','Call','In person','Video','Other'];
 const WHO={me:'You',them:'Them',mutual:'Mutual'};
@@ -458,7 +491,7 @@ function migrateFields(){const fs=S.settings.fields||[];if(!fs.length)return;
   S.friends.forEach(f=>{const c=f.custom||{};const add=fs.map(fd=>c[fd.id]?fd.name+': '+c[fd.id]:'').filter(Boolean);if(add.length){f.notes=((f.notes||'').trim()+'\n'+add.join('\n')).trim();delete f.custom;saveFriend(f)}});
   S.settings.fields=[];saveSettings()}
 function distOf(f){return(f.groups||[]).includes('far')?'far':(f.groups||[]).includes('near')?'near':''}
-function defaultSettings(){return {tiers:JSON.parse(JSON.stringify(DEFAULT_TIERS)),fields:[],timing:Object.assign({},DEFAULT_TIMING),tone:'gentle',avatars:'initials',onboarded:false,hints:[],reminders:{inapp:true,calendar:true,push:false},me:null,groups:BUILTIN_GROUPS.map(g=>Object.assign({},g)),colorBy:'tier',theme:'system',orbitNames:true,toured:false,dailyCap:5,homeNote:false,lastReview:null,v:5}}
+function defaultSettings(){return {tiers:JSON.parse(JSON.stringify(DEFAULT_TIERS)),fields:[],timing:Object.assign({},DEFAULT_TIMING),tone:'gentle',avatars:'initials',onboarded:false,hints:[],reminders:{inapp:true,calendar:true,push:false},me:null,groups:BUILTIN_GROUPS.map(g=>Object.assign({},g)),colorBy:'tier',theme:'system',orbitNames:true,toured:false,dailyCap:5,homeNote:false,lastReview:null,lang:'en',ladderNames:'english',v:5}}
 function normalizeSettings(s){
   const d=defaultSettings(); if(!s||typeof s!=='object')return d;
   const st=Array.isArray(s.tiers)?s.tiers:[];
@@ -481,6 +514,8 @@ function normalizeSettings(s){
     dailyCap:Math.max(1,parseInt(s.dailyCap,10)||5),
     homeNote:!!s.homeNote,
     lastReview:typeof s.lastReview==='string'?s.lastReview:null,
+    lang:s.lang==='ar'?'ar':'en',
+    ladderNames:s.ladderNames==='arabic'?'arabic':'english',
     v:5
   };
 }
@@ -503,11 +538,29 @@ function daysSince(iso){return Math.round((pd(todayISO())-pd(iso))/864e5)}
 function addDays(iso,n){const d=pd(iso);d.setDate(d.getDate()+n);return isoOf(d)}
 const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const MONL=['January','February','March','April','May','June','July','August','September','October','November','December'];
-function fmtDate(iso){const d=pd(iso);const y=d.getFullYear()!==new Date().getFullYear()?', '+d.getFullYear():'';return MON[d.getMonth()]+' '+d.getDate()+y}
-function rel(iso){const n=daysSince(iso);if(n===0)return'today';if(n===1)return'yesterday';if(n<0)return n===-1?'tomorrow':'in '+(-n)+' days';if(n<60)return n+' days ago';if(n<365)return Math.round(n/30)+' months ago';return(n/365).toFixed(1).replace('.0','')+' years ago'}
+const AR_MON=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+/* Arabic number words: [one, two, 3–10, 11+] */
+const W_DAYS=['يوم واحد','يومين','أيام','يومًا'],W_MONTHS=['شهر واحد','شهرين','أشهر','شهرًا'],W_YEARS=['سنة واحدة','سنتين','سنوات','سنة'],W_PEOPLE=['شخص واحد','شخصين','أشخاص','شخصًا'],W_TIMES=['مرة واحدة','مرتين','مرات','مرة'],W_THINGS=['أمر واحد','أمرين','أمور','أمرًا'],W_MSGS=['رسالة واحدة','رسالتين','رسائل','رسالة'],W_CONTACTS=['مرة تواصل واحدة','مرتي تواصل','مرات تواصل','مرة تواصل'];
+function nAr(n,w){n=Number(n);if(n===0)return '0 '+w[2];if(n===1)return w[0];if(n===2)return w[1];if(n%100>=3&&n%100<=10)return n+' '+w[2];return n+' '+w[3]}
+function fmtDate(iso){if(isAr()){const d=pd(iso);return d.getDate()+' '+AR_MON[d.getMonth()]+(d.getFullYear()!==new Date().getFullYear()?' '+d.getFullYear():'')}const d=pd(iso);const y=d.getFullYear()!==new Date().getFullYear()?', '+d.getFullYear():'';return MON[d.getMonth()]+' '+d.getDate()+y}
+function rel(iso){const n=daysSince(iso);if(isAr()){if(n===0)return'اليوم';if(n===1)return'أمس';if(n===-1)return'غدًا';if(n<0)return'بعد '+nAr(-n,W_DAYS);if(n<60)return'قبل '+nAr(n,W_DAYS);if(n<365)return'قبل '+nAr(Math.round(n/30),W_MONTHS);return'قبل '+nAr(Math.round(n/365),W_YEARS)}if(n===0)return'today';if(n===1)return'yesterday';if(n<0)return n===-1?'tomorrow':'in '+(-n)+' days';if(n<60)return n+' days ago';if(n<365)return Math.round(n/30)+' months ago';return(n/365).toFixed(1).replace('.0','')+' years ago'}
 const clone=o=>JSON.parse(JSON.stringify(o));
 const lines=s=>String(s||'').split('\n').map(x=>x.trim()).filter(Boolean);
-function tiers(){return S.settings.tiers}
+/* Arabic ladder (from Newt's reel, Nov 11): each word names what you do together */
+const AR_LADDER={
+ acq:{w:'جليس',v:'جَلِيس',tr:'Jalīs',m:'the one you sit with',ma:'مَن تجالسه',r:'from julūs, sitting together',ra:'من الجلوس'},
+ casual:{w:'سمير',v:'سَمِير',tr:'Samīr',m:'the one you stay up talking with',ma:'مَن تسهر معه في الحديث',r:'from samar, talk late into the night',ra:'من السَّمَر، حديث الليل'},
+ friend:{w:'رفيق',v:'رَفِيق',tr:'Rafīq',m:'the one who travels with you',ma:'مَن يرافقك في الطريق',r:'from murāfaqa, going along with someone',ra:'من المرافقة'},
+ good:{w:'صديق',v:'صَدِيق',tr:'Ṣadīq',m:'the one who tells you the truth',ma:'مَن يَصدُقك القول',r:'from ṣidq, truthfulness',ra:'من الصِّدق'},
+ homie:{w:'نجيّ',v:'نَجِيّ',tr:'Najiyy',m:'the one you whisper to',ma:'مَن تُسِرّ إليه',r:'from najwā, a confidence shared quietly',ra:'من النجوى، السرّ المهموس'}
+};
+const AR_BEST={w:'خليل',v:'خَلِيل',tr:'Khalīl',m:'the one who has passed through your soul',ma:'مَن تخلّل روحك',r:'from takhallul, to pass through',ra:'من التخلّل'};
+const AR_MORE=[['صاحب','ṣāḥib','a companion you keep company with'],['زميل','zamīl','a colleague or classmate; you share work or study'],['نديم','nadīm','a companion at gatherings and meals'],['قرين','qarīn','a constant companion, almost a counterpart'],['صفيّ','ṣafiyy','a chosen friend, pure of heart'],['حميم','ḥamīm','a warm, intimate friend'],['عشير','ʿashīr','someone you live among and share life with'],['أليف','alīf','the familiar one you are at ease with'],['خِلّ','khill','a close friend; a sister word of khalīl'],['وليّ','waliyy','an ally who stands up for you']];
+function isAr(){return S.settings.lang==='ar'}
+function arNames(){return isAr()||S.settings.ladderNames==='arabic'}
+function tiers(){const L=S.settings.tiers;if(!arNames())return L;return L.map(t=>{const a=AR_LADDER[t.key];return a?Object.assign({},t,{name:isAr()?a.w:a.tr,ar:a}):t})}
+function bfName(plural){return arNames()?(isAr()?'خليل':plural?'Khalīls':'Khalīl'):(plural?'Best friends':'Best friend')}
+function arWordHTML(a){return `<span class="arw" lang="ar" dir="rtl">${a.v}</span> <span class="muted small">${esc(a.tr)}, ${esc(a.m)}</span>`}
 function tiersTop(){return tiers().slice().reverse()} /* one order everywhere: closest first */
 function tierOf(f){return tiers().find(t=>t.key===f.tier)||tiers()[0]}
 function tierIdx(f){const i=tiers().findIndex(t=>t.key===f.tier);return i<0?0:i}
@@ -532,6 +585,7 @@ function colorOf(f){
 }
 const GROUP_COLORS=['#7B5CA2','#4369A0','#9E5070','#A05838','#63702F','#58687E','#806A1E','#2F7287'];
 const KINDS=[['group','Friend group'],['place','Place'],['season','Season of life']];
+function applyLang(){const r=document.documentElement;const was=r.dir==='rtl';if(isAr()){r.lang='ar';r.dir='rtl';if(!was&&typeof arTranslate==='function')setTimeout(()=>arTranslate(document.body))}else{r.lang='en';r.dir='ltr'}}
 function applyTheme(){const t=S.settings.theme;const r=document.documentElement;
   if(t==='dark'||t==='light')r.dataset.theme=t;else delete r.dataset.theme;
   document.querySelectorAll('meta[name=theme-color]').forEach(m=>{if(!m.dataset.orig)m.dataset.orig=m.content;m.content=t==='dark'?'#161614':t==='light'?'#F5F1E8':m.dataset.orig})}
@@ -582,6 +636,10 @@ function dueInfo(f){
 function balance(f,days){const b={me:0,them:0,mutual:0};(f.contacts||[]).forEach(c=>{if(days&&daysSince(c.date)>days)return;b[c.who]=(b[c.who]||0)+1});b.total=b.me+b.them+b.mutual;return b}
 function balanceWords(b,short){
   const n=b.me+b.them;
+  if(isAr()){if(n<2)return short?'':'لا يوجد سجل كافٍ بعد';const p=b.me/n;
+    if(p>=.7)return short?'تبادر أنت غالبًا':`تبادر أنت غالبًا: ${b.me} من آخر ${n}`;
+    if(p<=.3)return short?'يبادر هو غالبًا':`يبادر هو غالبًا: ${b.them} من آخر ${n}`;
+    return short?'متوازن تقريبًا':`متوازن تقريبًا: أنت ${b.me}، هو ${b.them}`}
   if(n<2)return short?'':'Not enough history yet';
   const p=b.me/n;
   if(p>=.7)return short?'You usually start':`You start most: ${b.me} of the last ${n}`;
@@ -600,9 +658,10 @@ function replyStats(f){
   const lags=ans.filter(c=>c.replyDate).map(c=>Math.max(0,Math.round((pd(c.replyDate)-pd(c.date))/864e5)));
   return{n:out.length,ans:ans.length,lag:lags.length?Math.round(lags.reduce((a,x)=>a+x,0)/lags.length):null};
 }
-function replyWords(f){const r=replyStats(f);if(r.n<2)return'';return `They answered ${r.ans} of your last ${r.n}${r.lag!=null&&r.ans?` · usually ${r.lag===0?'the same day':'within '+r.lag+' day'+(r.lag>1?'s':'')}`:''}`}
+function replyWords(f){const r=replyStats(f);if(r.n<2)return'';if(isAr())return `ردّ على ${r.ans} من آخر ${nAr(r.n,W_MSGS)}${r.lag!=null&&r.ans?` · عادةً ${r.lag===0?'في اليوم نفسه':'خلال '+nAr(r.lag,W_DAYS)}`:''}`;return `They answered ${r.ans} of your last ${r.n}${r.lag!=null&&r.ans?` · usually ${r.lag===0?'the same day':'within '+r.lag+' day'+(r.lag>1?'s':'')}`:''}`}
 function extrasText(c){const x=[];const d=DEPTH.find(v=>v[0]===c.depth);if(d)x.push(d[1]);const fe=FEEL.find(v=>v[0]===c.feel);if(fe)x.push(fe[1]);
-  if(c.who==='me'&&c.reply==='waiting')x.push('waiting on a reply');else if(c.reply==='replied')x.push('they replied'+(c.replyDate?(c.replyDate===c.date?' same day':' '+fmtDate(c.replyDate)):''));else if(c.reply==='none')x.push('no reply');
+  const A=isAr();
+  if(c.who==='me'&&c.reply==='waiting')x.push(A?'بانتظار الرد':'waiting on a reply');else if(c.reply==='replied')x.push((A?'ردّ':'they replied')+(c.replyDate?(c.replyDate===c.date?(A?' في اليوم نفسه':' same day'):' '+fmtDate(c.replyDate)):''));else if(c.reply==='none')x.push(A?'لا رد':'no reply');
   return x.join(' · ')}
 function lastMode(f){const l=lastContact(f);return l&&QUICK_MODES.includes(l.mode)?l.mode:'Text'}
 function initials(n){const p=String(n).trim().split(/\s+/).filter(w=>/^[\p{L}\p{N}]/u.test(w));return((p[0]||'?')[0]+(p.length>1?p[p.length-1][0]:'')).toUpperCase()}
@@ -625,6 +684,25 @@ const mIcon=m=>`<svg class="mi" viewBox="0 0 24 24" aria-hidden="true">${ICON[m]
 /* ---------- tone (user's choice) ---------- */
 function say(key,v){
   const g=S.settings.tone!=='plain';
+  if(isAr()){const L={
+   quiet:g?`لم يبادر ${v.name} بالتواصل خلال آخر ${nAr(v.days,W_DAYS)} (بادرتَ أنت ${nAr(v.me,W_TIMES)}). من الطبيعي أن تأمل أن يبادر ${v.tier} أحيانًا. قد تبدو العلاقة من جهته أقرب إلى ${v.lower} الآن، ولا بأس أن تلاحظ ذلك.`
+          :`لم يبادر ${v.name} بشيء خلال ${nAr(v.days,W_DAYS)}؛ بادرتَ أنت ${nAr(v.me,W_TIMES)}. ${v.tier} يبادر عادةً أحيانًا. تبدو العلاقة الآن أقرب إلى ${v.lower}.`,
+   gap:g?`مرّت ${nAr(v.since,W_DAYS)} منذ آخر تواصل، وهي مدة أطول بكثير مما يمرّ عادةً مع ${v.tier}. إن صار هذا هو المعتاد، فقد تكون درجة أدنى أو «خامل» توقعًا ألطف.`
+        :`${nAr(v.since,W_DAYS)} منذ آخر تواصل، أي أكثر من ${v.mult} أضعاف المعتاد مع ${v.tier}. فكّر في درجة أدنى أو «خامل».`,
+   newf:g?`تعرفه منذ أقل من ${nAr(v.days,W_DAYS)}. القرب بهذه الدرجة يحتاج عادةً إلى وقت طويل معًا، فخفّف توقعاتك وهي تنمو.`
+         :`تعرفه منذ أقل من ${nAr(v.days,W_DAYS)}. درجة ${v.tier} تحتاج عادةً وقتًا أطول؛ توقّع أقل الآن.`,
+   moved:g?`رفعتَه درجةً مؤخرًا ولم تسجّل إلا القليل من التواصل. قد يساعدك التأمل على رؤية ما إذا كان الواقع يطابق ذلك.`
+          :`رُفع درجةً قبل ${nAr(v.days,W_DAYS)} بأقل من خمس مرات تواصل. راجع الدرجة.`,
+   noreply:g?`لم يردّ ${v.name} على ${v.none} من آخر ${nAr(v.n,W_MSGS)}. الناس ينشغلون، والردود ليست كل شيء، لكن من الطبيعي أن تأمل من ${v.tier} أن يردّ في أغلب الأحيان. قد يستحق هذا الانتباه.`
+            :`${v.none} من آخر ${nAr(v.n,W_MSGS)} إلى ${v.name} بلا رد. ${v.tier} يردّ عادةً في أغلب الأحيان.`,
+   check:g?`آخر تأمل لك (${v.date}) أشار إلى ${v.tier}. لا بأس أن تأمل بأكثر؛ لكن توقّع الآن ما يعطيه ${v.tier}.`
+          :`آخر تأمل (${v.date}) اقترح ${v.tier}. توقّع ما يعطيه ${v.tier}.`,
+   resLower:g?`وضعتَه في درجة ${v.cur}. لا بأس أن تأمل أن تنمو العلاقة. أما الآن فتوقّع ما يعطيه ${v.sug}؛ هذا ألطف لكليكما.`
+             :`وضعتَه في درجة ${v.cur}، لكن الواقع يطابق ${v.sug}. اجعل توقعاتك عند ${v.sug}.`,
+   resHigher:g?`وضعتَه في درجة ${v.cur}، لكن يبدو أن الصداقة أعمق من ذلك.`:`هذا يطابق ${v.sug}، أعلى مما وضعتَه (${v.cur}).`,
+   resSame:g?`هذا يطابق درجته. لتوقعاتك أساس متين.`:`يطابق درجته.`,
+   unfair:g?`قلتَ إن ما توقعتَه قد يكون أكثر مما يعطيه ${v.tier} عادةً. هذا لا يقلّل من الألم؛ قد يعني أن التوقع يحتاج إلى حديث، أو إلى درجة مختلفة.`
+           :`توقعك أعلى مما يعطيه ${v.tier} عادةً. تحدّثا عنه، أو عدّل الدرجة.`};return L[key]}
   const L={
    quiet:g?`${v.name} hasn't reached out first in the last ${v.days} days (you did ${v.me} times). At ${v.tier}, it's fair to hope they'll start things sometimes. From their side, this may feel more like ${v.lower} right now, and that's okay to notice.`
           :`Nothing started by ${v.name} in ${v.days} days; you started ${v.me}. A ${v.tier} usually starts things sometimes. This currently looks more like ${v.lower}.`,
@@ -785,8 +863,8 @@ function shrinkPhoto(file){return new Promise((res,rej)=>{const r=new FileReader
 /* ---------- small pieces ---------- */
 function tagsHTML(f){
   let h='';
-  if(f.best==='overarching')h+='<span class="tag bf">Best friend</span>';
-  else if(f.best==='temporal')h+=`<span class="tag bf">Best friend${f.bestContext?' · '+esc(f.bestContext):' of a season'}</span>`;
+  if(f.best==='overarching')h+=`<span class="tag bf">${bfName()}</span>`;
+  else if(f.best==='temporal')h+=`<span class="tag bf">${bfName()}${f.bestContext?' · '+esc(f.bestContext):' of a season'}</span>`;
   if(f.soulmate)h+='<span class="tag">Soulmate</span>';
   if(f.tempered)h+='<span class="tag">Tempered</span>';
   if(f.dormant)h+='<span class="tag">Dormant</span>';
@@ -794,17 +872,21 @@ function tagsHTML(f){
   return h?`<span class="tags">${h}</span>`:'';
 }
 function statusHTML(d){
+  if(isAr()){const n=-d.dueIn;const m={overdue:['due',d.dueIn===0?'مستحق اليوم':n>60?'منذ مدة':'متأخر '+nAr(n,W_DAYS)],soon:['soon','بعد '+nAr(d.dueIn,W_DAYS)],never:['due','لم يُسجَّل'],ok:['ok','بعد '+nAr(d.dueIn,W_DAYS)],snoozed:['off','مؤجَّل'],off:['off','بلا تذكير']}[d.state];return `<span class="st ${m[0]}"><i></i>${m[1]}</span>`}
   const m={overdue:['due',d.dueIn===0?'Due today':-d.dueIn>60?'A while':(-d.dueIn)+'d past'],soon:['soon','In '+d.dueIn+'d'],never:['due','Not logged'],ok:['ok','In '+d.dueIn+'d'],snoozed:['off','Snoozed'],off:['off','No reminder']}[d.state];
   return `<span class="st ${m[0]}"><i></i>${m[1]}</span>`;
 }
-function lastLine(f){const l=lastContact(f);if(!l)return'No contact logged yet';return `${rel(l.date)} · ${l.who==='me'?'you reached out':l.who==='them'?'they reached out':'mutual'}`}
+function lastLine(f){const l=lastContact(f);if(isAr()){if(!l)return'لم يُسجَّل تواصل بعد';return `${rel(l.date)} · ${l.who==='me'?'بادرتَ أنت':l.who==='them'?'بادَر هو':'معًا'}`}if(!l)return'No contact logged yet';return `${rel(l.date)} · ${l.who==='me'?'you reached out':l.who==='them'?'they reached out':'mutual'}`}
 function nextLine(f){const d=dueInfo(f);
+  if(isAr()){if(d.state==='snoozed')return'مؤجَّل حتى '+fmtDate(d.until);if(d.state==='off')return f.dormant?'متوقف (خامل)':'لا تذكير';
+    if(d.dueIn<=0)return d.dueIn===0?'مستحق اليوم':-d.dueIn>60?'مستحق منذ مدة':'مستحق منذ '+nAr(-d.dueIn,W_DAYS);
+    return 'بعد '+nAr(d.dueIn,W_DAYS)+' ('+fmtDate(d.dueDate)+')'+(d.never?'، محسوبة من يوم إضافته':'')}
   if(d.state==='snoozed')return 'Snoozed until '+fmtDate(d.until);
   if(d.state==='off')return f.dormant?'Paused (Dormant)':'No reminder set';
   if(d.dueIn<=0)return d.dueIn===0?'Due today':-d.dueIn>60?'Due for a while now':'Due '+(-d.dueIn)+' days ago';
   return 'In '+d.dueIn+' days ('+fmtDate(d.dueDate)+')'+(d.never?', counting from when you added them':'');
 }
-function waitLine(f){const w=waitingOf(f)[0];if(!w)return'';const n=daysSince(w.date);return `<div class="meta" style="color:var(--other-ink)">Waiting on a reply to your ${esc(w.mode.toLowerCase())} · ${n===0?'today':n===1?'1 day':n+' days'}</div>`}
+function waitLine(f){const w=waitingOf(f)[0];if(!w)return'';const n=daysSince(w.date);if(isAr())return `<div class="meta" style="color:var(--other-ink)">بانتظار رده على ${esc(MODE_AR_OF[w.mode]||'رسالتك')} · ${n===0?'اليوم':nAr(n,W_DAYS)}</div>`;return `<div class="meta" style="color:var(--other-ink)">Waiting on a reply to your ${esc(w.mode.toLowerCase())} · ${n===0?'today':n===1?'1 day':n+' days'}</div>`}
 function row(f,opts={}){
   const d=dueInfo(f);const fu=openFollowups(f);const ci=cadenceInfo(f);const fromTier=ci.src===tierOf(f).name;
   return `<li class="r" id="row-${f.id}">${avatarHTML(f)}
@@ -829,7 +911,7 @@ function orbitSVG(list,size,opts={}){
   if(opts.counts){
     let b='';ts.forEach((t,i)=>{const k=list.filter(f=>f.tier===t.key).length;if(!k)return;const r=rOf(i),a=-Math.PI/2+i*0.95,x=c+r*Math.cos(a),y=c+r*Math.sin(a);
       b+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="13" style="fill:${TIER_COLORS[t.key]||NOCOLOR}"/><text x="${x.toFixed(1)}" y="${(y+4).toFixed(1)}" text-anchor="middle" class="cnt">${k}</text>`});
-    const counts=tiersTop().map(t=>{const k=list.filter(f=>f.tier===t.key).length;return k?`${k} ${t.name}${k>1?'s':''}`:''}).filter(Boolean).join(', ');
+    const counts=tiersTop().map(t=>{const k=list.filter(f=>f.tier===t.key).length;return k?`${k} ${t.name}${k>1&&!isAr()?'s':''}`:''}).filter(Boolean).join(', ');
     return `<svg class="orbit" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" role="img" aria-label="${esc(counts)}">${rings}<circle class="you" cx="${c}" cy="${c}" r="11"/><text class="youl" x="${c}" y="${c+3.5}" text-anchor="middle">You</text>${b}</svg>`;
   }
   ts.forEach((t,i)=>{
@@ -868,7 +950,7 @@ function orbitSVG(list,size,opts={}){
       labs+=`<text class="nm${fs<10?' sm':''}" x="${pick[0].toFixed(1)}" y="${pick[1].toFixed(1)}" text-anchor="${pick[2]}" aria-hidden="true" style="pointer-events:none">${esc(nm)}</text>`});
     dots+=labs;
   }
-  const counts=tiersTop().map(t=>{const k=list.filter(f=>f.tier===t.key).length;return k?`${k} ${t.name}${k>1?'s':''}`:''}).filter(Boolean).join(', ');
+  const counts=tiersTop().map(t=>{const k=list.filter(f=>f.tier===t.key).length;return k?`${k} ${t.name}${k>1&&!isAr()?'s':''}`:''}).filter(Boolean).join(', ');
   return `<svg class="orbit" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" role="group" aria-label="Your orbit: ${esc(counts||'no one yet')}. Inner rings are closer friendships.">${rings}
     <circle class="you" cx="${c}" cy="${c}" r="${big?15:11}"/><text class="youl" x="${c}" y="${c+3.5}" text-anchor="middle">You</text>${dots}</svg>`;
 }
@@ -949,7 +1031,7 @@ function filterDefs(){
   const c=[['all','All']];
   S.settings.groups.forEach(g=>c.push(['g:'+g.id,g.name,g.color]));
   c.push(['sep']);tiersTop().forEach(t=>c.push([t.key,t.name]));
-  c.push(['best','Best friends'],['soulmate','Soulmates'],['tempered','Tempered'],['dormant','Dormant']);
+  c.push(['best',bfName(1)],['soulmate','Soulmates'],['tempered','Tempered'],['dormant','Dormant']);
   return c;
 }
 function filterChips(){const fl=ui.filter;
@@ -1003,17 +1085,32 @@ function recentHTML(){
 function tierDef(t){
   return `<p class="tsum">${esc(t.summary||'')}</p><dl class="dims">${DIMS.map(([k,l])=>t[k]?`<dt>${l}</dt><dd>${esc(t[k])}</dd>`:'').join('')}</dl>`;
 }
+function arabicLadderHTML(){
+  const rows=tiers().map(t=>({t,a:AR_LADDER[t.key]})).filter(x=>x.a);
+  if(isAr())return `<p class="sub">للعربية كلمة لكل درجة من الصداقة، وكل كلمة مأخوذة مما تفعلانه معًا.</p>
+   <ol class="arlad">${rows.map(({t,a})=>`<li><b class="arw">${a.v}</b> ${esc(a.ma)} <span class="muted small">(${esc(a.ra)})</span></li>`).join('')}<li><b class="arw">${AR_BEST.v}</b> ${esc(AR_BEST.ma)}، وهو أعمقها <span class="muted small">(${esc(AR_BEST.ra)})</span></li></ol>
+   <blockquote class="arq"><p class="arw">الرَّفِيقُ قَبْلَ الطَّرِيق</p></blockquote>
+   <blockquote class="arq"><p class="arw">قَدْ تَخَلَّلْتَ مَسْلَكَ الرُّوحِ مِنِّي ... وَبِهِ سُمِّيَ الْخَلِيلُ خَلِيلَا</p></blockquote>
+   <h3 class="h3s">كلمات أخرى للصديق</h3><p class="note">${AR_MORE.map(([w])=>w).join('، ')}</p>`;
+  return `<p class="sub">Arabic has a word for every level of friend, and each one comes from what you do together. ${S.settings.ladderNames==='arabic'?'Orbit is using these as your tier names.':'Turn them on as your tier names in Settings → Language.'}</p>
+   <ol class="arlad">${rows.map(({t,a})=>`<li><b class="arw" lang="ar">${a.v}</b> <b>${esc(a.tr)}</b>, ${esc(a.m)} <span class="muted small">(${esc(a.r)})</span>. ${S.settings.ladderNames==='arabic'?'':`Orbit’s ${esc(S.settings.tiers.find(x=>x.key===t.key).name)}.`}</li>`).join('')}
+   <li><b class="arw" lang="ar">${AR_BEST.v}</b> <b>${AR_BEST.tr}</b>, ${esc(AR_BEST.m)} <span class="muted small">(${esc(AR_BEST.r)})</span>. The deepest; Orbit uses it for a best friend.</li></ol>
+   <blockquote class="arq"><p class="arw" lang="ar">الرَّفِيقُ قَبْلَ الطَّرِيق</p><p class="small">“Choose the companion before the road.”</p></blockquote>
+   <blockquote class="arq"><p class="arw" lang="ar">قَدْ تَخَلَّلْتَ مَسْلَكَ الرُّوحِ مِنِّي ... وَبِهِ سُمِّيَ الْخَلِيلُ خَلِيلَا</p><p class="small">“You have passed through the pathways of my soul, and that is why a khalīl is called khalīl.”</p></blockquote>
+   <details class="fold"><summary>More Arabic words for friend</summary><ul class="small">${AR_MORE.map(([w,tr,m])=>`<li><span class="arw" lang="ar">${w}</span> <b>${tr}</b>: ${esc(m)}</li>`).join('')}</ul></details>`;
+}
 function vGuide(){
   let h=`<p class="lede">A ladder for how close a friendship is, plus a few tags that describe it in other ways. It’s a map, not a ranking of anyone’s worth, and people move both directions over time.</p>
-  <nav class="toc" aria-label="On this page">${[['g-ladder','The ladder'],['g-best','Best friend'],['g-tags','Tags'],['g-connect','How people connect'],['g-wrong','When something goes wrong'],['g-expect','Setting expectations'],['g-remember','Good to remember']].map(([id,l])=>`<button class="linkbtn" data-act="jump" data-t="${id}">${l}</button>`).join('')}</nav>
+  <nav class="toc" aria-label="On this page">${[['g-ladder','The ladder'],['g-arabic','The Arabic ladder'],['g-best','Best friend'],['g-tags','Tags'],['g-connect','How people connect'],['g-wrong','When something goes wrong'],['g-expect','Setting expectations'],['g-remember','Good to remember']].map(([id,l])=>`<button class="linkbtn" data-act="jump" data-t="${id}">${l}</button>`).join('')}</nav>
   <div class="orbitbox">${guideOrbit()}</div>
   <section class="sec" id="g-ladder"><h2>The ladder</h2><p class="sub">Every tier is described the same four ways: <b>Contact</b> (why and how you see each other), <b>Knowing</b> (how well you know each other), <b>Asking</b> (what you could fairly ask of them) and <b>Effort</b> (who starts things). Each step up adds one thing: chosen, then planned, then go-to, then family. The <b>big-news test</b> under each tier asks: if something big happened to you, good or bad, what would happen with this person?</p>`;
   tiersTop().forEach(t=>{
     const n=S.friends.filter(f=>f.tier===t.key).length;
-    h+=`<div class="rung"><h3>${esc(t.name)} <small>${n?n+' '+(n===1?'person':'people')+' · ':''}${t.cadence?'reminder every '+t.cadence+' days':'no reminder'}</small></h3>${tierDef(t)}${t.test?`<div class="test"><b>Big-news test:</b> ${esc(t.test)}</div>`:''}${t.ex?`<p class="small muted" style="margin-top:var(--s2)">Examples: ${esc(t.ex)}</p>`:''}
+    h+=`<div class="rung"><h3>${esc(t.name)}${t.ar&&!isAr()?` <span class="arw" lang="ar">${t.ar.v}</span>`:''} <small>${n?n+' '+(n===1?'person':'people')+' · ':''}${t.cadence?'reminder every '+t.cadence+' days':'no reminder'}</small></h3>${tierDef(t)}${t.test?`<div class="test"><b>Big-news test:</b> ${esc(t.test)}</div>`:''}${t.ex?`<p class="small muted" style="margin-top:var(--s2)">Examples: ${esc(t.ex)}</p>`:''}
     <details class="fold"><summary>What to expect</summary><div class="exp"><h4>Fair to expect</h4><ul>${lines(t.expect).map(x=>`<li>${esc(x)}</li>`).join('')}</ul><h4>Not fair to expect yet</h4><ul>${notyetHTML(t)}</ul></div></details></div>`;
   });
   h+=`<div class="rung"><h3>Stranger</h3><p style="margin-top:6px">Someone you haven’t met. Not tracked here, but any stranger could end up anywhere on this ladder.</p></div></section>
+  <section class="sec" id="g-arabic"><h2>${isAr()?'سُلَّم الأصدقاء بالعربية':'The Arabic ladder'}</h2>${arabicLadderHTML()}</section>
   <section class="sec" id="g-best"><h2>Best friend</h2><div class="prose" style="margin-top:var(--s3)"><p>The top spot, taken literally: your <b>best</b> friend. Usually a Homie and often a Platonic soulmate. Everything a best friend should be, with grace, because everyone is human.</p>
   <ul><li><b>Overarching:</b> your best friend across your whole life right now. Only one at a time, and it can change.</li><li><b>Of a season:</b> the best friend of a setting or stretch of life (college, a job, a city). You can have one per context.</li></ul></div></section>
   <section class="sec" id="g-tags"><h2>Tags</h2><p class="sub">Tags sit on top of the ladder rather than on it, because they describe something other than closeness.</p>`;
@@ -1051,9 +1148,9 @@ function toneBlock(intro){
   const s=S.settings.tone;
   const ex=[
     {k:'gentle',t:'Gentle',d:'Softer, leaves room for other explanations.',
-     q:say0('gentle','quiet',{name:'Sam',days:90,me:6,tier:'Good friend',lower:'Friend'}),q2:say0('gentle','resLower',{cur:'Good friend',sug:'Friend'})},
+     q:say0('gentle','quiet',{name:'Sam',days:90,me:6,tier:tiers()[3].name,lower:tiers()[2].name}),q2:say0('gentle','resLower',{cur:'Good friend',sug:'Friend'})},
     {k:'plain',t:'Straightforward',d:'Short and direct, just the facts.',
-     q:say0('plain','quiet',{name:'Sam',days:90,me:6,tier:'Good friend',lower:'Friend'}),q2:say0('plain','resLower',{cur:'Good friend',sug:'Friend'})}
+     q:say0('plain','quiet',{name:'Sam',days:90,me:6,tier:tiers()[3].name,lower:tiers()[2].name}),q2:say0('plain','resLower',{cur:'Good friend',sug:'Friend'})}
   ];
   return `<label class="f" style="${intro?'margin-top:var(--s4)':''}">${intro?'How should Orbit word its notes?':'Tone of notes'}</label>
   <p class="note" style="margin-top:0">When what’s happening doesn’t match someone’s tier, Orbit adds a short note. This sets how it’s worded.</p>
@@ -1078,6 +1175,13 @@ function vMore(){
    <div class="tg"><div><b>People per day</b><span>Today shows this many; the rest wait in a fold</span></div><input type="number" min="1" inputmode="numeric" class="num" id="dailyCap" value="${s.dailyCap}" aria-label="People per day"></div>
    ${tm.map(([k,l,u])=>`<div class="tg"><div><b>${esc(l)}</b><span>${esc(u)}</span></div><input type="number" min="0" inputmode="numeric" class="num" data-timing="${k}" value="${T(k)}" aria-label="${esc(l)} (${esc(u)})"></div>`).join('')}
    ${IN_CLAUDE?'':`<div class="tg"><div><b>Calendar</b><span>Add everyone’s next due date and birthdays to your calendar app</span></div><button class="btn" data-act="icsAll">Add all</button></div>`}
+  </section>
+  <section class="sec" id="moreLang"><h2>Language</h2>
+   <label class="f">App language</label>
+   <div class="seg" role="group" aria-label="App language"><button data-act="lang" data-v="en" class="${!isAr()?'on':''}" aria-pressed="${!isAr()}">English</button><button data-act="lang" data-v="ar" class="${isAr()?'on':''}" aria-pressed="${isAr()}" lang="ar">العربية</button></div>
+   ${isAr()?'':`<label class="f">Tier names</label>
+   <div class="seg" role="group" aria-label="Tier names"><button data-act="ladderNames" data-v="english" class="${s.ladderNames!=='arabic'?'on':''}" aria-pressed="${s.ladderNames!=='arabic'}">English</button><button data-act="ladderNames" data-v="arabic" class="${s.ladderNames==='arabic'?'on':''}" aria-pressed="${s.ladderNames==='arabic'}">Arabic words</button></div>
+   <p class="note">Arabic words name each tier by what you do together: Jalīs, Samīr, Rafīq, Ṣadīq, Najiyy, and Khalīl for a best friend. The Guide explains each one.</p>`}
   </section>
   <section class="sec" id="moreLook"><h2>Look &amp; tone</h2>
    <label class="f">Light or dark</label>
@@ -1110,7 +1214,7 @@ function vMore(){
    <div class="acts"><button class="btn" data-act="restore" data-mode="merge">Merge in</button><button class="btn danger" data-act="restore" data-mode="replace">${ui.arm==='replace'?'Tap again to replace everything':'Replace everything'}</button></div></section>
   <section class="sec"><h2>About</h2><div class="acts" style="margin-top:var(--s3)"><button class="btn primary" data-act="tour">Take the tour</button><button class="btn" data-act="intro">Replay the intro</button><button class="btn" data-act="hintsReset">Show tips again</button></div>
    <p class="note">Your orbit stays private: ${IN_CLAUDE?'it’s saved in your own Claude account space':'it’s saved on this device only, nothing is sent anywhere, and it’s protected by your phone’s lock'}. Fonts are bundled, so nothing loads from other sites.</p>
-   <p class="small muted" style="margin-top:var(--s4)">Orbit · v5.1 · Nov 10, 2026 · ${S.friends.length} ${S.friends.length===1?'person':'people'}</p></section>`;
+   <p class="small muted" style="margin-top:var(--s4)">Orbit · v5.2 · Nov 11, 2026 · ${S.friends.length} ${S.friends.length===1?'person':'people'}</p></section>`;
   return h;
 }
 /* ---------- sheets ---------- */
@@ -1167,7 +1271,7 @@ function sheetAdd(el){
   <div id="nMany" hidden><label class="f" for="nNames">Names</label><textarea id="nNames" placeholder="One per line, or separated by commas" style="min-height:120px"></textarea>
   <p class="note">Everyone here gets the same tier, place and groups. You can change anyone later.</p></div>
   <label class="f">Where are they on the ladder?</label>
-  <div class="tierpick" role="radiogroup" aria-label="Tier">${tiersTop().map(t=>`<label><input type="radio" name="nTier" value="${t.key}" ${t.key==='friend'?'checked':''}><div><b>${esc(t.name)}</b><span>${esc(t.summary||'')}</span><span class="bn">Big news: ${esc(t.test||'')}</span></div></label>`).join('')}</div>
+  <div class="tierpick" role="radiogroup" aria-label="Tier">${tiersTop().map(t=>`<label><input type="radio" name="nTier" value="${t.key}" ${t.key==='friend'?'checked':''}><div><b>${esc(t.name)}${t.ar&&!isAr()?` <span class="arw" lang="ar">${t.ar.v}</span>`:''}</b><span>${t.ar?esc(isAr()?t.ar.ma:t.ar.m.charAt(0).toUpperCase()+t.ar.m.slice(1))+'. ':''}${esc(t.summary||'')}</span><span class="bn">Big news: ${esc(t.test||'')}</span></div></label>`).join('')}</div>
   <button type="button" class="linkbtn" data-act="bnTog">Show the big-news test for each</button>
   <p class="note">Not sure? Place them by what’s happening now, not what you hope. You can reflect on it later.</p>
   <label class="f">Where they live</label><div class="seg" id="nDist" role="group" aria-label="Where they live">${[['near','Nearby'],['far','Long-distance'],['','Not set']].map(([v,l])=>`<button type="button" data-v="${v}" class="${v===''?'on':''}" aria-pressed="${v===''}">${l}</button>`).join('')}</div>
@@ -1282,9 +1386,9 @@ function sheetEdit(el,f){
   const t=tierOf(f);
   el.innerHTML=sheetHead('Edit '+esc(f.name),{act:'open',id:f.id,label:f.name})+`
   <div class="ps"><h4>Place on the ladder</h4>
-    <div class="tierpick" role="radiogroup" aria-label="Tier">${tiersTop().map(x=>`<label><input type="radio" name="eTier" value="${x.key}" ${x.key===f.tier?'checked':''}><div><b>${esc(x.name)}</b><span>${esc(x.summary||'')}</span><span class="bn">Big news: ${esc(x.test||'')}</span></div></label>`).join('')}</div>
+    <div class="tierpick" role="radiogroup" aria-label="Tier">${tiersTop().map(x=>`<label><input type="radio" name="eTier" value="${x.key}" ${x.key===f.tier?'checked':''}><div><b>${esc(x.name)}${x.ar&&!isAr()?` <span class="arw" lang="ar">${x.ar.v}</span>`:''}</b><span>${x.ar?esc(isAr()?x.ar.ma:x.ar.m.charAt(0).toUpperCase()+x.ar.m.slice(1))+'. ':''}${esc(x.summary||'')}</span><span class="bn">Big news: ${esc(x.test||'')}</span></div></label>`).join('')}</div>
     <button type="button" class="linkbtn" data-act="bnTog">Show the big-news test for each</button>
-    <label class="f">Best friend</label>
+    <label class="f">${bfName()}${arNames()&&!isAr()?` <span class="muted" style="font-weight:400">(best friend)</span>`:''}</label>
     <div class="seg" role="group" aria-label="Best friend">${[['','No'],['temporal','Of a season'],['overarching','Overarching']].map(([v,l])=>`<button data-act="best" data-id="${f.id}" data-v="${v}" class="${(f.best||'')===v?'on':''}" aria-pressed="${(f.best||'')===v}">${l}</button>`).join('')}</div>
     ${f.best==='temporal'?`<input type="text" id="fBestCtx" style="margin-top:var(--s2)" placeholder="Which season or setting? e.g. college, the café" value="${esc(f.bestContext||'')}" aria-label="Season or setting">`:''}
     <p class="note">Where they live, groups and tags (Tempered, Soulmate, Dormant) are on ${esc(f.name)}’s page under About.</p>
@@ -1307,7 +1411,7 @@ function sheetEdit(el,f){
     <p class="note">Automatic follows More → Color people by.</p>
     <label class="f" for="fBday">Birthday</label><input type="date" id="fBday" value="${esc(f.birthday||'')}">
     <label class="f" for="fMet">How you met</label><input type="text" id="fMet" value="${esc(f.met||'')}">
-    <p class="note">Notes, ask-about items and your own fields are on ${esc(f.name)}’s main page under Remember.</p>
+    <p class="note">Notes and ask-about items are on ${esc(f.name)}’s main page under Remember.</p>
   </div>
   <div class="acts" style="margin:var(--s5) 0;justify-content:center"><button class="btn danger" data-act="delFriend" data-id="${f.id}">${ui.arm===f.id?'Tap again to delete '+esc(f.name):'Delete '+esc(f.name)}</button></div></div>`;
   el.querySelectorAll('input[name=eTier]').forEach(r=>r.onchange=()=>{const before=tierIdx(f);setTier(f,r.value);render();
@@ -1496,6 +1600,14 @@ function recPath(p){
   return'talk';
 }
 function openerFor(path,f,p){
+  if(isAr()){const w=(p.what||'').trim()||'ما حدث';return{
+   clarify:`مرحبًا، هل يمكنني أن أتأكد من أمر معك؟ حين ${w}، لم أكن متأكدًا مما قصدتَه. كيف رأيتَ الأمر؟`,
+   talk:`مرحبًا، هناك أمر يشغل بالي، وأفضّل أن نتحدث عنه بدل أن أتركه. هل لديك وقت ${p.when?'يوم '+fmtDate(p.when):'قريبًا'}؟`,
+   apologize:`كنتُ أفكر في ${w}. أنا آسف. لم يكن ذلك منصفًا لك. هل هناك ما يساعد؟`,
+   boundary:`صداقتنا تهمني، لذلك أريد أن أكون صريحًا بشأن أمر يتكرر: ${w}. هذا صعب عليّ. من الآن، أحتاج إلى ___.`,
+   expect:`أدركتُ أن أمرًا يهمني أكثر مما قلت: ___. هل يناسبك ذلك؟`,
+   time:`أفكر فيك. لا داعي للرد الآن؛ يسعدني أن نلتقي حين تهدأ الأمور.`,
+   letgo:`(ملاحظة لنفسي) أختار أن أترك هذا لأن ___. إن عاد، سأختار طريقًا آخر.`}[path]}
   const w=(p.what||'').trim()||'what happened';
   return{
    clarify:`Hey, can I check something with you? When ${w}, I wasn’t sure what you meant. How did you see it?`,
@@ -1630,7 +1742,7 @@ function sheetIntro(el){
 /* ---------- render ---------- */
 function flash(x){if(!x)return;x.classList.add('saved');setTimeout(()=>x.classList.remove('saved'),1400)}
 function render(){
-  applyTheme();
+  applyTheme();applyLang();
   hintShown=false;
   const v={reach:vReach,people:vPeople,guide:vGuide,more:vMore}[ui.view]||vReach;
   $('#view').innerHTML=(window.TOUR_DEMO?'<div class="demo-banner">Sample people for the tour. Your own orbit comes back when it ends.</div>':'')+v();renderTabs();
@@ -1638,7 +1750,7 @@ function render(){
   document.querySelectorAll('[data-timing]').forEach(x=>x.onchange=()=>{S.settings.timing[x.dataset.timing]=Math.max(0,parseInt(x.value,10)||0);saveSettings();flash(x)});
   const dc=$('#dailyCap');if(dc)dc.onchange=()=>{S.settings.dailyCap=Math.max(1,parseInt(dc.value,10)||5);saveSettings();flash(dc);renderTabs()};
   const rf=$('#restoreFile');if(rf)rf.onchange=()=>{const fl=rf.files[0];if(!fl)return;fl.text().then(t=>{$('#restore').value=t;toast('Backup loaded. Tap Merge in or Replace everything.')})};
-  document.querySelectorAll('[data-tier]').forEach(x=>x.onchange=()=>{const t=tiers().find(t=>t.key===x.dataset.tier);if(!t)return;const fld=x.dataset.field;t[fld]=fld==='cadence'?Math.max(0,parseInt(x.value,10)||0):x.value;saveSettings();flash(x)});
+  document.querySelectorAll('[data-tier]').forEach(x=>x.onchange=()=>{const t=S.settings.tiers.find(t=>t.key===x.dataset.tier);if(!t)return;const fld=x.dataset.field;t[fld]=fld==='cadence'?Math.max(0,parseInt(x.value,10)||0):x.value;saveSettings();flash(x)});
   document.querySelectorAll('#view [data-gf]').forEach(x=>x.onchange=()=>{const g=S.settings.groups.find(g=>g.id===x.dataset.g);if(!g)return;const k=x.dataset.gf;
     if(k==='cadence'){const n=x.value===''?null:Math.max(0,parseInt(x.value,10)||0);if(n===0){g.off=true;g.cadence=null}else{g.cadence=n;g.off=false}}else if(k==='off')g.off=x.checked;else if(k==='name'){if(x.value.trim())g.name=x.value.trim()}else g[k]=x.value;saveSettings();const id=x.id;render();flash($('#'+id));const d=$('#'+id)&&$('#'+id).closest('details');if(d)d.open=true});
   const cb=$('#colorBy');if(cb)cb.onchange=()=>{S.settings.colorBy=cb.value;saveSettings();render()};
@@ -1665,7 +1777,11 @@ document.addEventListener('click',e=>{
   case 'intro':return openSheet({type:'intro',step:0});
   case 'hint':dismissHint(a.dataset.id);a.closest('.hint').remove();return;
   case 'hintsReset':S.settings.hints=[];saveSettings();toast('Tips will show again');return;
-  case 'filter':ui.filter=a.dataset.k;render();if(S_&&S_.type==='orbit')renderSheet();return;
+  case 'filter':{const inSheet=!!a.closest('#sheet');const box=inSheet?$('#sheet'):document;const rows=[...box.querySelectorAll('#pfilters .chips')].map(r=>r.scrollLeft);const y=window.scrollY,sy=$('#sheet').scrollTop;
+    ui.filter=a.dataset.k;render();if(S_&&S_.type==='orbit')renderSheet();
+    const nr=[...box.querySelectorAll('#pfilters .chips')];nr.forEach((r,i)=>{r.scrollLeft=rows[i]||0});window.scrollTo(0,y);$('#sheet').scrollTop=sy;
+    const on=box.querySelector(`#pfilters [data-k="${CSS.escape(ui.filter)}"]`);if(on){const r=on.parentElement,b=on.getBoundingClientRect(),pr=r.getBoundingClientRect();if(b.left<pr.left||b.right>pr.right)r.scrollLeft+=(b.left+b.width/2)-(pr.left+pr.width/2)}
+    return}
   case 'theme':S.settings.theme=a.dataset.v;saveSettings();render();return;
   case 'orbitNames':S.settings.orbitNames=!S.settings.orbitNames;saveSettings();render();return;
   case 'orbitBig':return openSheet({type:'orbit'});
@@ -1678,6 +1794,8 @@ document.addEventListener('click',e=>{
   case 'revLog':{const f=F();if(!f)return;const c={id:rid(),date:todayISO(),who:a.dataset.who,mode:'Other',note:''};f.contacts=(f.contacts||[]).concat([c]);saveFriend(f);S_.done[f.id]=a.dataset.who;renderSheet();render();toast(`Logged ${esc(f.name)}`,()=>{f.contacts=f.contacts.filter(x=>x.id!==c.id);saveFriend(f);delete S_.done[f.id];renderSheet();render()});return}
   case 'revDone':S.settings.lastReview=todayISO();saveSettings();closeSheet();toast('See you next week');return;
   case 'jump':{const t=document.getElementById(a.dataset.t);if(t){t.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});const h2=t.querySelector('h2');if(h2){h2.tabIndex=-1;h2.focus({preventScroll:true})}}return}
+  case 'lang':S.settings.lang=a.dataset.v==='ar'?'ar':'en';saveSettings();langChanged();return;
+  case 'ladderNames':S.settings.ladderNames=a.dataset.v==='arabic'?'arabic':'english';saveSettings();render();return;
   case 'homeOk':S.settings.homeNote=true;saveSettings();render();return;
   case 'bnTog':{const on=!document.querySelector('#sheet .tierpick').classList.contains('showbn');document.querySelectorAll('#sheet .tierpick').forEach(x=>x.classList.toggle('showbn',on));a.textContent=on?'Hide the big-news test':'Show the big-news test for each';return}
   case 'grpTog':{const f=F();if(!f)return;const g=a.dataset.g;const L=f.groups||[];f.groups=L.includes(g)?L.filter(x=>x!==g):L.concat([g]);saveFriend(f);renderSheet();render();return}
@@ -1899,8 +2017,37 @@ const Tour=(()=>{
 })();
 function route(){if(Tour.running)return;let h=location.hash.slice(1);if(h==='log'){ui.peopleMode='recent';h='people';history.replaceState(null,'','#people')}ui.view=TABS.some(t=>t[0]===h)?h:'reach';ui.arm=null;render();window.scrollTo(0,0)}
 window.addEventListener('hashchange',route);
+/* ---------- Arabic interface: translates the English UI as it renders (dictionary in ar.js) ---------- */
+const I18N=window.ORBIT_AR||{t:{},b:{},p:[]};
+const I18N_SKIP='textarea,input,script,style,.av,.arw,[data-noi18n]';
+function arOne(s){const t=I18N.t[s];if(t!=null)return t;for(const [re,fn] of I18N.p){const m=s.match(re);if(m)return typeof fn==='function'?fn(m):s.replace(re,fn)}return null}
+function arLookup(s){if(window.NO_I18N)return null;let m;const ex=I18N.t[s];if(ex!=null)return ex;
+  if(m=s.match(/^· (.+)$/)){const q=arLookup(m[1]);return q!=null?'· '+q:null}
+  if(!s.includes(' · ')){const r=arOne(s);if(r!=null)return r}
+  if(s.includes(' · ')){const ps=s.split(' · ');const out=ps.map(x=>arLookup(x)??x);return out.some((x,i)=>x!==ps[i])?out.join(' · '):null}
+  if(m=s.match(/^([\u0600-\u06FF][^A-Za-z]*?[.:،]\s*)([A-Z].*)$/)){const q=arLookup(m[2]);if(q!=null)return m[1]+q}
+  if(s.includes(', ')){const ps=s.split(', ');if(ps.length>=2&&/[\u0600-\u06FF]/.test(ps[1]))return ps.map((x,i)=>i?(arOne(x)??x):x).join('، ')}
+  return null}
+const normH=s=>s.replace(/\s+/g,' ').trim();
+function arText(n){const v=n.nodeValue;const t=v.trim();if(!t||/^[\d\s·.,:%+\-–—()‹›✕×]*$/.test(t))return;const p=n.parentElement;if(p&&p.closest(I18N_SKIP))return;const r=arLookup(t);if(r!=null&&r!==t){if(n.__en==null)n.__en=v;n.nodeValue=v.replace(t,r)}}
+function arAttrs(el){for(const k of ['placeholder','aria-label','title']){const v=el.getAttribute&&el.getAttribute(k);if(!v)continue;const r=arLookup(v.trim());if(r!=null&&r!==v){if(!el.hasAttribute('data-en-'+k))el.setAttribute('data-en-'+k,v);el.setAttribute(k,r)}}}
+function arTranslate(root){
+  if(!isAr()||window.NO_I18N||!root)return;
+  if(root.nodeType===3){arText(root);return}
+  if(root.nodeType!==1||root.closest&&root.closest('textarea,script,style'))return;
+  const els=[root,...root.querySelectorAll('*')];
+  for(const el of els){if(!el.isConnected&&el!==root)continue;if(el.children.length&&!el.closest(I18N_SKIP)&&!el.querySelector('input,select,textarea,details')){const b=I18N.b[normH(el.innerHTML)];if(b!=null){el.innerHTML=b;}}}
+  for(const el of [root,...root.querySelectorAll('*')])arAttrs(el);
+  const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let n;while(n=w.nextNode())arText(n);
+}
+function arRestore(){document.querySelectorAll('*').forEach(el=>{for(const k of ['placeholder','aria-label','title']){const o=el.getAttribute('data-en-'+k);if(o!=null){el.setAttribute(k,o);el.removeAttribute('data-en-'+k)}}});const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let n;while(n=w.nextNode())if(n.__en!=null){n.nodeValue=n.__en;n.__en=null}}
+let arBusy=false;
+const arObs=new MutationObserver(ms=>{if(!isAr()||arBusy)return;arBusy=true;try{for(const m of ms){if(m.type==='characterData')arText(m.target);else if(m.type==='attributes')arAttrs(m.target);else m.addedNodes.forEach(arTranslate)}}finally{arObs.takeRecords();arBusy=false}});
+arObs.observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['placeholder','aria-label','title']});
+function langChanged(){applyLang();if(isAr())arTranslate(document.body);else arRestore();render();if(ui.sheet)renderSheet();renderTabs()}
 {const t=$('#toast');['mouseenter','focusin'].forEach(e=>t.addEventListener(e,toastHold));['mouseleave','focusout'].forEach(e=>t.addEventListener(e,()=>{if(t.classList.contains('show'))toastArm(Math.max(4000,toastMs))}))}
 migrateFields();
+if(isAr())arTranslate(document.body);
 route();
 initSync();
 if(!S.settings.onboarded)setTimeout(()=>{if(!S.settings.onboarded&&!ui.sheet)openSheet({type:'intro',step:0})},IN_CLAUDE?1500:300);
