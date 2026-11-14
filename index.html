@@ -409,6 +409,9 @@ const DEFAULT_TIERS=[
   test:"You'd call them that day, and they'd show up if you needed them.",ex:""}
 ];
 DEFAULT_TIERS.forEach(t=>{t.desc=t.summary+' '+['Contact: '+t.contact,'Knowing: '+t.knowing,'Asking: '+t.asking,'Effort: '+t.effort].join(' ')});
+/* From Newt's essay "Definitions & Hierarchy of Friendship" (bnewt.com): Aristotle's three kinds of friendship */
+const KINDS3=[['utility','Utility','what they do for you, or you for them'],['pleasure','Pleasure','enjoying each other'],['virtue','Virtue','who they actually are']];
+const TIER_KIND={acq:'Usually utility.',casual:'Usually utility or pleasure.',friend:'Utility, pleasure or virtue.',good:'Often a mix of utility, pleasure and virtue.',homie:'Usually all three: utility, pleasure and virtue.'};
 const DIMS=[['contact','Contact','why and how you see each other'],['knowing','Knowing','how well you know each other'],['asking','Asking','what you could fairly ask of them'],['effort','Effort','who starts things']];
 const EXPECT={
  acq:["A friendly hello","Small favors in the shared setting"],
@@ -443,6 +446,8 @@ DEFAULT_TIERS.forEach(t=>{t.expect=EXPECT[t.key].join('\n');t.notyet=NOTYET[t.ke
 const MARKERS=[
  {key:'tempered',name:'Tempered',short:"Tested by time and hard seasons",desc:"The friendship has been through hard seasons (distance, conflict, big life changes) and you both kept choosing it. Like tempered glass or steel, it's stronger for the heating and cooling."},
  {key:'soulmate',name:'Platonic soulmate',short:"It clicked right away",desc:"It clicked right away and it feels like you've known each other for years. This is about fit, not history: someone you met last month can be a soulmate while still being a Friend on the ladder. Soulmate + Tempered is an earned platonic soulmate."},
+ {key:'kindred',name:'Kindred spirit',short:"Clicked fast, but life kept you apart",desc:"Someone you connected with so well, so fast, but for one reason or another you had to miss each other. The ember that could light a platonic soulmate friendship."},
+ {key:'unicorn',name:'Unicorn',short:"You keep crossing paths but don't really know them",desc:"Someone you see everywhere because your schedules happen to line up, but you don't really know them, and maybe haven't even met. Usually a stranger or an acquaintance."},
  {key:'dormant',name:'Dormant',short:"Close once, quiet for now; pauses reminders",desc:"Someone you were close to but aren't in regular touch with right now (moved away, a busy season). Their tier stays as the closeness you had; reminders pause."}
 ];
 const MODE_AR_OF={'Text':'رسالتك','Call':'مكالمتك','In person':'لقائك','Video':'مكالمة الفيديو','Social media':'رسالتك','Letter / card':'بطاقتك','Other':'تواصلك'};
@@ -660,6 +665,7 @@ function replyStats(f){
 }
 function replyWords(f){const r=replyStats(f);if(r.n<2)return'';if(isAr())return `ردّ على ${r.ans} من آخر ${nAr(r.n,W_MSGS)}${r.lag!=null&&r.ans?` · عادةً ${r.lag===0?'في اليوم نفسه':'خلال '+nAr(r.lag,W_DAYS)}`:''}`;return `They answered ${r.ans} of your last ${r.n}${r.lag!=null&&r.ans?` · usually ${r.lag===0?'the same day':'within '+r.lag+' day'+(r.lag>1?'s':'')}`:''}`}
 function extrasText(c){const x=[];const d=DEPTH.find(v=>v[0]===c.depth);if(d)x.push(d[1]);const fe=FEEL.find(v=>v[0]===c.feel);if(fe)x.push(fe[1]);
+  if(c.opened)x.push({me:'you opened up',them:'they opened up',both:'you both opened up'}[c.opened]+(c.resp==='yes'?', and it was met':c.resp==='no'?', not really met':''));
   const A=isAr();
   if(c.who==='me'&&c.reply==='waiting')x.push(A?'بانتظار الرد':'waiting on a reply');else if(c.reply==='replied')x.push((A?'ردّ':'they replied')+(c.replyDate?(c.replyDate===c.date?(A?' في اليوم نفسه':' same day'):' '+fmtDate(c.replyDate)):''));else if(c.reply==='none')x.push(A?'لا رد':'no reply');
   return x.join(' · ')}
@@ -867,6 +873,8 @@ function tagsHTML(f){
   else if(f.best==='temporal')h+=`<span class="tag bf">${bfName()}${f.bestContext?' · '+esc(f.bestContext):' of a season'}</span>`;
   if(f.soulmate)h+='<span class="tag">Soulmate</span>';
   if(f.tempered)h+='<span class="tag">Tempered</span>';
+  if(f.kindred)h+='<span class="tag">Kindred spirit</span>';
+  if(f.unicorn)h+='<span class="tag">Unicorn</span>';
   if(f.dormant)h+='<span class="tag">Dormant</span>';
   groupsOf(f).filter(g=>g.id!=='near').forEach(g=>{h+=`<span class="tag"><i class="gdot" style="background:${g.color||'#8B877E'}"></i>${esc(g.name)}</span>`});
   return h?`<span class="tags">${h}</span>`:'';
@@ -1031,7 +1039,7 @@ function filterDefs(){
   const c=[['all','All']];
   S.settings.groups.forEach(g=>c.push(['g:'+g.id,g.name,g.color]));
   c.push(['sep']);tiersTop().forEach(t=>c.push([t.key,t.name]));
-  c.push(['best',bfName(1)],['soulmate','Soulmates'],['tempered','Tempered'],['dormant','Dormant']);
+  c.push(['best',bfName(1)],['soulmate','Soulmates'],['tempered','Tempered'],['kindred','Kindred spirits'],['unicorn','Unicorns'],['dormant','Dormant']);
   return c;
 }
 function filterChips(){const fl=ui.filter;
@@ -1043,7 +1051,7 @@ function filtered(){
   if(q)list=list.filter(f=>(f.name+' '+(f.notes||'')+' '+(f.met||'')).toLowerCase().includes(q));
   const fl=ui.filter||'all';
   if(fl==='best')list=list.filter(f=>f.best);
-  else if(['soulmate','tempered','dormant'].includes(fl))list=list.filter(f=>f[fl]);
+  else if(['soulmate','tempered','kindred','unicorn','dormant'].includes(fl))list=list.filter(f=>f[fl]);
   else if(fl.startsWith('g:'))list=list.filter(f=>(f.groups||[]).includes(fl.slice(2)));
   else if(fl!=='all')list=list.filter(f=>f.tier===fl);
   return list;
@@ -1101,12 +1109,16 @@ function arabicLadderHTML(){
 }
 function vGuide(){
   let h=`<p class="lede">A ladder for how close a friendship is, plus a few tags that describe it in other ways. It’s a map, not a ranking of anyone’s worth, and people move both directions over time.</p>
-  <nav class="toc" aria-label="On this page">${[['g-ladder','The ladder'],['g-arabic','The Arabic ladder'],['g-best','Best friend'],['g-tags','Tags'],['g-connect','How people connect'],['g-wrong','When something goes wrong'],['g-expect','Setting expectations'],['g-remember','Good to remember']].map(([id,l])=>`<button class="linkbtn" data-act="jump" data-t="${id}">${l}</button>`).join('')}</nav>
+  <nav class="toc" aria-label="On this page">${[['g-why','Why a ladder'],['g-ladder','The ladder'],['g-arabic','The Arabic ladder'],['g-best','Best friend'],['g-tags','Tags'],['g-kinds','Three kinds of friendship'],['g-close','How closeness grows'],['g-connect','How people connect'],['g-wrong','When something goes wrong'],['g-expect','Setting expectations'],['g-remember','Good to remember']].map(([id,l])=>`<button class="linkbtn" data-act="jump" data-t="${id}">${l}</button>`).join('')}</nav>
   <div class="orbitbox">${guideOrbit()}</div>
+  <section class="sec" id="g-why"><h2>Why a ladder</h2><div class="prose" style="margin-top:var(--s3)">
+   <p>This ladder started with Newt, who made Orbit. He grew up in a small mountain town with eight people in his graduating class, and knew everything about all of them. In college he burned out trying to know everyone that well and give every person the same priority, stranger or best friend.</p>
+   <p>The ladder is how he sorted it out: different relationships, different levels, and time spent to match. You don’t need to add everyone to Orbit. Start with the people you want to keep up with.</p>
+   <p>It describes how things are. It doesn’t prescribe how they should be. Use the words that fit your life.</p></div></section>
   <section class="sec" id="g-ladder"><h2>The ladder</h2><p class="sub">Every tier is described the same four ways: <b>Contact</b> (why and how you see each other), <b>Knowing</b> (how well you know each other), <b>Asking</b> (what you could fairly ask of them) and <b>Effort</b> (who starts things). Each step up adds one thing: chosen, then planned, then go-to, then family. The <b>big-news test</b> under each tier asks: if something big happened to you, good or bad, what would happen with this person?</p>`;
   tiersTop().forEach(t=>{
     const n=S.friends.filter(f=>f.tier===t.key).length;
-    h+=`<div class="rung"><h3>${esc(t.name)}${t.ar&&!isAr()?` <span class="arw" lang="ar">${t.ar.v}</span>`:''} <small>${n?n+' '+(n===1?'person':'people')+' · ':''}${t.cadence?'reminder every '+t.cadence+' days':'no reminder'}</small></h3>${tierDef(t)}${t.test?`<div class="test"><b>Big-news test:</b> ${esc(t.test)}</div>`:''}${t.ex?`<p class="small muted" style="margin-top:var(--s2)">Examples: ${esc(t.ex)}</p>`:''}
+    h+=`<div class="rung" data-k="${t.key}"><h3>${esc(t.name)}${t.ar&&!isAr()?` <span class="arw" lang="ar">${t.ar.v}</span>`:''} <small>${n?n+' '+(n===1?'person':'people')+' · ':''}${t.cadence?'reminder every '+t.cadence+' days':'no reminder'}</small></h3>${tierDef(t)}${t.test?`<div class="test"><b>Big-news test:</b> ${esc(t.test)}</div>`:''}${TIER_KIND[t.key]?`<p class="small" style="margin-top:var(--s2)"><span class="muted">Kind of friendship:</span> ${esc(TIER_KIND[t.key])}</p>`:''}${t.ex?`<p class="small muted" style="margin-top:var(--s2)">Examples: ${esc(t.ex)}</p>`:''}
     <details class="fold"><summary>What to expect</summary><div class="exp"><h4>Fair to expect</h4><ul>${lines(t.expect).map(x=>`<li>${esc(x)}</li>`).join('')}</ul><h4>Not fair to expect yet</h4><ul>${notyetHTML(t)}</ul></div></details></div>`;
   });
   h+=`<div class="rung"><h3>Stranger</h3><p style="margin-top:6px">Someone you haven’t met. Not tracked here, but any stranger could end up anywhere on this ladder.</p></div></section>
@@ -1115,7 +1127,15 @@ function vGuide(){
   <ul><li><b>Overarching:</b> your best friend across your whole life right now. Only one at a time, and it can change.</li><li><b>Of a season:</b> the best friend of a setting or stretch of life (college, a job, a city). You can have one per context.</li></ul></div></section>
   <section class="sec" id="g-tags"><h2>Tags</h2><p class="sub">Tags sit on top of the ladder rather than on it, because they describe something other than closeness.</p>`;
   MARKERS.forEach(m=>{h+=`<div class="rung"><h3>${esc(m.name)}</h3><p style="margin-top:6px">${esc(m.desc)}</p></div>`});
-  h+=`</section><section class="sec" id="g-connect"><h2>How people connect</h2><div class="prose" style="margin-top:var(--s3)">
+  h+=`</section><section class="sec" id="g-kinds"><h2>Three kinds of friendship</h2><div class="prose" style="margin-top:var(--s3)">
+   <p>Aristotle (<i>Nicomachean Ethics</i>, Book VIII) noticed that we love friends for different reasons:</p>
+   <ul><li><b>Utility:</b> what they do for you, or you for them, like a coworker who covers your shift.</li><li><b>Pleasure:</b> enjoying each other, like the friend you always laugh with.</li><li><b>Virtue:</b> who they actually are, and who you become around them.</li></ul>
+   <p>None is wrong. Closer tiers tend to mix all three. More time together doesn’t automatically make a better friendship; the reason you’re friends matters too.</p></div></section>
+  <section class="sec" id="g-close"><h2>How closeness grows</h2><div class="prose" style="margin-top:var(--s3)">
+   <p>Psychologists Harry Reis and Phillip Shaver found that closeness isn’t built by sharing alone. It’s sharing plus a response: you open up, and the other person shows up for it in a way that leaves you feeling understood, validated and cared for.</p>
+   <ul><li>Friends may not share much that’s vulnerable yet. The ones who do are more likely to move up.</li><li>Good friends share and respond well, both ways.</li><li>With Homies, you can trust them with very vulnerable things, and they handle it well.</li></ul>
+   <p>When you log a contact, you can note if someone opened up and whether the other showed up for it. Over time that shows up in Strength &amp; fit.</p></div></section>
+  <section class="sec" id="g-connect"><h2>How people connect</h2><div class="prose" style="margin-top:var(--s3)">
    <p>Attachment research suggests people tend to lean toward a few patterns in close relationships. Orbit uses plain names for them. They’re rough tendencies, not types or diagnoses, and the same person can look different with different people or under stress.</p>
    <ul>${Object.values(STYLES).map(v=>`<li><b>${v.name}:</b> ${v.signs}</li>`).join('')}</ul>
    <p>Knowing your own pattern and guessing theirs can explain a lot: why a slow reply stings, why someone goes quiet after a hard talk, or why a friendship feels effortless. Take the check in More → How you connect, and pick a pattern on anyone’s page.</p></div></section>
@@ -1214,7 +1234,7 @@ function vMore(){
    <div class="acts"><button class="btn" data-act="restore" data-mode="merge">Merge in</button><button class="btn danger" data-act="restore" data-mode="replace">${ui.arm==='replace'?'Tap again to replace everything':'Replace everything'}</button></div></section>
   <section class="sec"><h2>About</h2><div class="acts" style="margin-top:var(--s3)"><button class="btn primary" data-act="tour">Take the tour</button><button class="btn" data-act="intro">Replay the intro</button><button class="btn" data-act="hintsReset">Show tips again</button></div>
    <p class="note">Your orbit stays private: ${IN_CLAUDE?'it’s saved in your own Claude account space':'it’s saved on this device only, nothing is sent anywhere, and it’s protected by your phone’s lock'}. Fonts are bundled, so nothing loads from other sites.</p>
-   <p class="small muted" style="margin-top:var(--s4)">Orbit · v5.2 · Nov 11, 2026 · ${S.friends.length} ${S.friends.length===1?'person':'people'}</p></section>`;
+   <p class="small muted" style="margin-top:var(--s4)">Orbit · v5.3 · Nov 13, 2026 · ${S.friends.length} ${S.friends.length===1?'person':'people'}</p></section>`;
   return h;
 }
 /* ---------- sheets ---------- */
@@ -1350,6 +1370,9 @@ function sheetPerson(el,f){
   </details>
   <details class="fold ps-fold" ${(f.plans||[]).some(p=>p.status!=='resolved')?'open':''}><summary><h4>Understand this friendship</h4><span class="muted small">Reflect, work through something${enough?', strength and fit':''}</span></summary>
     <div class="acts" style="margin-top:var(--s2)"><button class="btn" data-act="reflect" data-id="${f.id}">Reflect on this friendship</button><button class="btn" data-act="repair" data-id="${f.id}">Work through something</button></div>
+    <label class="f">What kind of friendship is it?</label>
+    <div class="chips wrap" role="group" aria-label="Kind of friendship">${KINDS3.map(([k,l,d])=>{const on=(f.kinds||[]).includes(k);return `<button class="chip ${on?'on':''}" data-act="kindTog" data-id="${f.id}" data-k="${k}" aria-pressed="${on}" title="${esc(d)}">${l}</button>`}).join('')}</div>
+    <p class="note">Utility: ${esc(KINDS3[0][2])}. Pleasure: ${esc(KINDS3[1][2])}. Virtue: ${esc(KINDS3[2][2])}. Pick any. See the Guide.</p>
     <p class="note">Reflect checks an expectation against what’s really happening. Work through something builds a plan for a hard conversation.${f.lastCheck?` Last reflected ${fmtDate(f.lastCheck.date)}.`:''}</p>
     ${plansHTML(f)}
     ${enough?strengthHTML(f):`<p class="note">Strength and fit shows up after a few logged contacts.</p>`}
@@ -1391,7 +1414,7 @@ function sheetEdit(el,f){
     <label class="f">${bfName()}${arNames()&&!isAr()?` <span class="muted" style="font-weight:400">(best friend)</span>`:''}</label>
     <div class="seg" role="group" aria-label="Best friend">${[['','No'],['temporal','Of a season'],['overarching','Overarching']].map(([v,l])=>`<button data-act="best" data-id="${f.id}" data-v="${v}" class="${(f.best||'')===v?'on':''}" aria-pressed="${(f.best||'')===v}">${l}</button>`).join('')}</div>
     ${f.best==='temporal'?`<input type="text" id="fBestCtx" style="margin-top:var(--s2)" placeholder="Which season or setting? e.g. college, the café" value="${esc(f.bestContext||'')}" aria-label="Season or setting">`:''}
-    <p class="note">Where they live, groups and tags (Tempered, Soulmate, Dormant) are on ${esc(f.name)}’s page under About.</p>
+    <p class="note">Where they live, groups and tags (like Tempered or Dormant) are on ${esc(f.name)}’s page under About.</p>
   </div>
   <div class="ps"><h4>Timing</h4><p class="note" style="margin-top:0">A time set here beats their groups and tier.</p>
     <div>
@@ -1476,6 +1499,8 @@ function sheetCheckin(el,f){
   <label class="f" for="ciDate">Date</label><input type="date" id="ciDate" value="${c.date}" max="${todayISO()}">
   ${seg('depth',DEPTH,c.depth,'How deep did it go?')}
   ${seg('feel',FEEL,c.feel,'How did it feel?')}
+  ${seg('opened',[['me','I did'],['them','They did'],['both','Both']],c.opened||'','Did someone open up?')}
+  ${c.opened?seg('resp',[['yes','Yes'],['some','Somewhat'],['no','Not really']],c.resp||'',c.opened==='them'?'Did you show up for it?':'Did they show up for it?'):''}
   ${c.who==='me'?seg('reply',REPLY,c.reply||'',LIVE.includes(c.mode)?'Did they answer? (optional for calls and visits)':'Did they answer?'):''}
   ${c.reply==='replied'?`<label class="f" for="ciRd">Replied on</label><input type="date" id="ciRd" value="${c.replyDate||todayISO()}" min="${c.date}" max="${todayISO()}">`:''}
   <label class="f" for="ciNote">Note</label><textarea id="ciNote" placeholder="What you talked about, anything to follow up on">${esc(c.note||'')}</textarea>
@@ -1537,6 +1562,11 @@ function strengthSignals(f){
   const fe=(f.contacts||[]).filter(c=>c.feel).slice(-10);if(fe.length>=3){const g=fe.filter(c=>c.feel==='good').length,hd=fe.filter(c=>c.feel==='hard').length;if(g/fe.length>=.6)s.push('Most of your time together feels good.');if(hd/fe.length>=.4)w.push('Several check-ins felt off.')}
   const dp=(f.contacts||[]).filter(c=>c.depth).slice(-10);if(dp.length>=3&&dp.filter(c=>c.depth!=='quick').length/dp.length>=.5)s.push('Your conversations go past the surface.');
   const first=(f.contacts||[]).reduce((a,c)=>!a||c.date<a?c.date:a,f.created||null);if(first&&daysSince(first)>=365)s.push('Long history: since '+fmtDate(first)+'.');
+  const op=(f.contacts||[]).filter(c=>c.opened).slice(-12);
+  if(op.length>=2){const meOpen=op.filter(c=>c.opened!=='them'),met=meOpen.filter(c=>c.resp==='yes').length,miss=meOpen.filter(c=>c.resp==='no').length;
+    if(op.some(c=>c.opened!=='me')&&op.some(c=>c.opened!=='them'))s.push('You both open up to each other.');
+    else if(meOpen.length>=3&&!op.some(c=>c.opened!=='me'))w.push('You open up more than they do.');
+    if(met>=2&&met>miss)s.push('They show up when you open up.');else if(miss>=2)w.push('When you open up, it often isn’t met.')}
   if(f.tempered)s.push('Tested by hard seasons and still here.');
   const pl=f.plans||[];if(pl.some(p=>p.status==='resolved'&&p.outcome==='repaired'))s.push('You’ve worked through something hard together.');
   if(pl.some(p=>p.status==='open'))w.push('Something is still being worked through.');
@@ -1731,7 +1761,7 @@ function wrapT(t,x,yc,max){const w=t.split(' ');const L=[];let c='';w.forEach(x2
 function sheetIntro(el){
   const s=ui.sheet;s.step=s.step||0;
   const P=[
-   {h:'Welcome to your orbit',b:`<p>Orbit keeps track of the people in your life: how close you are, who reached out last, and what’s fair to expect.</p>${guideOrbit()}<p class="muted" style="margin-top:var(--s3)">Five rings, from Acquaintance on the outside to Homie closest to you. Closer means closer, not more important. Each step in adds one thing: <b>chosen</b>, <b>planned</b>, <b>go-to</b>, <b>family</b>. The Guide explains each one.</p>`},
+   {h:'Welcome to your orbit',b:`<p>Orbit keeps track of the people in your life: how close you are, who reached out last, and what’s fair to expect.</p><p>You don’t need to add everyone. Start with the people you want to keep up with.</p>${guideOrbit()}<p class="muted" style="margin-top:var(--s3)">Five rings, from Acquaintance on the outside to Homie closest to you. Closer means closer, not more important. Each step in adds one thing: <b>chosen</b>, <b>planned</b>, <b>go-to</b>, <b>family</b>. The Guide explains each one.</p>`},
    {h:'Two buttons, one habit',b:`<div class="logbtns" aria-hidden="true"><span class="btn primary">I reached out</span><span class="btn them">They did</span></div><p style="margin-top:var(--s4)">After any text, call or hangout, tap one. That’s the whole habit. Who starts matters: it’s how Orbit notices when one person is carrying a friendship.</p><p>Today shows a few people at a time, never a backlog.</p>`},
    {h:'Expectations, kindly',b:`<p>Every tier says what’s fair to expect and what isn’t yet. Write down what you expect from someone and check it: reasonable, said out loud, agreed on.</p>${toneBlock(1)}`}
   ];
@@ -1799,6 +1829,7 @@ document.addEventListener('click',e=>{
   case 'homeOk':S.settings.homeNote=true;saveSettings();render();return;
   case 'bnTog':{const on=!document.querySelector('#sheet .tierpick').classList.contains('showbn');document.querySelectorAll('#sheet .tierpick').forEach(x=>x.classList.toggle('showbn',on));a.textContent=on?'Hide the big-news test':'Show the big-news test for each';return}
   case 'grpTog':{const f=F();if(!f)return;const g=a.dataset.g;const L=f.groups||[];f.groups=L.includes(g)?L.filter(x=>x!==g):L.concat([g]);saveFriend(f);renderSheet();render();return}
+  case 'kindTog':{const f=F();if(!f)return;const k=a.dataset.k;const L=f.kinds||[];f.kinds=L.includes(k)?L.filter(x=>x!==k):L.concat([k]);saveFriend(f);renderSheet();return}
   case 'mkTog':{const f=F();if(!f)return;const k=a.dataset.k;f[k]=!f[k];saveFriend(f);renderSheet();render();if(k==='dormant'&&f.dormant)toast(`${esc(f.name)} is Dormant. Reminders are paused.`);return}
   case 'fColor':{const f=F();if(!f)return;f.color=a.dataset.v||'';saveFriend(f);renderSheet();render();return}
   case 'exChk':{const f=F();if(!f)return;const e=expectList(f).find(x=>x.id===a.dataset.e);if(!e)return;e[a.dataset.k]=!e[a.dataset.k];saveFriend(f);renderSheet();return}
@@ -1813,7 +1844,7 @@ document.addEventListener('click',e=>{
     addContact(f,{who:a.dataset.who,mode:S_.mode||lastMode(f),date:d,note});S_.logNote='';S_.logDate='';S_.detailsOpen=false;renderSheet();render();const ls=$('#logSec');if(ls)ls.classList.add('flash');return}
   case 'checkin':return openSheet({type:'checkin',id:a.dataset.id,cid:a.dataset.c});
   case 'ci':{const f=friend(S_.id);const c=f&&f.contacts.find(x=>x.id===S_.cid);if(!c)return;const k=a.dataset.k,v=a.dataset.v;
-    if(k==='depth'||k==='feel'){c[k]=c[k]===v?'':v}else if(k==='reply'){c.reply=c.reply===v?'':v;if(v==='replied'&&!c.replyDate)c.replyDate=todayISO()}else c[k]=v;
+    if(k==='depth'||k==='feel'||k==='opened'||k==='resp'){c[k]=c[k]===v?'':v;if(k==='opened'&&!c.opened)delete c.resp}else if(k==='reply'){c.reply=c.reply===v?'':v;if(v==='replied'&&!c.replyDate)c.replyDate=todayISO()}else c[k]=v;
     if(k==='who'){c.reply=c.who==='me'?defaultReply(c):''}if(k==='mode'&&c.who==='me'&&(!c.reply||c.reply==='waiting'))c.reply=defaultReply(c);
     saveFriend(f);renderSheet();render();return}
   case 'ciAsk':{const f=F();const i=$('#ciAsk');const v=i&&i.value.trim();if(!f||!v)return;f.followups=(f.followups||[]).concat([{id:rid(),text:v,done:false,date:todayISO()}]);saveFriend(f);i.value='';toast('Added to Ask about next time');render();return}

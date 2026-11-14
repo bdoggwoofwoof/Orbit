@@ -51,7 +51,7 @@ P=r"""[
 [/^What might be going on for (.+)\? You don’t have to agree with it; just imagine it\.$/,'ما الذي قد يمرّ به $1؟ لا يلزمك أن توافق؛ فقط تخيّل.'],
 [/^What were you expecting from (.+)\?$/,'ماذا كنتَ تتوقع من $1؟'],
 [/^When you reflected on (.+), you’d expected: “(.+)”\.$/,'حين تأملتَ بتاريخ $1، كنتَ قد توقعت: «$2».'],
-[/^Where they live, groups and tags \(Tempered, Soulmate, Dormant\) are on (.+)’s page under About\.$/,'مكان السكن والمجموعات والوسوم (مُجرَّب، توأم الروح، ساكن) في صفحة $1 تحت «عن».'],
+[/^Where they live, groups and tags \(like Tempered or Dormant\) are on (.+)’s page under About\.$/,'مكان السكن والمجموعات والوسوم (مثل «مُجرَّب» أو «ساكن») في صفحة $1 تحت «عن».'],
 [/^You reached out over (\d+) days ago\. Did they answer\?$/,m=>`بادرتَ قبل أكثر من ${nAr(m[1],W_DAYS)}. هل ردّ؟`],
 [/^You started (\d+) of the last (\d+)\. Is this one mostly you carrying it\?$/,'بادرتَ في $1 من آخر $2. هل تحمل هذه الصداقة وحدك غالبًا؟'],
 [/^They started (\d+) of the last (\d+)\. Maybe be the one to reach out next\.$/,'بادر هو في $1 من آخر $2. ربما تكون أنت المبادر في المرة القادمة.'],
