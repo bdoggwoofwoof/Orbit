@@ -58,6 +58,8 @@ P=r"""[
 [/^Add something you expect from (.+)$/,'أضِف شيئًا تتوقعه من $1'],
 [/^Color (#\w+)$/,'اللون $1'],
 [/^Your orbit: (.+)\. Inner rings are closer friendships\.$/,'مدارك: $1. الحلقات الداخلية صداقات أقرب.'],
+[/^Your orbit: (.+)\. Inner rings are closer friendships\. Pinch or scroll to zoom, drag to move\.$/,'مدارك: $1. الحلقات الداخلية صداقات أقرب. قرّب بإصبعين أو بالتمرير، واسحب للتنقل.'],
+[/^How you met: (.+)$/,'كيف تعارفتما: $1'],
 [/^(.+)\. Change tier$/,'$1. تغيير الدرجة'],
 [/^With (.+):$/,'مع $1:'],
 [/^You \((.+)\) and (.+):$/,m=>`أنت (${arLookup(m[1].charAt(0).toUpperCase()+m[1].slice(1))??m[1]}) و${m[2]}:`],

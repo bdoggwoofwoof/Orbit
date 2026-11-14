@@ -35,3 +35,11 @@ T.update({
 "If it helps, you can mark the kind on someone’s page under Understand this friendship. It’s optional.":"إن كان ذلك مفيدًا، يمكنك تحديد النوع في صفحة الشخص تحت «افهم هذه الصداقة». هذا اختياري.",
 })
 T["Examples: Your closest friend from college, from work, or from church."]="أمثلة: أقرب صديق لك من الجامعة أو العمل أو الكنيسة."
+T.update({
+"When you met (optional)":"متى تعارفتما (اختياري)","When you met":"متى تعارفتما","Month":"الشهر","Day":"اليوم","Year":"السنة",
+"Add when you met":"أضِف متى تعارفتما",
+"Just the year is fine. Add the month or day if you remember.":"تكفي السنة. أضِف الشهر أو اليوم إن كنت تتذكّر.",
+"Just the year is fine. Add the month or day if you remember. Several at once all get the same date.":"تكفي السنة. أضِف الشهر أو اليوم إن كنت تتذكّر. عند إضافة عدة أشخاص يأخذون جميعًا التاريخ نفسه.",
+"Pinch or scroll to zoom, drag to move, double-tap to zoom in. Names appear as you zoom.":"قرّب بإصبعين أو بالتمرير، واسحب للتنقل، وانقر مرتين للتكبير. تظهر الأسماء كلما قرّبت.",
+"Zoom in":"تكبير","Zoom out":"تصغير","Fit the whole orbit":"عرض المدار كاملًا","Full screen":"ملء الشاشة","Exit full screen":"الخروج من ملء الشاشة","Close full screen":"إغلاق ملء الشاشة","Your orbit, full screen":"مدارك، ملء الشاشة",
+})
