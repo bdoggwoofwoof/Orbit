@@ -388,7 +388,7 @@ nav.tabs .badge{position:absolute;top:5px;left:calc(50% + 6px);background:var(--
 
 /* ---------- model defaults ---------- */
 /* Each tier is defined on the same four things: Contact, Knowing, Asking, Effort.
-   Each step up adds one thing: chosen → planned → go-to → family. */
+   Each step up adds one thing: chosen → planned → go-to → your person in a group. */
 const DEFAULT_TIERS=[
  {key:'acq',name:'Acquaintance',cadence:0,summary:'You share a place.',
   contact:'By circumstance only.',knowing:'Names and surface facts.',asking:'Small favors in that setting.',effort:'Nobody plans anything.',
@@ -404,14 +404,13 @@ const DEFAULT_TIERS=[
  {key:'good',name:'Good friend',cadence:10,summary:"You're each other's go-to people.",
   contact:"Regular, and they're who you text when you want company.",knowing:'How they work: what stresses them and what actually helps them.',asking:'Real support in a hard week.',effort:'Steady and mutual.',
   test:"They're one of the first few people you'd tell, and they'd check in after.",ex:""},
- {key:'homie',name:'Homie',cadence:7,summary:"They're part of your everyday life, like family.",
-  contact:'Woven into normal life; no occasion needed.',knowing:'Their people, history and patterns.',asking:'Almost anything, even at 2am.',effort:'You show up for each other without being asked.',
-  test:"You'd call them that day, and they'd show up if you needed them.",ex:""}
+ {key:'homie',name:'Homie',cadence:7,summary:"Your best friend in a specific group.",
+  contact:"Woven into that group's life; no occasion needed.",knowing:'Their people, history and patterns.',asking:'Almost anything, even at 2am.',effort:'You show up for each other without being asked.',
+  test:"You'd call them that day, and they'd show up if you needed them.",ex:"Your closest friend from college, from work, or from church."}
 ];
 DEFAULT_TIERS.forEach(t=>{t.desc=t.summary+' '+['Contact: '+t.contact,'Knowing: '+t.knowing,'Asking: '+t.asking,'Effort: '+t.effort].join(' ')});
 /* From Newt's essay "Definitions & Hierarchy of Friendship" (bnewt.com): Aristotle's three kinds of friendship */
 const KINDS3=[['utility','Utility','what they do for you, or you for them'],['pleasure','Pleasure','enjoying each other'],['virtue','Virtue','who they actually are']];
-const TIER_KIND={acq:'Usually utility.',casual:'Usually utility or pleasure.',friend:'Utility, pleasure or virtue.',good:'Often a mix of utility, pleasure and virtue.',homie:'Usually all three: utility, pleasure and virtue.'};
 const DIMS=[['contact','Contact','why and how you see each other'],['knowing','Knowing','how well you know each other'],['asking','Asking','what you could fairly ask of them'],['effort','Effort','who starts things']];
 const EXPECT={
  acq:["A friendly hello","Small favors in the shared setting"],
@@ -432,6 +431,7 @@ const NEVER=["Reading your mind","Being available all the time","Never forgettin
 const EXCHECK=[['reasonable','Reasonable'],['said','Clearly said'],['agreed','Agreed on']];
 /* Text from earlier versions: if a saved tier still has it unchanged, it gets the new wording. */
 const OLD_TEXT={desc:[
+ "They're part of your everyday life, like family. Contact: Woven into normal life; no occasion needed. Knowing: Their people, history and patterns. Asking: Almost anything, even at 2am. Effort: You show up for each other without being asked.",
  "You know their name and a little about them, and they know a little about you. You see each other because of circumstance, not plans.",
  "You enjoy each other and talk past small talk, but mostly inside a shared setting like class, work, church or a team. Plans just the two of you are rare or new.",
  "You make plans on purpose and see them fairly often. You know the outline of their story and some of what they value, and you're learning how they do relationships.",
@@ -440,7 +440,8 @@ const OLD_TEXT={desc:[
  test:["If the shared place ended, you'd lose touch without noticing.","You'd miss them if the place ended, but staying in touch would take effort.","You've hung out just the two of you, and they've started some of it.","You'd notice something was wrong before they told you, and they'd notice with you.","In an emergency you'd call them, and they'd come.","You'd say hi, but you wouldn't text them.","You'd sit with them by choice, but you haven't hung out outside the shared place yet.","You could call them on the phone and it wouldn't be weird.","You'd notice something was wrong before they told you.","You'd win a trivia game about them, and you'd call them at 2am."],
  expect:["A friendly hello\nBasic courtesy\nEventually remembering your name","Warm conversation when you're in the same place\nSaying yes sometimes to something tied to that shared setting","Replying within a few days\nSaying yes to plans sometimes\nStarting plans or texts some of the time\nRemembering the big things you've told them","Reaching out on their own\nNoticing when you're off\nShowing up for big moments when they can\nBeing honest with you, kindly","Showing up when things are hard\nAn open door\nKnowing how you work\nWorking through conflict instead of disappearing"],
  knowing:["How they work, including when they're off and what helps."],
- summary:["You rely on each other."],
+ summary:["You rely on each other.","They're part of your everyday life, like family."],
+ contact:["Woven into normal life; no occasion needed."],
  notyet:["Texting back\nInvitations\nRemembering details about you\nSupport in hard times","Them starting plans\nChecking in on you\nKnowing your big stuff\nChoosing you over their other plans","Dropping everything for you\nKnowing what you need without being told\nBeing your main support","Being available all the time\nNever forgetting things\nBeing only your friend","Reading your mind every time\nBeing your only support\nNever having other priorities"]};
 DEFAULT_TIERS.forEach(t=>{t.expect=EXPECT[t.key].join('\n');t.notyet=NOTYET[t.key].join('\n')});
 const MARKERS=[
@@ -500,7 +501,7 @@ function defaultSettings(){return {tiers:JSON.parse(JSON.stringify(DEFAULT_TIERS
 function normalizeSettings(s){
   const d=defaultSettings(); if(!s||typeof s!=='object')return d;
   const st=Array.isArray(s.tiers)?s.tiers:[];
-  const tiers=d.tiers.map(t=>{const sv=Object.assign({},st.find(x=>x&&x.key===t.key)||{});Object.keys(OLD_TEXT).forEach(k=>{if(sv[k]!=null&&OLD_TEXT[k].includes(sv[k]))delete sv[k]});['summary','contact','knowing','asking','effort'].forEach(k=>{if(sv[k]==='')delete sv[k]});return Object.assign({},t,sv)});
+  const tiers=d.tiers.map(t=>{const sv=Object.assign({},st.find(x=>x&&x.key===t.key)||{});Object.keys(OLD_TEXT).forEach(k=>{if(sv[k]!=null&&OLD_TEXT[k].includes(sv[k]))delete sv[k]});['summary','contact','knowing','asking','effort','ex'].forEach(k=>{if(sv[k]==='')delete sv[k]});return Object.assign({},t,sv)});
   return {
     tiers,
     fields:Array.isArray(s.fields)?s.fields.filter(x=>x&&x.id&&x.name):[],
@@ -1115,10 +1116,10 @@ function vGuide(){
    <p>This ladder started with Newt, who made Orbit. He grew up in a small mountain town with eight people in his graduating class, and knew everything about all of them. In college he burned out trying to know everyone that well and give every person the same priority, stranger or best friend.</p>
    <p>The ladder is how he sorted it out: different relationships, different levels, and time spent to match. You don’t need to add everyone to Orbit. Start with the people you want to keep up with.</p>
    <p>It describes how things are. It doesn’t prescribe how they should be. Use the words that fit your life.</p></div></section>
-  <section class="sec" id="g-ladder"><h2>The ladder</h2><p class="sub">Every tier is described the same four ways: <b>Contact</b> (why and how you see each other), <b>Knowing</b> (how well you know each other), <b>Asking</b> (what you could fairly ask of them) and <b>Effort</b> (who starts things). Each step up adds one thing: chosen, then planned, then go-to, then family. The <b>big-news test</b> under each tier asks: if something big happened to you, good or bad, what would happen with this person?</p>`;
+  <section class="sec" id="g-ladder"><h2>The ladder</h2><p class="sub">Every tier is described the same four ways: <b>Contact</b> (why and how you see each other), <b>Knowing</b> (how well you know each other), <b>Asking</b> (what you could fairly ask of them) and <b>Effort</b> (who starts things). Each step up adds one thing: chosen, then planned, then go-to, then your person in a group. The <b>big-news test</b> under each tier asks: if something big happened to you, good or bad, what would happen with this person?</p>`;
   tiersTop().forEach(t=>{
     const n=S.friends.filter(f=>f.tier===t.key).length;
-    h+=`<div class="rung" data-k="${t.key}"><h3>${esc(t.name)}${t.ar&&!isAr()?` <span class="arw" lang="ar">${t.ar.v}</span>`:''} <small>${n?n+' '+(n===1?'person':'people')+' · ':''}${t.cadence?'reminder every '+t.cadence+' days':'no reminder'}</small></h3>${tierDef(t)}${t.test?`<div class="test"><b>Big-news test:</b> ${esc(t.test)}</div>`:''}${TIER_KIND[t.key]?`<p class="small" style="margin-top:var(--s2)"><span class="muted">Kind of friendship:</span> ${esc(TIER_KIND[t.key])}</p>`:''}${t.ex?`<p class="small muted" style="margin-top:var(--s2)">Examples: ${esc(t.ex)}</p>`:''}
+    h+=`<div class="rung" data-k="${t.key}"><h3>${esc(t.name)}${t.ar&&!isAr()?` <span class="arw" lang="ar">${t.ar.v}</span>`:''} <small>${n?n+' '+(n===1?'person':'people')+' · ':''}${t.cadence?'reminder every '+t.cadence+' days':'no reminder'}</small></h3>${tierDef(t)}${t.test?`<div class="test"><b>Big-news test:</b> ${esc(t.test)}</div>`:''}${t.ex?`<p class="small muted" style="margin-top:var(--s2)">Examples: ${esc(t.ex)}</p>`:''}
     <details class="fold"><summary>What to expect</summary><div class="exp"><h4>Fair to expect</h4><ul>${lines(t.expect).map(x=>`<li>${esc(x)}</li>`).join('')}</ul><h4>Not fair to expect yet</h4><ul>${notyetHTML(t)}</ul></div></details></div>`;
   });
   h+=`<div class="rung"><h3>Stranger</h3><p style="margin-top:6px">Someone you haven’t met. Not tracked here, but any stranger could end up anywhere on this ladder.</p></div></section>
@@ -1130,7 +1131,7 @@ function vGuide(){
   h+=`</section><section class="sec" id="g-kinds"><h2>Three kinds of friendship</h2><div class="prose" style="margin-top:var(--s3)">
    <p>Aristotle (<i>Nicomachean Ethics</i>, Book VIII) noticed that we love friends for different reasons:</p>
    <ul><li><b>Utility:</b> what they do for you, or you for them, like a coworker who covers your shift.</li><li><b>Pleasure:</b> enjoying each other, like the friend you always laugh with.</li><li><b>Virtue:</b> who they actually are, and who you become around them.</li></ul>
-   <p>None is wrong. Closer tiers tend to mix all three. More time together doesn’t automatically make a better friendship; the reason you’re friends matters too.</p></div></section>
+   <p>None is wrong, and any tier can be any mix. Closer friendships often include all three. More time together doesn’t automatically make a better friendship; the reason you’re friends matters too.</p><p>If it helps, you can mark the kind on someone’s page under Understand this friendship. It’s optional.</p></div></section>
   <section class="sec" id="g-close"><h2>How closeness grows</h2><div class="prose" style="margin-top:var(--s3)">
    <p>Psychologists Harry Reis and Phillip Shaver found that closeness isn’t built by sharing alone. It’s sharing plus a response: you open up, and the other person shows up for it in a way that leaves you feeling understood, validated and cared for.</p>
    <ul><li>Friends may not share much that’s vulnerable yet. The ones who do are more likely to move up.</li><li>Good friends share and respond well, both ways.</li><li>With Homies, you can trust them with very vulnerable things, and they handle it well.</li></ul>
@@ -1234,7 +1235,7 @@ function vMore(){
    <div class="acts"><button class="btn" data-act="restore" data-mode="merge">Merge in</button><button class="btn danger" data-act="restore" data-mode="replace">${ui.arm==='replace'?'Tap again to replace everything':'Replace everything'}</button></div></section>
   <section class="sec"><h2>About</h2><div class="acts" style="margin-top:var(--s3)"><button class="btn primary" data-act="tour">Take the tour</button><button class="btn" data-act="intro">Replay the intro</button><button class="btn" data-act="hintsReset">Show tips again</button></div>
    <p class="note">Your orbit stays private: ${IN_CLAUDE?'it’s saved in your own Claude account space':'it’s saved on this device only, nothing is sent anywhere, and it’s protected by your phone’s lock'}. Fonts are bundled, so nothing loads from other sites.</p>
-   <p class="small muted" style="margin-top:var(--s4)">Orbit · v5.3 · Nov 13, 2026 · ${S.friends.length} ${S.friends.length===1?'person':'people'}</p></section>`;
+   <p class="small muted" style="margin-top:var(--s4)">Orbit · v5.4 · Nov 13, 2026 · ${S.friends.length} ${S.friends.length===1?'person':'people'}</p></section>`;
   return h;
 }
 /* ---------- sheets ---------- */
@@ -1370,10 +1371,10 @@ function sheetPerson(el,f){
   </details>
   <details class="fold ps-fold" ${(f.plans||[]).some(p=>p.status!=='resolved')?'open':''}><summary><h4>Understand this friendship</h4><span class="muted small">Reflect, work through something${enough?', strength and fit':''}</span></summary>
     <div class="acts" style="margin-top:var(--s2)"><button class="btn" data-act="reflect" data-id="${f.id}">Reflect on this friendship</button><button class="btn" data-act="repair" data-id="${f.id}">Work through something</button></div>
-    <label class="f">What kind of friendship is it?</label>
-    <div class="chips wrap" role="group" aria-label="Kind of friendship">${KINDS3.map(([k,l,d])=>{const on=(f.kinds||[]).includes(k);return `<button class="chip ${on?'on':''}" data-act="kindTog" data-id="${f.id}" data-k="${k}" aria-pressed="${on}" title="${esc(d)}">${l}</button>`}).join('')}</div>
-    <p class="note">Utility: ${esc(KINDS3[0][2])}. Pleasure: ${esc(KINDS3[1][2])}. Virtue: ${esc(KINDS3[2][2])}. Pick any. See the Guide.</p>
     <p class="note">Reflect checks an expectation against what’s really happening. Work through something builds a plan for a hard conversation.${f.lastCheck?` Last reflected ${fmtDate(f.lastCheck.date)}.`:''}</p>
+    <p class="small muted" style="margin:var(--s3) 0 4px">Kind of friendship, if you want to mark it</p>
+    <div class="chips wrap" role="group" aria-label="Kind of friendship">${KINDS3.map(([k,l,d])=>{const on=(f.kinds||[]).includes(k);return `<button class="chip ${on?'on':''}" data-act="kindTog" data-id="${f.id}" data-k="${k}" aria-pressed="${on}" title="${esc(d)}">${l}</button>`}).join('')}</div>
+    <p class="note">Optional. The Guide explains utility, pleasure and virtue.</p>
     ${plansHTML(f)}
     ${enough?strengthHTML(f):`<p class="note">Strength and fit shows up after a few logged contacts.</p>`}
     <dl class="facts"><dt>Balance</dt><dd>${balanceWords(b)}${b.mutual?` <span class="muted small">· ${b.mutual} mutual</span>`:''}</dd>${replyWords(f)?`<dt>Replies</dt><dd>${replyWords(f)}</dd>`:''}</dl>
@@ -1761,7 +1762,7 @@ function wrapT(t,x,yc,max){const w=t.split(' ');const L=[];let c='';w.forEach(x2
 function sheetIntro(el){
   const s=ui.sheet;s.step=s.step||0;
   const P=[
-   {h:'Welcome to your orbit',b:`<p>Orbit keeps track of the people in your life: how close you are, who reached out last, and what’s fair to expect.</p><p>You don’t need to add everyone. Start with the people you want to keep up with.</p>${guideOrbit()}<p class="muted" style="margin-top:var(--s3)">Five rings, from Acquaintance on the outside to Homie closest to you. Closer means closer, not more important. Each step in adds one thing: <b>chosen</b>, <b>planned</b>, <b>go-to</b>, <b>family</b>. The Guide explains each one.</p>`},
+   {h:'Welcome to your orbit',b:`<p>Orbit keeps track of the people in your life: how close you are, who reached out last, and what’s fair to expect.</p><p>You don’t need to add everyone. Start with the people you want to keep up with.</p>${guideOrbit()}<p class="muted" style="margin-top:var(--s3)">Five rings, from Acquaintance on the outside to Homie closest to you. Closer means closer, not more important. Each step in adds one thing: <b>chosen</b>, <b>planned</b>, <b>go-to</b>, <b>your person in a group</b>. The Guide explains each one.</p>`},
    {h:'Two buttons, one habit',b:`<div class="logbtns" aria-hidden="true"><span class="btn primary">I reached out</span><span class="btn them">They did</span></div><p style="margin-top:var(--s4)">After any text, call or hangout, tap one. That’s the whole habit. Who starts matters: it’s how Orbit notices when one person is carrying a friendship.</p><p>Today shows a few people at a time, never a backlog.</p>`},
    {h:'Expectations, kindly',b:`<p>Every tier says what’s fair to expect and what isn’t yet. Write down what you expect from someone and check it: reasonable, said out loud, agreed on.</p>${toneBlock(1)}`}
   ];
