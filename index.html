@@ -337,6 +337,9 @@ nav.tabs .badge{position:absolute;top:5px;left:calc(50% + 6px);background:var(--
 /* ---------- toast (top, out of the way of + and tabs) ---------- */
 .toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top) + 10px);transform:translate(-50%,-14px);opacity:0;visibility:hidden;background:var(--surface);color:var(--ink);border:1px solid var(--rule);box-shadow:0 10px 30px rgba(0,0,0,.18);padding:10px 8px 10px 16px;border-radius:var(--r-md);display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;z-index:30;width:min(520px,94vw);font-size:var(--t-sm);transition:transform var(--dur) var(--ease),opacity var(--dur),visibility var(--dur)}
 .toast.show{transform:translate(-50%,0);opacity:1;visibility:visible}
+.toast .tx{background:none;border:0;min-width:36px;padding:0;font-size:16px;color:var(--ink2)}
+body.sheet-open .toast{top:auto;bottom:calc(env(safe-area-inset-bottom) + 12px);transform:translate(-50%,14px)}
+body.sheet-open .toast.show{transform:translate(-50%,0)}
 .toast .tb{background:var(--paper);border:1px solid var(--rule);color:var(--ink);border-radius:99px;min-height:36px;padding:0 12px;cursor:pointer;font-size:13px}
 .toast .tb.on{background:var(--teal);color:var(--on-teal);border-color:var(--teal);font-weight:600}
 .toast .undo{font-weight:700;color:var(--teal);background:none;border:0;text-decoration:underline}
@@ -859,18 +862,20 @@ function hint(id,title,body){
 }
 /* ---------- toast ---------- */
 let toastT,toastMs=0;
+function toastClose(){clearTimeout(toastT);$('#toast').classList.remove('show')}
+document.addEventListener('click',e=>{if(e.target.closest&&e.target.closest('#toast [data-tx]')){e.stopPropagation();toastClose()}},true);
 function toastArm(ms){toastMs=ms;clearTimeout(toastT);toastT=setTimeout(()=>$('#toast').classList.remove('show'),ms)}
 function toastHold(){clearTimeout(toastT)}
 function toast(msg,undo){
   const t=$('#toast');
-  t.innerHTML=`<span>${msg}</span>${undo?'<button class="tb undo" id="tUndo">Undo</button>':''}`;
+  t.innerHTML=`<span>${msg}</span>${undo?'<button class="tb undo" id="tUndo">Undo</button>':''}<button class="tb tx" type="button" data-tx aria-label="Close">✕</button>`;
   if(undo)$('#tUndo').onclick=()=>{undo();t.classList.remove('show')};
   t.classList.add('show');toastArm(undo?10000:4000);
 }
 function toastLog(f,c){
   const t=$('#toast');
   const label={me:'You reached out',them:'They reached out',mutual:'Mutual'}[c.who];
-  const draw=()=>{t.innerHTML=`<span>${label} · ${esc(f.name)}</span><button class="tb" id="tMore">Details</button><button class="tb undo" id="tUndo">Undo</button><div class="ms" role="group" aria-label="How?">${QUICK_MODES.map(m=>`<button class="tb ${c.mode===m?'on':''}" data-m="${m}" aria-pressed="${c.mode===m}">${m}</button>`).join('')}</div>`;
+  const draw=()=>{t.innerHTML=`<span>${label} · ${esc(f.name)}</span><button class="tb" id="tMore">Details</button><button class="tb undo" id="tUndo">Undo</button><button class="tb tx" type="button" data-tx aria-label="Close">✕</button><div class="ms" role="group" aria-label="How?">${QUICK_MODES.map(m=>`<button class="tb ${c.mode===m?'on':''}" data-m="${m}" aria-pressed="${c.mode===m}">${m}</button>`).join('')}</div>`;
     $('#tUndo').onclick=()=>{f.contacts=f.contacts.filter(x=>x.id!==c.id);saveFriend(f);t.classList.remove('show');render();renderSheet()};
     $('#tMore').onclick=()=>{t.classList.remove('show');openSheet({type:'checkin',id:f.id,cid:c.id,back:ui.sheet&&ui.sheet.type==='person'})};
     t.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{c.mode=b.dataset.m;if(c.who==='me'&&(c.reply==='waiting'||!c.reply))c.reply=defaultReply(c);saveFriend(f);draw();renderSheet();toastArm(10000)});
@@ -1376,22 +1381,26 @@ function vMore(){
    <div class="acts"><button class="btn" data-act="restore" data-mode="merge">Merge in</button><button class="btn danger" data-act="restore" data-mode="replace">${ui.arm==='replace'?'Tap again to replace everything':'Replace everything'}</button></div></section>
   <section class="sec"><h2>About</h2><div class="acts" style="margin-top:var(--s3)"><button class="btn primary" data-act="tour">Take the tour</button><button class="btn" data-act="intro">Replay the intro</button><button class="btn" data-act="hintsReset">Show tips again</button></div>
    <p class="note">Your orbit stays private: ${IN_CLAUDE?'it’s saved in your own Claude account space':'it’s saved on this device only, nothing is sent anywhere, and it’s protected by your phone’s lock'}. Fonts are bundled, so nothing loads from other sites.</p>
-   <p class="small muted" style="margin-top:var(--s4)">Orbit · v5.5 · Nov 13, 2026 · ${S.friends.length} ${S.friends.length===1?'person':'people'}</p></section>`;
+   <p class="small muted" style="margin-top:var(--s4)">Orbit · v5.6 · Nov 24, 2026 · ${S.friends.length} ${S.friends.length===1?'person':'people'}</p></section>`;
   return h;
 }
 /* ---------- sheets ---------- */
+/* Keep the page behind a sheet still (iPhone ignores overflow:hidden on body), Nov 24 */
+let lockY=null;
+function lockScroll(on){const b=document.body;if(on&&lockY===null){lockY=scrollY;b.classList.add('sheet-open');b.style.position='fixed';b.style.top=-lockY+'px';b.style.left='0';b.style.right='0'}
+  else if(!on&&lockY!==null){const y=lockY;lockY=null;b.classList.remove('sheet-open');b.style.position='';b.style.top='';b.style.left='';b.style.right='';scrollTo(0,y)}}
 function openSheet(s){
   if(!ui.sheet)ui.lastFocus=document.activeElement;
-  ui.sheet=s;ui.arm=null;document.getElementById('app').classList.add('open');renderSheet();
+  ui.sheet=s;ui.arm=null;lockScroll(true);document.getElementById('app').classList.add('open');renderSheet();
   const sh=$('#sheet');sh.scrollTop=0;
   setTimeout(()=>{const el=s.focus==='log'?$('#logNote')||$('#sheet .logbtns button'):s.type==='add'?$('#nName'):$('#sheet h3, #sheet [data-autofocus]');if(el){el.setAttribute('tabindex',el.tabIndex<0&&!/INPUT|TEXTAREA|BUTTON/.test(el.tagName)?'-1':el.getAttribute('tabindex')||'');el.focus({preventScroll:s.focus!=='log'});if(s.focus==='log')el.scrollIntoView({block:'center'})}},60);
 }
 function closeSheet(){
-  ui.sheet=null;document.getElementById('app').classList.remove('open');
+  ui.sheet=null;document.getElementById('app').classList.remove('open');lockScroll(false);
   setTimeout(()=>{if(!ui.sheet)$('#sheet').innerHTML=''},300);render();
   const lf=ui.lastFocus;ui.lastFocus=null;
-  if(lf&&lf.dataset&&lf.dataset.id){const n=document.querySelector(`[data-act="open"][data-id="${lf.dataset.id}"]`);if(n){n.focus();return}}
-  if(lf&&document.body.contains(lf))lf.focus();
+  if(lf&&lf.dataset&&lf.dataset.id){const n=document.querySelector(`[data-act="open"][data-id="${lf.dataset.id}"]`);if(n){n.focus({preventScroll:true});return}}
+  if(lf&&document.body.contains(lf))lf.focus({preventScroll:true});
 }
 function sheetHead(title,back){
   return `<div class="grab"></div><div class="in"><div class="hd">${back?`<button class="back" data-act="${back.act}" data-id="${back.id||''}">‹ ${esc(back.label)}</button>`:`<span></span>`}<button class="x" data-act="close" aria-label="Close">✕</button></div>${title?`<h3 id="sheetTitle" tabindex="-1">${title}</h3>`:''}`;
@@ -2120,7 +2129,7 @@ const Tour=(()=>{
   function start(){
     if(running)return;if(!root)build();
     running=true;window.TOUR_DEMO=true;$('#toast').classList.remove('show');
-    if(ui.sheet){ui.sheet=null;document.getElementById('app').classList.remove('open');$('#sheet').innerHTML=''}
+    if(ui.sheet){ui.sheet=null;document.getElementById('app').classList.remove('open');lockScroll(false);$('#sheet').innerHTML=''}
     saved={friends:S.friends,settings:S.settings,filter:ui.filter,q:ui.q};demoList=demo();
     S.friends=demoList;S.settings=Object.assign(JSON.parse(JSON.stringify(saved.settings)),{groups:DG,orbitNames:true,colorBy:'tier',avatars:'initials',hints:['reach-buttons','orbit-meaning','no-backlog','after-add','first-run']});
     ui.filter='all';ui.q='';ui.pick=0;
@@ -2133,7 +2142,7 @@ const Tour=(()=>{
     ui.filter=saved.filter;ui.q=saved.q;saved=null;window.TOUR_DEMO=false;
     S.settings.toured=true;saveSettings();
     root.hidden=true;document.body.classList.remove('tour-on','tour-fading');
-    ui.sheet=null;document.getElementById('app').classList.remove('open');$('#sheet').innerHTML='';
+    ui.sheet=null;document.getElementById('app').classList.remove('open');lockScroll(false);$('#sheet').innerHTML='';
     route();
     if(!S.friends.length)setTimeout(()=>openSheet({type:'add'}),300);
   }
@@ -2181,7 +2190,7 @@ const Tour=(()=>{
       document.body.classList.add('tour-fading');await wait(200);if(tk!==token)return;
       if(needView){ui.view=x.view;render();window.scrollTo(0,0)}
       if(needSheet){if(wantSheet){ui.sheet={type:'person',id:wantSheet};document.getElementById('app').classList.add('open');renderSheet();$('#sheet').scrollTop=0}
-        else{ui.sheet=null;document.getElementById('app').classList.remove('open');$('#sheet').innerHTML=''}}
+        else{ui.sheet=null;document.getElementById('app').classList.remove('open');lockScroll(false);$('#sheet').innerHTML=''}}
       await frame();await frame();if(wantSheet)await wait(280);
     }
     let found=[];
